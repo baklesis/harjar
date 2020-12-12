@@ -49,13 +49,13 @@ create table header (
 header_id not null auto_increment,
 response int,
 request int,
---content_type
---cache_control
---pragma
---expires
---age
---last_modified
---host
+content_type varchar(50),
+cache_control varchar(50),
+pragma varchar(50),
+expires datetime,
+age int,
+last_modified datetime,
+host varchar(50),
 primary key (header_id),
 constraint of_response foreign key (response) references request(request_id) on delete cascade on update cascade,
 constraint of_request foreign key (request) references request(request_id) on delete cascade on update cascade
