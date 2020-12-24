@@ -1,9 +1,9 @@
 import Card from '../../card.js'
 
 const template = `
-  <card style="width:500px; height:500px">
+  <card>
     <h5 class='pt-4 px-1' style='text-align: center;'>TTL Ιστοαντικειμένων</h5>
-    <div style="height:400px"><canvas id="histogram" class='pt-4 px-3'></canvas></div>
+    <div style="height:600px"><canvas id="histogram" class='p-3'></canvas></div>
   </card>
 `
 export default {
@@ -20,7 +20,7 @@ export default {
           datasets: [{
             label: '%',
             data: [19, 28, 20, 16, 43, 56, 12, 39, 44, 34],
-            backgroundColor: '#007BFF',
+            backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
           }]
         },
         options: {
@@ -38,7 +38,7 @@ export default {
                 return "Ιστοαντικείμενα: "+data.datasets[0].data[tooltipItem.index]+"%"
               }
             }
-          },
+          }
         }
       },
     }
