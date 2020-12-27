@@ -1,7 +1,7 @@
 const template = `
   <div class="border border-primary rounded-corners-5">
     <b-button block @click="visible = !visible" variant="primary" style="text-align: left">
-      <b-icon :icon="caret()"></b-icon>
+      <b-icon :icon="caret()" style="height:15px"></b-icon>
       {{ title }}
     </b-button>
     <b-collapse class="p-2" v-model="visible">
