@@ -2,10 +2,10 @@ import Card from '../card.js'
 import FilterItem from './filter-item.js'
 
 const template = `
-  <card class="fixed-bottom fixed-top" style="width:215px">
+  <card style="height: 100%; width:215px">
     <div class="pt-3 px-1" style='text-align: center;'>Φίλτρα Ιστοαντικειμένων</div>
     <hr>
-    <div class="overflow-auto" style="height: calc(100vh - 110px)">
+    <div class="overflow-auto" style="height: calc(100% - 110px)">
       <div class="pb-3 px-1">
         <filter-item title="Περιεχόμενο" :options="content_types"></filter-item>
       </div>
