@@ -18,10 +18,9 @@ const template = `
 `
 export default {
   template,
+  props: ['title','username'],
   data () {
     return {
-      title: 'Ανάλυση / HTTP Κεφαλίδες',
-      username: 'admin'
     }
   }
 }

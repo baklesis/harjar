@@ -8,7 +8,7 @@ $sql = $conn->query("SELECT username,type FROM user WHERE username='$username' A
 if($sql){
   $result = $sql->fetch_assoc();
   $_SESSION['username']=$result['username'];
-  $_SESSION['usertype']=$result['type'];
+  $_SESSION['type']=$result['type'];
 }
 echo json_encode($result);
 ?>
