@@ -5,13 +5,14 @@
   <title></title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.15.0/dist/bootstrap-vue.min.css"/>
-  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
   <div class="fixed-bottom fixed-top bg">
     <main>
-    	<card-info title="Hello!"> </card-info>
+      <component v-bind:is="curr_page"></component>
     </main>
   </div>
 </body>
@@ -19,8 +20,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.15.0/dist/bootstrap-vue.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="content/Overview/Chart.roundedBarCharts.js"></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="index.js" type="module" charset="utf-8"></script>
 </html>

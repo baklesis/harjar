@@ -4,8 +4,7 @@ import CardPie from './analysis-header/card-pie.js'
 
 const template = `
   <b-container class="rounded-corners-25" style="height: 100%; width: 80%; background: rgba(255, 255, 255, 0.2)">
-    <div class='pt-3'></div>
-    <div class='overflow-auto' style='height: calc(100% - 35px);'>
+    <div class='pt-3 overflow-auto' style='height: 100%;'>
       <b-col>
         <b-row>
           <b-col class='p-3'>
@@ -16,7 +15,7 @@ const template = `
           </b-col>
         </b-row>
         <b-row><b-col class='p-3'><card-pie></card-pie></b-col></b-row>
-        <b-row><b-col class='p-3'><card-histogram></card-histogram></b-col></b-row>
+        <b-row><b-col class='pt-3 px-3 pb-4'><card-histogram></card-histogram></b-col></b-row>
       </b-col>
     </div>
   </b-container>

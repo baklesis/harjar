@@ -2,7 +2,7 @@ const template = `
   <b-col>
     <b-row>
       <b-col>
-        <b-container style='width: 80%;'><h4 style="color: white">Ανάλυση / HTTP Κεφαλίδες</h4></b-container>
+        <b-container style='width: 80%;'><h4 style="color: white">{{title}}</h4></b-container>
       </b-col>
       <b-col cols='3'>
         <b-container style='height: 45px; width: 215px;'>
@@ -20,7 +20,8 @@ export default {
   template,
   data () {
     return {
-      username: "admin"
+      title: 'Ανάλυση / HTTP Κεφαλίδες',
+      username: 'admin'
     }
   }
 }

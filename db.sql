@@ -11,7 +11,7 @@ primary key (username)
 );
 
 create table entry (
-entry_id not null auto_increment,
+entry_id int not null auto_increment,
 user varchar(50) not null,
 startedDateTime datetime not null,
 serverIPAddress varchar(15) not null,
@@ -20,15 +20,15 @@ constraint of_user foreign key (user) references user(username) on delete cascad
 );
 
 create table timing (
-timing_id not null auto_increment,
+timing_id int not null auto_increment,
 entry int not null,
 wait int not null,
-primary key (entry_id),
+primary key (timing_id),
 constraint of_entry foreign key (entry) references entry(entry_id) on delete cascade on update cascade
 );
 
 create table response (
-response_id not null auto_increment,
+response_id int not null auto_increment,
 user varchar(50) not null,
 method varchar(10) not null,
 url varchar(2000) not null,
@@ -37,7 +37,7 @@ constraint of_user foreign key (user) references user(username) on delete cascad
 );
 
 create table request (
-request_id not null auto_increment,
+request_id int not null auto_increment,
 user varchar(50) not null,
 status int not null,
 status_text varchar(50) not null,
@@ -46,7 +46,7 @@ constraint of_user foreign key (user) references user(username) on delete cascad
 );
 
 create table header (
-header_id not null auto_increment,
+header_id int not null auto_increment,
 response int,
 request int,
 content_type varchar(50),
@@ -60,3 +60,6 @@ primary key (header_id),
 constraint of_response foreign key (response) references request(request_id) on delete cascade on update cascade,
 constraint of_request foreign key (request) references request(request_id) on delete cascade on update cascade
 );
+
+insert into user values ('admin','1','admin@har.com','admin');
+insert into user values ('prisonmike','1','prisonmike@har.com','user');

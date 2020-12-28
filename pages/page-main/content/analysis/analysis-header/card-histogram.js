@@ -20,7 +20,7 @@ export default {
           datasets: [{
             label: '%',
             data: [19, 28, 20, 16, 43, 56, 12, 39, 44, 34],
-            backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
+            backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF","#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
           }]
         },
         options: {
