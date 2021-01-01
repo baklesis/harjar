@@ -2,8 +2,8 @@ import Card from '../../../card.js'
 
 const template = `
   <card>
-    <h5 class='pt-4 px-1' style='text-align: center;'>TTL Ιστοαντικειμένων</h5>
-    <div style="height:460px"><canvas id="histogram" class='p-3'></canvas></div>
+    <h5 class='pt-4 px-1' style='text-align: center;'>Μέσος Χρόνος Απόκρισης Αιτήσεων</h5>
+    <div style="height: calc(100% - 50px);"><canvas id="histogram" class='px-3' style='padding-top: 10%; padding-bottom: 10%'></canvas></div>
   </card>
 `
 export default {
@@ -14,13 +14,13 @@ export default {
   data () {
     return {
       histogram_config: {
-        type: 'bar',
+        type: 'line',
         data: {
-          labels: ['0-9','10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90-99'],
+          labels: ['00:00','01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],
           datasets: [{
-            label: '%',
-            data: [19, 28, 20, 16, 43, 56, 12, 39, 44, 34],
-            backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF","#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
+            label: '',
+            data: [19, 28, 20, 16, 43, 56, 12, 39, 44, 34, 19, 28, 20, 16, 43, 56, 12, 39, 44, 34, 19, 28, 20, 16],
+            backgroundColor: ['#87CEFA'],
           }]
         },
         options: {
@@ -32,10 +32,10 @@ export default {
           tooltips: {
             callbacks: {
               title: function(tooltipItem, data){
-                return "TTL: "+tooltipItem[0].xLabel
+                return "Ώρα: "+tooltipItem[0].xLabel
               },
               label: function(tooltipItem, data) {
-                return "Ιστοαντικείμενα: "+data.datasets[0].data[tooltipItem.index]+"%"
+                return "Μέσος Χρόνος Απόκρισης: "+data.datasets[0].data[tooltipItem.index]
               }
             }
           }

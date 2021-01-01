@@ -12,7 +12,7 @@ const template = `
       </b-form-group>
       <hr/>
       <b-button type="reset">Ακύρωση</b-button>
-      <b-button type="submit" class='btn-color' >Εγγραφή</b-button>
+      <b-button type="submit" class='btn-color'>Εγγραφή</b-button>
     </b-form>
   </b-modal>
 `
@@ -22,8 +22,6 @@ export default {
     return {
       username:'',
       usernameState: null,
-      lastname:'',
-      lastnameState: null,
       email:'',
       emailState: null,
       password:'',
@@ -47,7 +45,6 @@ export default {
   methods: {
     cancel() {
       this.username=''
-      this.lastname=''
       this.email=''
       this.password=''
       this.passwordState=null
@@ -55,20 +52,20 @@ export default {
     },
     signUp(){
       event.preventDefault() //prevents page reload after button submit
-      if (this.usernameState & this.lastnameState & this.emailState & this.passwordState){
-        // axios.post('/db/signup.php',{'username': this.username, 'email': this.email, 'password':this.password})
-        // .then(function (response) {
-        //   if(response.data == 'ok'){
-        //     alert("Η εγγραφή σας ολοκληρώθηκε με επιτυχία")
-        //   }
-        //   else{
-        //     alert("Η εγγραφή σας απέτυχε λόγω σφάλματος")
-        //   }
-        //   location.reload();
-        // })
-        // .catch(function (error) {
-        //   console.log(error);
-        // })
+      if (this.usernameState & this.emailState & this.passwordState){
+        axios.post('./php/signup.php',{'username': this.username, 'email': this.email, 'password':this.password})
+        .then(function (response) {
+          if(response.data){
+            alert("Η εγγραφή σας ολοκληρώθηκε με επιτυχία")
+          }
+          else{
+            alert("Αυτός ο λογαριασμός υπάρχει ήδη")
+          }
+          location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
       }
     }
   }

@@ -5,13 +5,27 @@ const App = {
   el: 'main',
   components: {
     'login' : Login,
-    'home' : Home,
+    'home' : Home
   },
   data() {
     return {
-      curr_page: 'home'
+      curr_page: 'login'
     }
   },
+  mounted() {
+    axios.post('./php/get_session.php')
+    .then((response)=>{
+      if (response.data != null){ // if user already logged in (session exists)
+        this.curr_page = 'home'
+      }
+      else { // if user not logged in (no session exists)
+        this.curr_page = 'login'
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
 }
 window.addEventListener('load', () => {
   new Vue(App)

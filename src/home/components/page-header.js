@@ -8,9 +8,9 @@ const template = `
         <b-container style='height: 45px; width: 215px;'>
           <b-dropdown right :text='username' variant='outline-light' offset="15" style='width: 150px; float: right;'>
             <b-dropdown-item>Λογαριασμός</b-dropdown-item>
-            <b-dropdown-item>Αποσύνδεση</b-dropdown-item>
+            <b-dropdown-item @click="logOut()">Αποσύνδεση</b-dropdown-item>
           </b-dropdown>
-          <img src='../../assets/img/profile.png' style='background: #007BFF; height: 50px; width: 50px; position: absolute; top: -5px; border-radius: 50%; z-index: 100;'></img>
+          <img src='../assets/img/profile.png' style='background: #007BFF; height: 50px; width: 50px; position: absolute; top: -5px; border-radius: 50%; z-index: 100;'></img>
         </b-container>
       </b-col>
     </b-row>
@@ -21,6 +21,17 @@ export default {
   props: ['title','username'],
   data () {
     return {
+    }
+  },
+  methods: {
+    logOut() {
+      axios.get('./php/logout.php')
+      .then((response)=>{
+        this.$root.curr_page = 'login'
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
     }
   }
 }

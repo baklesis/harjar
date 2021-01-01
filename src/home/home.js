@@ -4,7 +4,7 @@ import PageHeader from './components/page-header.js'
 const template = `
   <div class="fixed-bottom fixed-top animate__animated animate__fadeIn"><b-col><b-row>
       <b-col cols='2' style='background: white'>
-        <div style='height:100px; width: 100px; background: white'></div>
+        <div style='height:100vh; width: 100px; background: white'></div>
       </b-col>
       <b-col>
         <b-row class='pt-4 pb-3'>
@@ -52,12 +52,12 @@ export default {
     }
   },
   mounted () {
-    axios.post('./php/get_user.php')
+    axios.post('./php/get_session.php')
     .then((response)=>{
       if (response.data != null){
         if (response.data['type'] == 'admin'){
           this.page_content = 'analysis' //change to overview later
-          this.page_content_props = {content_type: "header"}
+          this.page_content_props = {content_type: "request"}
         }
         else if (response.data['type'] == 'user'){
           this.page_content = 'overview' //change to map later
@@ -68,6 +68,6 @@ export default {
     })
     .catch(function (error) {
       console.log(error);
-    }) 
+    })
   }
 }
