@@ -3,7 +3,7 @@ import RequestMap from './components/request-map/request-map.js'
 import Overview from './components/overview/overview.js'
 
 const template = `
-  <component v-bind:is="content" v-bind="content_props"></component> 
+  <component v-bind:is="content" v-bind="content_props"></component>
 `
 export default {
   components: {

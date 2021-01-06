@@ -1,5 +1,6 @@
 .bg {
   background: linear-gradient(180deg, rgba(153,204,255,1) 50%, rgba(166,128,184,1) 100%);
+  /*background-image: url('../assets/img/bg.jpg'); background-size: cover; background-position: center bottom;"*/
 }
 .rounded-corners-25 {
   border-radius: 25px;

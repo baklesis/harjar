@@ -1,22 +1,17 @@
 import Card from '../../card.js'
-import FilterItem from './filter-item.js'
+import FilterType from './filter-type.js'
 
 const template = `
   <card style="height: 100%; width:215px">
     <div class="pt-3 px-1" style='text-align: center;'>Φίλτρα Ιστοαντικειμένων</div>
+    <div class="pt-3 px-1">
+      <b-button @click='saveSelectedFilters' size="sm">Εφαρμογή</b-button>
+      <b-button @click='resetSelectedFilters' size="sm">Καθάρισμα</b-button>
+    </div>
     <hr>
-    <div class="overflow-auto" style="height: calc(100% - 110px)">
-      <div class="pb-3 px-1">
-        <filter-item title="Περιεχόμενο" :options="content_types"></filter-item>
-      </div>
-      <div class="pb-3 px-1">
-        <filter-item title="Ημέρα" :options="days"></filter-item>
-      </div>
-      <div class="pb-3 px-1">
-        <filter-item title="Πάροχος" :options="providers"></filter-item>
-      </div>
-      <div class="pb-3 px-1">
-        <filter-item title="HTTP Μέθοδος" :options="http_methods"></filter-item>
+    <div class="overflow-auto" style="height: calc(100% - 143px)">
+      <div class="pb-3 px-1" v-for='filter_type in getFilterTypes()'>
+        <filter-type :id='filter_type.value' :title="filter_type.title" :options="filter_type.options"></filter-type>
       </div>
     </div>
   </card>
@@ -24,12 +19,13 @@ const template = `
 export default {
   components: {
     'card': Card,
-    'filter-item': FilterItem,
+    'filter-type': FilterType,
   },
   template,
   data () {
     return {
       window_height: window.innerHeight,
+      // filter option items
       content_types: [
         { text: 'Application', value: 'application' },
         { text: 'Audio', value: 'audio' },
@@ -67,6 +63,39 @@ export default {
         { text: 'TRACE', value: 'TRACE'},
         { text: 'PATCH', value: 'PATCH'},
       ]
+    }
+  },
+  methods: {
+    getFilterTypes() {
+      if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
+        // return filter types for header tab
+        return [  
+            { title: "Περιεχόμενο", value: 'content_types', options: this.content_types },
+            { title: "Πάροχος", value: 'providers', options: this.providers }
+          ]
+      }
+      else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
+      // return filter types for request tab
+      return [
+          { title: "Περιεχόμενο", value: 'content_types', options: this.content_types },
+          { title: "Ημέρα", value: 'days', options: this.days },
+          { title: "Πάροχος", value: 'providers', options: this.providers },
+          { title: "HTTP Μέθοδος", value: 'http_methods', options: this.http_methods }
+        ]
+      }
+    },
+    saveSelectedFilters() {  // saves selected filters from each filter-type component to global variable in analysis
+      this.$parent.saved_filters.content_types = document.getElementById('content_types').selected
+      this.$parent.saved_filters.days = document.getElementById('days')
+      this.$parent.saved_filters.providers = document.getElementById('providers')
+      this.$parent.saved_filters.http_methods = document.getElementById('http_methods')
+    },
+    resetSelectedFilters() {  // clears selected filters
+      document.getElementById('content_types').__vue__.selected = []
+      document.getElementById('days').__vue__.selected = []
+      document.getElementById('providers').__vue__.selected = []
+      document.getElementById('http_methods').__vue__.selected = []
+      this.getSelectedFilters()  // saves selected filters
     }
   }
 }

@@ -1,25 +1,27 @@
-import PageContent from './components/page-content/page-content.js'
+import PageSidebar from './components/page-sidebar.js'
 import PageHeader from './components/page-header.js'
+import PageContent from './components/page-content/page-content.js'
 
 const template = `
   <div class="fixed-bottom fixed-top animate__animated animate__fadeIn"><b-col><b-row>
       <b-col cols='2' style='background: white'>
-        <div style='height:100vh; width: 100px; background: white'></div>
+        <page-sidebar></page-sidebar>
       </b-col>
       <b-col>
         <b-row class='pt-4 pb-3'>
           <page-header :title='getTitle' :username='username'></page-header>
         </b-row>
         <b-row>
-          <page-content :content='page_content' :content_props='page_content_props'></page-content>
+          <page-content :content='getContent' :content_props='page_content_props'></page-content>
         </b-row>
       </b-col>
     </b-row></b-col></div>
 `
 export default {
   components: {
-    'page-content': PageContent,
+    'page-sidebar': PageSidebar,
     'page-header': PageHeader,
+    'page-content': PageContent
   },
   template,
   props: [],
@@ -28,7 +30,7 @@ export default {
       header_title: null,
       username: null,
       page_content: null,
-      page_content_props: {}
+      page_content_props: {},
     }
   },
   computed: {
@@ -49,19 +51,22 @@ export default {
           this.header_title = 'Επισκόπηση'
       }
       return this.header_title
+    },
+    getContent() {
+      return this.page_content
     }
   },
   mounted () {
-    axios.post('./php/get_session.php')
+    axios.post('./php/get_session.php')  // check user type in user session
     .then((response)=>{
       if (response.data != null){
-        if (response.data['type'] == 'admin'){
-          this.page_content = 'analysis' //change to overview later
-          this.page_content_props = {content_type: "request"}
+        if (response.data['type'] == 'admin'){  // if user is admin
+          this.page_content = 'overview' // default content is overview
+          this.page_content_props = null
         }
-        else if (response.data['type'] == 'user'){
-          this.page_content = 'overview' //change to map later
-          this.page_content_props = {}
+        else if (response.data['type'] == 'user'){  // if user is regular user
+          this.page_content = 'map' // default content is map
+          this.page_content_props = null
         }
         this.username = response.data['username']
       }
