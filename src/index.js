@@ -12,7 +12,7 @@ const App = {
     }
   },
   mounted() {
-    axios.post('./php/get_session.php')
+    axios.post('./php/get_session.php')  // check if user session exists
     .then((response)=>{
       if (response.data != null){ // if user already logged in (session exists)
         this.curr_page = 'home'

@@ -1,6 +1,6 @@
 const template = `
   <b-modal id="signup" title="Πληροφορίες Λογαριασμού" @hide="cancel" hide-footer >
-    <b-form @submit.stop.prevent="signUp" @reset="cancel">
+    <b-form @submit.stop.prevent="signUp" @reset="cancel" onsubmit='return false'>
       <b-form-group label-cols-sm="3" label="Όνομα Χρήστη" label-for="username">
         <b-form-input id="username" v-model="username" type="text" :state="usernameValidate" required placeholder=""></b-form-input>
       </b-form-group>
@@ -51,7 +51,6 @@ export default {
       this.$bvModal.hide("signup")
     },
     signUp(){
-      event.preventDefault() //prevents page reload after button submit
       if (this.usernameState & this.emailState & this.passwordState){
         axios.post('./php/signup.php',{'username': this.username, 'email': this.email, 'password':this.password})
         .then(function (response) {

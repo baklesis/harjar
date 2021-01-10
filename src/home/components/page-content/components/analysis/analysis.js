@@ -16,7 +16,7 @@ const template = `
 `
 export default {
   template,
-  props: ['content_type'],
+  props: ['content_type'],  // prop for defining analysis component content type: header or request
   components: {
     'card-filters': CardFilters,
     'scroll-pane': ScrollPane,
@@ -24,7 +24,13 @@ export default {
   },
   data () {
     return {
-      content: null,
+      saved_filters: {  // saved filter options of each filter-type component
+        content_types: [],
+        days: [],
+        providers: [],
+        http_methods: []
+      },
+      content: null,  // content of analysis page tabs: header or request 
     }
   },
   computed: {

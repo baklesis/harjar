@@ -8,6 +8,7 @@ const template = `
       <b-form-checkbox-group
       stacked
       style="text-allign: left;"
+      v-model="selected"
       :options="options">
       </b-form-checkbox-group>
     </b-collapse>
@@ -20,7 +21,7 @@ export default {
     return {
       visible: false,
       selected: [],
-      caret: function(){
+      caret: function(){  // switches dropdown caret icon
         return this.visible? "caret-up-fill" : "caret-down-fill"
       }
     }
