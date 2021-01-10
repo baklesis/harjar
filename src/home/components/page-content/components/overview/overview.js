@@ -6,20 +6,20 @@ const template = `
 <b-container class="p-4">
   <b-row class='my-4'>
     <b-col>
-    	<card-info title='Χρήστες' :value=numberOfUsers></card-info>
+    	<card-info title='Χρήστες' icon='person-fill' :value=numberOfUsers></card-info>
     </b-col>
     <b-col>
-    	<card-info title='Domain' :value=numberOfDomains></card-info>
+    	<card-info title='Domain' icon='globe2' :value=numberOfDomains></card-info>
     </b-col>
     <b-col>
-    	<card-info title='Πάροχοι' :value=numberOfProviders></card-info>
+    	<card-info title='Πάροχοι' icon='hdd-network-fill' :value=numberOfProviders></card-info>
     </b-col>
   </b-row>
   <b-row align-v="center">
     <b-col cols="8">
     	<card-bar></card-bar>
     </b-col>
-    <b-col><card-info-list></card-info-list></b-col>
+    <b-col><card-info-list icon='paperclip'></card-info-list></b-col>
   </b-row>
 </b-container>
  `

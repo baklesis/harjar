@@ -1,6 +1,5 @@
 import Login from './login/login.js'
 import Home from './home/home.js'
-
 const App = {
   el: 'main',
   components: {
@@ -30,3 +29,5 @@ const App = {
 window.addEventListener('load', () => {
   new Vue(App)
 })
+
+Chart.plugins.unregister(ChartDataLabels); // disables the data labels on charts by default

@@ -1,10 +1,15 @@
 import Card from "../../card.js"
 const template = `
 	<card>
-	<div class = 'pt-3 overflow-auto' style='height:300px'>
-	<div v-for="type in types">
-    <h5 class='pt-3 px-1 text-muted'> {{ type.name }}
-    <b-icon :icon="icon"></b-icon></h5>
+	<div class = 'pt-3 overflow-auto' style='height:340px'>
+	<div v-for="type in types"><b-row>
+  <b-col cols='9'>
+    <h5 class='pt-3 px-1 text-muted'>{{type.name}}</h5>
+    </b-col>
+    <b-col cols='3'>
+    <b-icon class="pt-3" :icon='icon' variant="primary" font-scale="3" ></b-icon></h5>
+    </b-col>
+    </b-row>
     <hr>
     <b-row class='pb-3 px-1' align-v='center'>
       <b-col cols='4'><h2><b>{{type.value}} </b></h2></b-col>
