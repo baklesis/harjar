@@ -3,16 +3,14 @@ import ScrollPane from './components/analysis-header/scroll-pane.js'
 import CardGraph from './components/analysis-request/card-graph.js'
 
 const template = `
-  <b-col>
     <b-row>
       <b-col>
-        <component :is='getContent' style='height: calc(100vh - 100px); width: 80%;'></component>
+        <component :is='getContent' style='height: calc(100vh - 100px);'></component>
       </b-col>
       <b-col  cols='3'>
         <card-filters style="height: calc(100vh - 100px)"></card-filters>
       </b-col>
     </b-row>
-  </b-col>
 `
 export default {
   template,

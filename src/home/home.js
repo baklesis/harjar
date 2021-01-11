@@ -12,7 +12,9 @@ const template = `
           <page-header :title='getTitle' :username='username'></page-header>
         </b-row>
         <b-row>
+        <b-container style='width:85%''>
           <page-content :content='getContent' :content_props='page_content_props'></page-content>
+          </b-container>
         </b-row>
       </b-col>
     </b-row></b-col></div>
@@ -49,6 +51,9 @@ export default {
           break;
         case 'overview':
           this.header_title = 'Επισκόπηση'
+          break;
+        case 'upload':
+          this.header_title = 'Upload'
       }
       return this.header_title
     },

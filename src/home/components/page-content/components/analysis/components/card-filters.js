@@ -2,7 +2,7 @@ import Card from '../../card.js'
 import FilterType from './filter-type.js'
 
 const template = `
-  <card style="height: 100%; width:215px">
+  <card style="height: 100%">
     <div class="pt-3 px-1" style='text-align: center;'>Φίλτρα Ιστοαντικειμένων</div>
     <div class="pt-3 px-1">
       <b-button @click='saveSelectedFilters' size="sm">Εφαρμογή</b-button>
@@ -24,7 +24,6 @@ export default {
   template,
   data () {
     return {
-      window_height: window.innerHeight,
       // filter option items
       content_types: [
         { text: 'Application', value: 'application' },

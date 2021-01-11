@@ -1,11 +1,7 @@
-
-
 const template = `
     <div id="map" style= "height: 800px;"></div>
 `
 export default {
-  components: {
-  },
   template,
   props: ['user'],
   data () {

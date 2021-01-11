@@ -9,7 +9,7 @@ export default {
     return {
     	curr_options : [],
     	user_options : ['Χάρτης','Upload'],
-    	admin_options : ['Επισκόπιση','Ανάλυση/Request','Ανάλυση/Header','Χάρτης']
+    	admin_options : ['Επισκόπηση','Ανάλυση/Request','Ανάλυση/Header','Χάρτης']
     }
   },
   methods: {
@@ -20,8 +20,10 @@ export default {
           this.$parent.page_content_props = null
           break
         case 'Upload':
+          this.$parent.page_content = 'upload'
+          this.$parent.page_content_props = null
           break
-        case 'Επισκόπιση':
+        case 'Επισκόπηση':
           this.$parent.page_content = 'overview'
           this.$parent.page_content_props = null
           break
