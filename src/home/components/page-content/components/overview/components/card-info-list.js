@@ -1,9 +1,9 @@
 import Card from "../../card.js"
 const template = `
 	<card>
-	<div class = 'pt-3 overflow-auto' style='height:340px'>
+	<div style='height: 425px; overflow: auto; overflow-x: hidden;'>
 	<div v-for="type in types"><b-row>
-  <b-col cols='9'>
+  	<b-col cols='9'>
     <h5 class='pt-3 px-1 text-muted'>{{type.name}}</h5>
     </b-col>
     <b-col cols='3'>
@@ -27,7 +27,7 @@ const template = `
  	props: ['title','subtitle','value','icon'],
    data () {
      return {
-     	types: 
+     	types:
      		[{name: 'Application', value: Math.floor((Math.random() * 100) + 1)},
      		{name: 'Audio', value: Math.floor((Math.random() * 100) + 1)},
      		{name: 'Font', value: Math.floor((Math.random() * 100) + 1)},

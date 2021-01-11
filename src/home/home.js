@@ -1,5 +1,5 @@
 import PageSidebar from './components/page-sidebar.js'
-import PageHeader from './components/page-header.js'
+import PageHeader from './components/page-header/page-header.js'
 import PageContent from './components/page-content/page-content.js'
 
 const template = `

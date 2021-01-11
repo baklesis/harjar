@@ -69,7 +69,7 @@ export default {
     getFilterTypes() {
       if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
         // return filter types for header tab
-        return [  
+        return [
             { title: "Περιεχόμενο", value: 'content_types', options: this.content_types },
             { title: "Πάροχος", value: 'providers', options: this.providers }
           ]
@@ -86,9 +86,9 @@ export default {
     },
     saveSelectedFilters() {  // saves selected filters from each filter-type component to global variable in analysis
       this.$parent.saved_filters.content_types = document.getElementById('content_types').selected
-      this.$parent.saved_filters.days = document.getElementById('days')
-      this.$parent.saved_filters.providers = document.getElementById('providers')
-      this.$parent.saved_filters.http_methods = document.getElementById('http_methods')
+      this.$parent.saved_filters.days = document.getElementById('days').selected
+      this.$parent.saved_filters.providers = document.getElementById('providers').selected
+      this.$parent.saved_filters.http_methods = document.getElementById('http_methods').selected
     },
     resetSelectedFilters() {  // clears selected filters
       document.getElementById('content_types').__vue__.selected = []

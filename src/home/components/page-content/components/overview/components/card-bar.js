@@ -2,13 +2,11 @@ import Card from '../../card.js'
 
 const template = `
   <card>
-  <b-row class="py-2">
+  <b-row class='pt-3'>
+  <h5 class="px-4 text-muted" style='float:left'>Αριθμός εγγραφών</h5>
   <b-col>
-  <h5 class="mx-2 my-1 text-muted">Αριθμός εγγραφών</h5>
-  </b-col>
-  <b-col>
-  <b-form-group>
-      <b-form-radio-group size="sm" class="ml-4"
+  <b-form-group style='float:right'>
+      <b-form-radio-group size="sm"
         id="btn-radios-1"
         v-model="selected"
         :options="options"
@@ -16,13 +14,12 @@ const template = `
         buttons
       ></b-form-radio-group>
     </b-form-group>
-
   </b-col>
   </b-row>
   <b-row>
     <b-col>
-    <div class = 'pt-3 overflow-auto' style='height:300px'>
-      <canvas id="barChart" width="200" height="100"></canvas>
+    <div class = 'px-2 pb-3 overflow-auto' style='height:360px'>
+      <canvas id="barChart" width="200px" height="140px"></canvas>
       </div>
     </b-col>
     </b-row>
@@ -131,10 +128,10 @@ export default {
         options: this.chart_config.options,
         plugins: this.chart_config.plugins,
       });
-    var incoming = '{ "method":{"GET":25,"POST":50,"HEAD":3},"code":{ "This":1, "is":3, "a":2, "test":4 } }';
+    var incoming = '{ "method":{"GET":25,"POST":50,"HEAD":3,"DELETE":2},"code":{ "This":1, "is":3, "a":2, "test":4 } }';
     var imported = JSON.parse(incoming);
     var sorted = this.sortNestedJSON(imported);
-    
+
     this.method_data.labels = sorted[0].map(function(value,index) {return value[0];});
     this.method_data.datasets[0].data = sorted[0].map(function(value,index) {return value[1];});
 

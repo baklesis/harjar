@@ -6,10 +6,10 @@ const template = `
   <b-col>
     <b-row>
       <b-col>
-        <component :is='getContent' style='height: calc(100vh - 90px); width: 80%;'></component>
+        <component :is='getContent' style='height: calc(100vh - 100px); width: 80%;'></component>
       </b-col>
       <b-col  cols='3'>
-        <card-filters style="height: calc(100vh - 90px)"></card-filters>
+        <card-filters style="height: calc(100vh - 100px)"></card-filters>
       </b-col>
     </b-row>
   </b-col>
@@ -30,7 +30,7 @@ export default {
         providers: [],
         http_methods: []
       },
-      content: null,  // content of analysis page tabs: header or request 
+      content: null,  // content of analysis page tabs: header or request
     }
   },
   computed: {
