@@ -8,6 +8,12 @@
 .rounded-corners-5 {
   border-radius: 5px;
 }
+.rounded-left {
+  border-radius: 5px 0px 0px 5px;
+}
+.rounded-right {
+  border-radius: 0px 5px 5px 0px;
+}
 .square{
   padding-top: 100%;
 }
@@ -27,6 +33,7 @@
   background-color: #20ab6c;
   border: none;
 }
+
 
 
 /*scrollbar*/

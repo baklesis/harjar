@@ -21,25 +21,25 @@ export default {
   data () {
     return {
       username:'',
-      usernameState: null,
+      username_state: null,
       email:'',
-      emailState: null,
+      email_state: null,
       password:'',
-      passwordState: null,
+      password_state: null,
     }
   },
   computed: {
     usernameValidate(){
-      this.usernameState = this.username.length == 0 ? null : true
-      return this.usernameState
+      this.username_state = this.username.length == 0 ? null : true
+      return this.username_state
     },
     emailValidate(){
-      this.emailState = this.email.length == 0 ? null : /\w+[@]\w+[.]\w+/.test(this.email)
-      return this.emailState
+      this.email_state = this.email.length == 0 ? null : /\w+[@]\w+[.]\w+/.test(this.email)
+      return this.email_state
     },
     passwordValidate() {
-      this.passwordState = this.password.length == 0 ? null : (this.password.length >= 8) && /[A-Z]/.test(this.password) && /[0-9]/.test(this.password) && /[^A-Z^a-z^0-9]/.test(this.password)
-      return this.passwordState
+      this.password_state = this.password.length == 0 ? null : (this.password.length >= 8) && /[A-Z]/.test(this.password) && /[0-9]/.test(this.password) && /[^A-Z^a-z^0-9]/.test(this.password)
+      return this.password_state
     }
   },
   methods: {
@@ -47,11 +47,13 @@ export default {
       this.username=''
       this.email=''
       this.password=''
-      this.passwordState=null
+      this.username_state=null
+      this.email_state=null
+      this.password_state=null
       this.$bvModal.hide("signup")
     },
     signUp(){
-      if (this.usernameState & this.emailState & this.passwordState){
+      if (this.username_state & this.email_state & this.password_state){
         axios.post('./php/signup.php',{'username': this.username, 'email': this.email, 'password':this.password})
         .then(function (response) {
           if(response.data){
