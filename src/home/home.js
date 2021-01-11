@@ -3,7 +3,8 @@ import PageHeader from './components/page-header/page-header.js'
 import PageContent from './components/page-content/page-content.js'
 
 const template = `
-  <div class="fixed-bottom fixed-top animate__animated animate__fadeIn"><b-col><b-row>
+  <div class="fixed-bottom fixed-top animate__animated animate__fadeIn">
+    <b-row>
       <b-col cols='2' style='background: white'>
         <page-sidebar></page-sidebar>
       </b-col>
@@ -12,12 +13,13 @@ const template = `
           <page-header :title='getTitle' :username='username'></page-header>
         </b-row>
         <b-row>
-        <b-container style='width:85%''>
-          <page-content :content='getContent' :content_props='page_content_props'></page-content>
+          <b-container style='width:85%'>
+            <page-content :content='getContent' :content_props='page_content_props'></page-content>
           </b-container>
         </b-row>
       </b-col>
-    </b-row></b-col></div>
+    </b-row>
+  </div>
 `
 export default {
   components: {
