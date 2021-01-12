@@ -1,5 +1,5 @@
 const template = `
-	<div style='height:100vh; width: 100px; background: white'>
+	<div style='height:100vh; width: 17vw; background: white'>
       <b-button v-for='option in curr_options' @click='showContent(option)'>{{option}}</b-button>
 	</div>
 `
@@ -27,7 +27,7 @@ export default {
           this.$parent.page_content = 'overview'
           this.$parent.page_content_props = null
           break
-        case 'Ανάλυση/Request': 
+        case 'Ανάλυση/Request':
           this.$parent.page_content = 'analysis'
           this.$parent.page_content_props = {content_type: 'request'}
           break

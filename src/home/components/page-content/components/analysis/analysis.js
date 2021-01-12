@@ -5,10 +5,10 @@ import CardGraph from './components/analysis-request/card-graph.js'
 const template = `
     <b-row>
       <b-col>
-        <component :is='getContent' style='height: calc(100vh - 100px);'></component>
+        <component :is='getContent' style='height: calc(100vh - 110px);'></component>
       </b-col>
       <b-col  cols='3'>
-        <card-filters style="height: calc(100vh - 100px)"></card-filters>
+        <card-filters style="height: calc(100vh - 110px)"></card-filters>
       </b-col>
     </b-row>
 `

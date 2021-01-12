@@ -17,17 +17,25 @@
 .square{
   padding-top: 100%;
 }
-.centered {
+.float-centered {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
+.text-centered{
+  display: block;
+  text-align: center;
+}
+.centered{
+  display: block;
+  margin: auto;
+}
 
 /*buttons*/
 .btn-color {
   background-color: #24cb7f;
-  border: none;
+  border: 1px;
 }
 .btn-color:hover, .btn-color:focus, .btn-color:active {
   background-color: #20ab6c;

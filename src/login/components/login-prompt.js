@@ -2,7 +2,7 @@ import SignupPrompt from './signup-prompt.js'
 
 const template = `
   <div>
-    <span class="dot centered" style="padding: 40px; height: 300px; width: 300px; margin-top: 50px; background-color: white; border-radius: 50%;">
+    <span class="dot float-centered" style="padding: 40px; height: 300px; width: 300px; margin-top: 50px; background-color: white; border-radius: 50%;">
       <span class="dot">
         <b-form @submit='logIn' onsubmit="return false">
           <b-col>

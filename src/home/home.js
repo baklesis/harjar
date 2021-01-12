@@ -5,12 +5,14 @@ import PageContent from './components/page-content/page-content.js'
 const template = `
   <div class="fixed-bottom fixed-top animate__animated animate__fadeIn">
     <b-row>
-      <b-col cols='2' style='background: white'>
+      <b-col cols='2'>
         <page-sidebar></page-sidebar>
       </b-col>
       <b-col>
         <b-row class='pt-4 pb-3'>
-          <page-header :title='getTitle' :username='username'></page-header>
+          <b-container style='width:85%'>
+            <page-header :title='getTitle' :username='username'></page-header>
+          </b-container>
         </b-row>
         <b-row>
           <b-container style='width:85%'>
