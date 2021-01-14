@@ -1,26 +1,26 @@
-import PageSidebar from './components/page-sidebar.js'
+import PageSidebar from './components/page-sidebar/page-sidebar.js'
 import PageHeader from './components/page-header/page-header.js'
 import PageContent from './components/page-content/page-content.js'
 
 const template = `
-  <div class="fixed-bottom fixed-top animate__animated animate__fadeIn">
-    <b-row>
-      <b-col cols='2'>
-        <page-sidebar></page-sidebar>
-      </b-col>
+  <div class="fixed-bottom fixed-top centered animate__animated animate__fadeIn">
+    <div style='width:15vw; float:left'>
+      <page-sidebar></page-sidebar>
+    </div>
+    <div class='centered' style='width:85vw; float:left'>
       <b-col>
         <b-row class='pt-4 pb-3'>
-          <b-container style='width:85%'>
+          <b-container>
             <page-header :title='getTitle' :username='username'></page-header>
           </b-container>
         </b-row>
         <b-row>
-          <b-container style='width:85%'>
+          <b-container>
             <page-content :content='getContent' :content_props='page_content_props'></page-content>
           </b-container>
         </b-row>
       </b-col>
-    </b-row>
+    </div>
   </div>
 `
 export default {

@@ -61,11 +61,11 @@ constraint of_response foreign key (response) references response(id) on delete 
 constraint of_request foreign key (request) references request(id) on delete cascade on update cascade
 );
 
-insert into user values ('admin','1','admin@har.com','admin');
+insert into user values ('administrator','1','admin@har.com','admin');
 insert into user values ('prisonmike','1','prisonmike@har.com','user');
 
 insert into response(user,status,status_text) values('prisonmike','302','Found');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host) 
+insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
 	values(null,0,'text','no-cache','no-cache','2020-12-07 12:56:11','16970','2019-09-30 15:50:52',null);
 
 insert into response(user,status,status_text) values('prisonmike','200','OK');

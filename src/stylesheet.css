@@ -1,7 +1,10 @@
+/*background*/
 .bg {
   /*background: linear-gradient(180deg, rgba(153,204,255,1) 50%, rgba(166,128,184,1) 100%);*/
   background-image: url('../assets/img/bg.jpg'); background-size: cover; background-position: center bottom;"
 }
+
+/*rounded corners*/
 .rounded-corners-25 {
   border-radius: 25px;
 }
@@ -14,9 +17,13 @@
 .rounded-right {
   border-radius: 0px 5px 5px 0px;
 }
+
+/*square dimensions*/
 .square{
   padding-top: 100%;
 }
+
+/*centered*/
 .float-centered {
   position: absolute;
   top: 50%;
@@ -31,6 +38,10 @@
   display: block;
   margin: auto;
 }
+.centered-x {
+  margin-left:50%;
+  transform: translateX(-50%);
+}
 
 /*buttons*/
 .btn-color {
@@ -42,7 +53,26 @@
   border: none;
 }
 
-
+/*sidebar option*/
+.sidebar-option {
+  color: grey;
+  background-color: white;
+  border-color: grey;
+  border-top: 1px;
+  border-bottom: 1px;
+  transition: 0.3s; /* animation */
+}
+.sidebar-option:hover {
+  background-color: lightgrey;
+  color: white;
+  cursor: pointer;
+}
+.sidebar-option:focus {
+  outline: none;
+  background-color: lightgrey;
+  color: white;
+  cursor: pointer;
+}
 
 /*scrollbar*/
 ::-webkit-scrollbar {
