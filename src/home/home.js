@@ -16,7 +16,7 @@ const template = `
         </b-row>
         <b-row>
           <b-container>
-            <page-content :content='getContent' :content_props='page_content_props'></page-content>
+            <page-content :content='page_content' :content_props='page_content_props'></page-content>
           </b-container>
         </b-row>
       </b-col>
@@ -60,9 +60,6 @@ export default {
           this.header_title = 'Upload'
       }
       return this.header_title
-    },
-    getContent() {
-      return this.page_content
     }
   },
   mounted () {
@@ -74,7 +71,7 @@ export default {
           this.page_content_props = null
         }
         else if (response.data['type'] == 'user'){  // if user is regular user
-          this.page_content = 'map' // default content is map
+          this.page_content = 'upload' // default content is map
           this.page_content_props = null
         }
         this.username = response.data['username']

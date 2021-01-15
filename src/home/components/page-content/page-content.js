@@ -4,7 +4,7 @@ import Overview from './components/overview/overview.js'
 import Upload from './components/upload/upload.js'
 
 const template = `
-  <component v-bind:is="content" v-bind="content_props"></component>
+  <component v-bind:is="content" v-bind="content_props" style='height: calc(100vh - 110px);'></component>
 `
 
 export default {
