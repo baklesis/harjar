@@ -3,7 +3,7 @@ import CardHistogram from '../analysis-header/card-histogram.js'
 import CardPie from '../analysis-header/card-pie.js'
 
 const template = `
-  <b-container class="rounded-corners-25" style="height: calc(100vh - 90px); background: rgba(255, 255, 255, 0.2)">
+  <b-container class="rounded-corners-25" style="height: calc(100vh - 110px); background: rgba(255, 255, 255, 0.2)">
     <div class='pt-3 px-3 overflow-auto' style='height: 100%;'>
         <b-row>
           <b-col class='p-3'>

@@ -5,7 +5,7 @@ import CardGraph from './components/analysis-request/card-graph.js'
 const template = `
     <b-row>
       <b-col>
-        <component :is='getContent' style='height:100%'></component>
+        <component :is='getContent'></component>
       </b-col>
       <b-col cols='3'>
         <card-filters></card-filters>
