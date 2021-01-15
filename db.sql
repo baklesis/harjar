@@ -53,6 +53,7 @@ content_type varchar(50),
 cache_control varchar(50),
 pragma varchar(50),
 expires datetime,
+max_age int,
 age int,
 last_modified datetime,
 host varchar(50),
@@ -70,6 +71,10 @@ constraint of_header foreign key (header) references header(id) on delete cascad
 
 insert into user values ('administrator','1','admin@har.com','admin');
 insert into user values ('prisonmike','1','prisonmike@har.com','user');
+
+insert into entries(startedDateTime,serverIPAddress) values('52.85.223.187','2020-12-17 8:27:02');
+insert into timing(0,217.41)
+values();
 
 insert into response(user,status,status_text) values('prisonmike','302','Found');
 insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
