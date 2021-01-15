@@ -7,7 +7,7 @@ $email = $input['email'];
 $password = $input['password'];
 $type = 'user';
 
-$sql = $conn->query("INSERT INTO user (username,password,email,type) VALUES('$username','$password', '$email', '$type')");
+$sql = $conn->query("INSERT INTO user (username,password,email,type) VALUES('$username',MD5('$password'), '$email', '$type')");
 if($sql){
 	echo 'ok';
 }

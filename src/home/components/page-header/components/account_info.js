@@ -115,11 +115,7 @@ export default {
       .then((response)=>{
         if(response.data!=null){
           this.username = response.data['username']
-          // show '*' as many times as the password length
-          let password_len = response.data['password_len']
-          for(let i=0; i<password_len; i++){
-            this.password = this.password + "*"
-          }
+          this.password = "*****" // placeholder password
           this.entries = response.data['entries']
           this.last_entry = response.data['last_entry']
         }

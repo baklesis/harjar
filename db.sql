@@ -75,8 +75,8 @@ primary key (header,control),
 constraint of_header foreign key (header) references header(id) on delete cascade on update cascade
 );
 
-insert into user values ('administrator','1','admin@har.com','admin');
-insert into user values ('prisonmike','1','prisonmike@har.com','user');
+insert into user values ('admin',MD5('1'),'admin@har.com','admin');
+insert into user values ('prisonmike',MD5('1'),'prisonmike@har.com','user');
 
 
 insert into entry(user,startedDateTime,serverIPAddress,isp,city) values('prisonmike','2020-12-17 8:27:02','52.85.223.187','Wind','Patras');

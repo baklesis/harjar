@@ -5,11 +5,6 @@ $results = null;
 if(isset($_SESSION['username']) and isset($_SESSION['type'])){ #if user session exists
   # get username
   $username = $_SESSION['username'];
-  # get password length (we will show only length for safety)
-  $sql = $conn->query("SELECT LENGTH(password) FROM user WHERE username='$username'");
-  if($sql){
-    $password_len = $sql->fetch_assoc()['LENGTH(password)'];
-  }
   # get number of entries
   $sql = $conn->query("SELECT COUNT(*) FROM entry WHERE user='$username'");
   if($sql){
@@ -25,7 +20,6 @@ if(isset($_SESSION['username']) and isset($_SESSION['type'])){ #if user session 
   }
   $results = [
     'username' => $username,
-    'password_len' => $password_len,
     'entries' => $entries,
     'last_entry' => $last_entry
   ];

@@ -11,7 +11,7 @@ const template = `
     <hr>
     <div class="overflow-auto" style="height: calc(100% - 143px)">
       <div class="pb-3 px-1" v-for='filter_type in getFilterTypes()'>
-        <filter-type :id='filter_type.value' :title="filter_type.title" :options="filter_type.options"></filter-type>
+        <filter-type :id='filter_type.value' :key='filter_type.value' :title="filter_type.title" :options="filter_type.options"></filter-type>
       </div>
     </div>
   </card>
@@ -45,12 +45,7 @@ export default {
         { text: 'Σάββατο', value: 'saturday'},
         { text: 'Κυριακή', value: 'sunday'},
       ],
-      providers: [
-        { text: 'Vodafone', value: 'vodafone' },
-        { text: 'Cosmote', value: 'cosmote' },
-        { text: 'Wind', value: 'wind' },
-        { text: 'Forthnet', value: 'forthnet' }
-      ],
+      providers: [],
       http_methods: [
         { text: 'GET', value: 'GET'},
         { text: 'HEAD', value: 'HEAD'},
@@ -65,36 +60,62 @@ export default {
     }
   },
   methods: {
+    getProviders() {
+      axios.get('./php/get_providers.php')
+      .then((response)=>{
+        this.providers = []
+        for(let i in response.data){
+          let provider = response.data[i]
+          this.providers.push({ text: provider, value: provider})
+        }
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
+      return this.providers
+    },
     getFilterTypes() {
       if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
         // return filter types for header tab
         return [
-            { title: "Περιεχόμενο", value: 'content_types', options: this.content_types },
-            { title: "Πάροχος", value: 'providers', options: this.providers }
+            { title: "Περιεχόμενο", value: 'header_content_types', options: this.content_types },
+            { title: "Πάροχος", value: 'header_providers', options: this.getProviders() }
           ]
       }
       else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
       // return filter types for request tab
       return [
-          { title: "Περιεχόμενο", value: 'content_types', options: this.content_types },
-          { title: "Ημέρα", value: 'days', options: this.days },
-          { title: "Πάροχος", value: 'providers', options: this.providers },
-          { title: "HTTP Μέθοδος", value: 'http_methods', options: this.http_methods }
+          { title: "Περιεχόμενο", value: 'request_content_types', options: this.content_types },
+          { title: "Ημέρα", value: 'request_days', options: this.days },
+          { title: "Πάροχος", value: 'request_providers', options: this.getProviders() },
+          { title: "HTTP Μέθοδος", value: 'request_http_methods', options: this.http_methods }
         ]
       }
     },
     saveSelectedFilters() {  // saves selected filters from each filter-type component to global variable in analysis
-      this.$parent.saved_filters.content_types = document.getElementById('content_types').selected
-      this.$parent.saved_filters.days = document.getElementById('days').selected
-      this.$parent.saved_filters.providers = document.getElementById('providers').selected
-      this.$parent.saved_filters.http_methods = document.getElementById('http_methods').selected
+      if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
+        this.$parent.header_saved_filters.content_types = document.getElementById('header_content_types').__vue__.selected
+        this.$parent.header_saved_filters.providers = document.getElementById('header_providers').__vue__.selected
+      }
+      else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
+        this.$parent.request_saved_filters.content_types = document.getElementById('request_content_types').__vue__.selected
+        this.$parent.request_saved_filters.days = document.getElementById('request_days').__vue__.selected
+        this.$parent.request_saved_filters.providers = document.getElementById('request_providers').__vue__.selected
+        this.$parent.request_saved_filters.http_methods = document.getElementById('request_http_methods').__vue__.selected
+      }
     },
     resetSelectedFilters() {  // clears selected filters
-      document.getElementById('content_types').__vue__.selected = []
-      document.getElementById('days').__vue__.selected = []
-      document.getElementById('providers').__vue__.selected = []
-      document.getElementById('http_methods').__vue__.selected = []
-      this.getSelectedFilters()  // saves selected filters
+      if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
+        document.getElementById('header_content_types').__vue__.selected = []
+        document.getElementById('header_providers').__vue__.selected = []
+      }
+      else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
+        document.getElementById('request_content_types').__vue__.selected = []
+        document.getElementById('request_days').__vue__.selected = []
+        document.getElementById('request_providers').__vue__.selected = []
+        document.getElementById('request_http_methods').__vue__.selected = []
+      }
+      this.saveSelectedFilters()  // saves selected filters
     }
   }
 }

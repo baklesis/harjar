@@ -22,7 +22,11 @@ export default {
   },
   data () {
     return {
-      saved_filters: {  // saved filter options of each filter-type component
+      header_saved_filters: {  // saved filter options of each filter-type component in analysis/header page
+        content_types: [],
+        providers: [],
+      },
+      request_saved_filters: {  // saved filter options of each filter-type component analysis/request page
         content_types: [],
         days: [],
         providers: [],
