@@ -46,7 +46,7 @@ constraint response_user foreign key (user) references user(username) on delete 
 );
 
 create table header (
-header_id int not null auto_increment,
+id int not null auto_increment,
 request int,
 response int,
 content_type varchar(50),
@@ -56,10 +56,17 @@ expires datetime,
 age int,
 last_modified datetime,
 host varchar(50),
-primary key (header_id),
+primary key (id),
 constraint of_response foreign key (response) references response(id) on delete cascade on update cascade,
 constraint of_request foreign key (request) references request(id) on delete cascade on update cascade
 );
+
+create table cache_control (
+header int not null,
+control varchar(50) not null,
+primary key (header,control),
+constraint of_header foreign key (header) references header(id) on delete cascade on update cascade
+)
 
 insert into user values ('administrator','1','admin@har.com','admin');
 insert into user values ('prisonmike','1','prisonmike@har.com','user');
