@@ -13,8 +13,8 @@ const template = `
             <card-info title='min-fresh' value='64%' subtitle='των αιτήσεων' icon='graph-down'></card-info>
           </b-col>
         </b-row>
-        <b-row><b-col class='p-3'><card-pie></card-pie></b-col></b-row>
-        <b-row><b-col class='pt-3 px-3 pb-4'><card-histogram></card-histogram></b-col></b-row>
+        <b-row><b-col class='p-3'><card-pie></card-pie ref='pie'></b-col></b-row>
+        <b-row><b-col class='pt-3 px-3 pb-4'><card-histogram ref='histogram'></card-histogram></b-col></b-row>
     </div>
   </b-container>
 `

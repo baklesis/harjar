@@ -1,12 +1,10 @@
 <?php
 include "config.php";
 
-//$input = json_decode(file_get_contents('php://input'),TRUE);
-//$filters = json_encode($input['filters']);
-
+$filters = json_decode(file_get_contents('php://input'),TRUE);
 // create string of all array items  using ", " delimiter
-$content_types = join("', '", ['text']);
-$providers =join("', '", ['Wind']);
+$content_types = join("', '", $filters['content_types']);
+$providers =join("', '", $filters['providers']);
 
 $buckets = array();  // all bucket ranges
 $bucket_vals = array();  // all bucket values
@@ -65,11 +63,12 @@ if($sql_max_ttl){  // if max value has been found
 
     # define bucket range
     $start = $i*$ttl_step;
-    if((($i+1)*$ttl_step)<=$max_ttl){  // if the next bucket limit is within the maximum ttl
-      $end = ($i+1)*$ttl_step;
-    }
-    else{  // else just set the max_ttl as the maximum limit
+
+    if($i == 9){  // if it is the last bucket
       $end = $max_ttl;
+    }
+    else{ 
+      $end = ($i+1)*$ttl_step;
     }
 
     # define range string to show on graph

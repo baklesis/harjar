@@ -5,7 +5,7 @@ import CardGraph from './components/analysis-request/card-graph.js'
 const template = `
     <b-row>
       <b-col>
-        <component :is='getContent'></component>
+        <component :is='getContent' :ref='getRef'></component>
       </b-col>
       <b-col cols='3'>
         <card-filters></card-filters>
@@ -42,6 +42,15 @@ export default {
       }
       else if (this.content_type == 'request') { // if analysis/request tab is selected
         this.content = 'card-graph' // show graph card as content
+      }
+      return this.content
+    },
+    getRef() {  // returns name to be used as reference when refering to this component from its parent
+      if (this.content_type == 'header') { // if analysis/header tab is selected
+        return 'scrollpane'
+      }
+      else if (this.content_type == 'request') { // if analysis/request tab is selected
+         return 'graph'
       }
       return this.content
     }

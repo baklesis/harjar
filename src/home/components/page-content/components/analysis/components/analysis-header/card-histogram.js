@@ -46,23 +46,26 @@ export default {
   methods: {
     createChart(id, config) {
       const ctx = document.getElementById(id);
-      this.histogram = new Chart(ctx, {
+      return new Chart(ctx, {
         type: config.type,
         data: config.data,
         options: config.options,
-      });
+      })
+    },
+    loadData() {
+      axios.post('./php/get_histogram.php',this.$parent.$parent.header_saved_filters)
+      .then((response)=>{
+        this.histogram_config.data.labels = response.data['buckets']
+        this.histogram_config.data.datasets[0].data = response.data['bucket_vals']
+        this.histogram.update()
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
     }
   },
   mounted() {
-    this.createChart('histogram', this.histogram_config);
-    axios.post('./php/get_histogram.php',this.$parent.$parent.header_saved_filters)
-    .then((response)=>{
-      this.histogram_config.data.labels = response.data['buckets']
-      this.histogram_config.data.datasets[0].data = response.data['bucket_vals']
-      this.histogram.update()
-    })
-    .catch(function (error) {
-        console.log(error);
-    })
+    this.histogram = this.createChart('histogram', this.histogram_config);
+    this.loadData()
   }
 }
