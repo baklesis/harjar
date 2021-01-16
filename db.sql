@@ -11,23 +11,23 @@ primary key (username)
 );
 
 create table entry (
-entry_id int not null auto_increment,
+id int not null auto_increment,
 user varchar(50) not null,
 uploadDateTime datetime not null,
 startedDateTime datetime not null,
 serverIPAddress varchar(50) not null,
 isp varchar(50) not null,
 city varchar(50) not null,
-primary key (entry_id),
+primary key (id),
 constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade
 );
 
 create table timing (
-timing_id int not null auto_increment,
+id int not null auto_increment,
 entry int not null,
 wait int not null,
-primary key (timing_id),
-constraint of_entry foreign key (entry) references entry(entry_id) on delete cascade on update cascade
+primary key (id),
+constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade
 );
 
 create table request (
@@ -37,7 +37,7 @@ user varchar(50) not null,
 method varchar(10) not null,
 url varchar(2000) not null,
 primary key (id),
-constraint of_entry foreign key (entry) references entry(entry_id) on delete cascade on update cascade,
+constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade,
 constraint request_user foreign key (user) references user(username) on delete cascade on update cascade
 );
 
@@ -48,7 +48,7 @@ user varchar(50) not null,
 status int not null,
 status_text varchar(50) not null,
 primary key (id),
-constraint of_entry foreign key (entry) references entry(entry_id) on delete cascade on update cascade,
+constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade,
 constraint response_user foreign key (user) references user(username) on delete cascade on update cascade
 );
 
