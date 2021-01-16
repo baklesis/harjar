@@ -13,6 +13,7 @@ primary key (username)
 create table entry (
 entry_id int not null auto_increment,
 user varchar(50) not null,
+uploadDateTime datetime not null,
 startedDateTime datetime not null,
 serverIPAddress varchar(50) not null,
 isp varchar(50) not null,
@@ -79,43 +80,43 @@ insert into user values ('admin',MD5('1'),'admin@har.com','admin');
 insert into user values ('prisonmike',MD5('1'),'prisonmike@har.com','user');
 
 
-insert into entry(user,startedDateTime,serverIPAddress,isp,city) values('prisonmike','2020-12-17 8:27:02','52.85.223.187','Wind','Patras');
+insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,isp,city) values('prisonmike',now(),'2020-12-17 8:27:02','52.85.223.187','Wind','Patras');
 insert into timing(entry,wait)
-	values(0,217.41);
+	values(1,217.41);
 
-insert into response(entry,user,status,status_text) values(0,'prisonmike','302','Found');
+insert into response(entry,user,status,status_text) values(1,'prisonmike','302','Found');
+insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
+	values(null,1,'text','no-cache','no-cache','31536000','16970',null);
+
+insert into response(entry,user,status,status_text) values(1,'prisonmike','200','OK');
+insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
+	values(null,2,'text','public',null,'1800','268',null);
+
+insert into request(entry,user,method,url) values(1,'prisonmike','GET','http://obe.sandals.com');
 insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(null,0,'text','no-cache','no-cache','2020-12-07 12:56:11','16970','2019-09-30 15:50:52',null);
+	values(1,null,null,null,null,null,null,null,'www.sandals.com');
 
-insert into response(entry,user,status,status_text) values(0,'prisonmike','200','OK');
+insert into request(entry,user,method,url) values(1,'prisonmike','POST','https://ct.pinterest.com');
 insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(null,1,'text','public',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
-
-insert into request(entry,user,method,url) values(0,'prisonmike','GET','http://obe.sandals.com');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(0,null,null,null,null,null,null,null,'www.sandals.com');
-
-insert into request(entry,user,method,url) values(0,'prisonmike','POST','https://ct.pinterest.com');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(1,null,null,null,null,null,null,null,null);
+	values(2,null,null,null,null,null,null,null,null);
 
 
-insert into entry(user,startedDateTime,serverIPAddress,isp,city) values('prisonmike','2020-16-17 8:27:02','24.48.0.1','Vodafone','Patras');
+insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,isp,city) values('prisonmike',now(),'2020-16-17 8:27:02','24.48.0.1','Vodafone','Patras');
 insert into timing(entry,wait)
-	values(0,217.41);
+	values(2,217.41);
 
-	insert into response(entry,user,status,status_text) values(0,'prisonmike','302','Found');
-	insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-		values(null,0,'text','no-cache','no-cache','2020-12-07 12:56:11','16970','2019-09-30 15:50:52',null);
+insert into response(entry,user,status,status_text) values(2,'prisonmike','302','Found');
+insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
+	values(null,3,'text','no-cache','no-cache','86400','16970',null);
 
-	insert into response(entry,user,status,status_text) values(0,'prisonmike','200','OK');
-	insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-		values(null,1,'text','public',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
+insert into response(entry,user,status,status_text) values(2,'prisonmike','200','OK');
+insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
+	values(null,4,'text','public',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
 
-	insert into request(entry,user,method,url) values(0,'prisonmike','GET','http://obe.sandals.com');
-	insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-		values(0,null,null,null,null,null,null,null,'www.sandals.com');
+insert into request(entry,user,method,url) values(2,'prisonmike','GET','http://obe.sandals.com');
+insert into header(request,response,content_type,cache_control,pragma,age,host)
+	values(3,null,null,null,null,null,'www.sandals.com');
 
-	insert into request(entry,user,method,url) values(0,'prisonmike','POST','https://ct.pinterest.com');
-	insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-		values(1,null,null,null,null,null,null,null,null);
+insert into request(entry,user,method,url) values(2,'prisonmike','POST','https://ct.pinterest.com');
+insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
+	values(4,null,null,null,null,null,null,null,null);

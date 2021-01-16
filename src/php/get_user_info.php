@@ -11,9 +11,9 @@ if(isset($_SESSION['username']) and isset($_SESSION['type'])){ #if user session 
     $entries = $sql->fetch_assoc()['COUNT(*)'];
   }
   # get last entry datetime
-  $sql = $conn->query("SELECT MAX(datetime) FROM entry WHERE user='$username'");
+  $sql = $conn->query("SELECT MAX(uploadDateTime) as MAX FROM entry WHERE user='$username'");
   if($sql){
-    $last_entry = $sql->fetch_assoc();
+    $last_entry = $sql->fetch_assoc()['MAX'];
   }
   else{
     $last_entry = '-';
