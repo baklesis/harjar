@@ -14,9 +14,9 @@ if(isset($_SESSION['username']) and isset($_SESSION['type'])){ #if user session 
   $sql = $conn->query("SELECT MAX(uploadDateTime) as MAX FROM entry WHERE user='$username'");
   if($sql){
     $last_entry = $sql->fetch_assoc()['MAX'];
-  }
-  else{
-    $last_entry = '-';
+    if($last_entry==null){
+      $last_entry = '-';
+    }
   }
   $results = [
     'username' => $username,

@@ -2,7 +2,7 @@ import Card from '../../../card.js'
 
 const template = `
   <card style="height: calc(100vh - 110px); max-height:720px ">
-    <h5 class='pt-4 px-1' style='text-align: center;'>Μέσος Χρόνος Απόκρισης Αιτήσεων</h5>
+    <h5 class='pt-4 px-1 text-muted' style='text-align: center;'>Μέσος Χρόνος Απόκρισης Αιτήσεων</h5>
     <canvas id="histogram" class='px-3' style='padding-top: 10%; padding-bottom: 10%'></canvas>
   </card>
 `

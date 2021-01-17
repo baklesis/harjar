@@ -6,13 +6,13 @@ const template = `
   <div class='px-3'>
     <b-row>
       <b-col>
-      	<card-info title='Χρήστες' icon='person-fill' :value=numberOfUsers></card-info>
+      	<card-info title='Χρήστες' icon='person-fill' :value='numberOfUsers'></card-info>
       </b-col>
       <b-col>
-      	<card-info title='Domain' icon='globe2' :value=numberOfDomains></card-info>
+      	<card-info title='Domain' icon='globe2' :value='numberOfDomains'></card-info>
       </b-col>
       <b-col>
-      	<card-info title='Πάροχοι' icon='hdd-network-fill' :value=numberOfProviders></card-info>
+      	<card-info title='Πάροχοι' icon='hdd-network-fill' :value='numberOfProviders'></card-info>
       </b-col>
     </b-row>
     <b-row align-v="center" class='pt-4'>
@@ -32,9 +32,35 @@ const template = `
  	},
    data () {
      return {
-     	numberOfUsers: 100,
-     	numberOfDomains: 20,
-     	numberOfProviders: 5
+     }
+   },
+   computed: {
+     numberOfUsers() {
+       axios.get('./php/get_users_count.php')
+       .then((response)=>{
+         return response.data
+       })
+       .catch(function (error) {
+         console.log(error);
+       })
+     },
+     numberOfDomains() {
+       axios.get('./php/get_domains_count.php')
+       .then((response)=>{
+         return response.data
+       })
+       .catch(function (error) {
+         console.log(error);
+       })
+     },
+     numberOfProviders() {
+       axios.get('./php/get_providers_count.php')
+       .then((response)=>{
+         return response.data
+       })
+       .catch(function (error) {
+         console.log(error);
+       })
      }
    }
  }

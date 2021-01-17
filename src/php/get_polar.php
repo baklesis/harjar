@@ -17,51 +17,21 @@ $results = null;
 
 # get public directives
 # we also check if any of the filter lists are empty. if any of them are then "1" is returned in the logical expression
-$sql = $conn->query("SELECT COUNT(*) as count FROM cache_control
+$sql = $conn->query("SELECT control, COUNT(*) as count FROM cache_control
 INNER JOIN header on header.id = cache_control.header
 INNER JOIN response ON response.id = header.response
 INNER JOIN entry ON entry.id = response.entry
-WHERE control='public' AND
+WHERE
 IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))");
+IF('' IN ('$providers'), 1, isp in ('$providers'))
+GROUP BY control");
 if($sql){
-  $public = $sql->fetch_assoc()['count'];
-}
-
-# get private directives
-$sql = $conn->query("SELECT COUNT(*) as count FROM cache_control
-INNER JOIN header on header.id = cache_control.header
-INNER JOIN response ON response.id = header.response
-INNER JOIN entry ON entry.id = response.entry
-WHERE control='private' AND
-IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))");
-if($sql){
-  $private = $sql->fetch_assoc()['count'];
-}
-
-# get no-cache directives
-$sql = $conn->query("SELECT COUNT(*) as count FROM cache_control
-INNER JOIN header on header.id = cache_control.header
-INNER JOIN response ON response.id = header.response
-INNER JOIN entry ON entry.id = response.entry
-WHERE control='no-cache' AND
-IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))");
-if($sql){
-  $no_cache = $sql->fetch_assoc()['count'];
-}
-
-# get no-store directives
-$sql = $conn->query("SELECT COUNT(*) as count FROM cache_control
-INNER JOIN header on header.id = cache_control.header
-INNER JOIN response ON response.id = header.response
-INNER JOIN entry ON entry.id = response.entry
-WHERE control='no-store' AND
-IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))");
-if($sql){
-  $no_store = $sql->fetch_assoc()['count'];
+  while($row = $sql->fetch_assoc()) {
+    if ($row['control'] == 'public') {$public = $row['count'];}
+    else if ($row['control'] == 'private') {$private = $row['count'];}
+    else if ($row['control'] == 'no-cache') {$no_cache = $row['count'];}
+    else if ($row['control'] == 'no-store') {$no_store = $row['count'];}
+  }
 }
 
 # get number of responses

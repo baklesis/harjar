@@ -2,7 +2,7 @@ import Card from '../../../card.js'
 
 const template = `
   <card>
-    <h5 class='pt-4 px-1' style='text-align: center;'>TTL Ιστοαντικειμένων</h5>
+    <h5 class='pt-4 px-1 text-muted' style='text-align: center;'>TTL Ιστοαντικειμένων</h5>
     <div style="height:460px"><canvas id="histogram" class='p-3'></canvas></div>
   </card>
 `
