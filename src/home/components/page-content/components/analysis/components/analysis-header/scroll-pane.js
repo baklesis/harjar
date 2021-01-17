@@ -1,6 +1,6 @@
 import CardInfo from '../../../card-info.js'
 import CardHistogram from '../analysis-header/card-histogram.js'
-import CardPie from '../analysis-header/card-pie.js'
+import CardPolar from '../analysis-header/card-polar.js'
 
 const template = `
   <b-container class="rounded-corners-25" style="height: calc(100vh - 110px); background: rgba(255, 255, 255, 0.2)">
@@ -13,7 +13,7 @@ const template = `
             <card-info title='min-fresh' value='64%' subtitle='των αιτήσεων' icon='graph-down'></card-info>
           </b-col>
         </b-row>
-        <b-row><b-col class='p-3'><card-pie></card-pie ref='pie'></b-col></b-row>
+        <b-row><b-col class='p-3'><card-polar ref='polar'></card-polar></b-col></b-row>
         <b-row><b-col class='pt-3 px-3 pb-4'><card-histogram ref='histogram'></card-histogram></b-col></b-row>
     </div>
   </b-container>
@@ -22,7 +22,7 @@ export default {
   components: {
     'card-info': CardInfo,
     'card-histogram': CardHistogram,
-    'card-pie': CardPie,
+    'card-polar': CardPolar,
   },
   template,
   data () {

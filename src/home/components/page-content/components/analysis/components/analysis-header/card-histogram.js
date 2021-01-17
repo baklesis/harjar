@@ -14,12 +14,12 @@ export default {
   data () {
     return {
       histogram: null,
-      histogram_config: {
+      config: {
         type: 'bar',
         data: {
           labels: [],
           datasets: [{
-            data: [],
+            data: [0,0,0,0,0,0,0,0,0,0],
             backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF","#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
           }]
         },
@@ -55,8 +55,8 @@ export default {
     loadData() {
       axios.post('./php/get_histogram.php',this.$parent.$parent.header_saved_filters)
       .then((response)=>{
-        this.histogram_config.data.labels = response.data['buckets']
-        this.histogram_config.data.datasets[0].data = response.data['bucket_vals']
+        this.config.data.labels = response.data['buckets']
+        this.config.data.datasets[0].data = response.data['bucket_vals']
         this.histogram.update()
       })
       .catch(function (error) {
@@ -65,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    this.histogram = this.createChart('histogram', this.histogram_config);
+    this.histogram = this.createChart('histogram', this.config);
     this.loadData()
   }
 }

@@ -98,6 +98,7 @@ export default {
         this.$parent.header_saved_filters.providers = document.getElementById('header_providers').__vue__.selected
         //reload charts
         this.$parent.$refs.scrollpane.$refs.histogram.loadData()
+        this.$parent.$refs.scrollpane.$refs.polar.loadData()
       }
       else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
         this.$parent.request_saved_filters.content_types = document.getElementById('request_content_types').__vue__.selected

@@ -3,7 +3,7 @@ import Card from '../../../card.js'
 const template = `
   <card>
     <h5 class='pt-4 px-1' style='text-align: center;'>Cache Directives Αποκρίσεων</h5>
-    <div style="height:460px"><canvas id="pie" class='p-3'></canvas></div>
+    <div style="height:460px"><canvas id="polar" class='p-3'></canvas></div>
   </card>
 `
 export default {
@@ -13,13 +13,14 @@ export default {
   template,
   data () {
     return {
-      histogram_config: {
-        type: 'pie',
+      polar: null,
+      config: {
+        type: 'polarArea',
         data: {
           labels: ['public','private', 'no-cache', 'no-store'],
           datasets: [{
             label: '%',
-            data: [50, 20, 15, 15],
+            data: [0,0,0,0],
             backgroundColor: ["#FF6666", '#87CEFA', "#FFFF66", "#9DE24F", "#FFBD55", "#CC99FF"],
           }]
         },
@@ -43,14 +44,25 @@ export default {
   methods: {
     createChart(id, config) {
       const ctx = document.getElementById(id);
-      const myChart = new Chart(ctx, {
+      return new Chart(ctx, {
         type: config.type,
         data: config.data,
         options: config.options,
       });
+    },
+    loadData() {
+      axios.post('./php/get_polar.php',this.$parent.$parent.header_saved_filters)
+      .then((response)=>{
+        this.config.data.datasets[0].data = response.data
+        this.polar.update()
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
     }
   },
   mounted() {
-  this.createChart('pie', this.histogram_config);
+  this.polar = this.createChart('polar', this.config);
+  this.loadData()
   }
 }

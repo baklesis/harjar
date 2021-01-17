@@ -57,7 +57,6 @@ id int not null auto_increment,
 request int,
 response int,
 content_type varchar(50),
-cache_control varchar(50),
 pragma varchar(50),
 expires datetime,
 max_age int,
@@ -85,20 +84,24 @@ insert into timing(entry,wait)
 	values(1,217.41);
 
 insert into response(entry,user,status,status_text) values(1,'prisonmike','302','Found');
-insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
-	values(null,1,'text','no-cache','no-cache','31536000','16970',null);
+insert into header(request,response,content_type,pragma,max_age,age,host)
+	values(null,1,'text','no-cache','31536000','16970',null);
+insert into cache_control(header,control) VALUES (1,'no-cache');
+insert into cache_control(header,control) VALUES (1,'public');
 
 insert into response(entry,user,status,status_text) values(1,'prisonmike','200','OK');
-insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
-	values(null,2,'text','public',null,'1800','268',null);
+insert into header(request,response,content_type,pragma,max_age,age,host)
+	values(null,2,'text',null,'1800','268',null);
+insert into cache_control(header,control) VALUES (2,'no-cache');
+insert into cache_control(header,control) VALUES (2,'private');
 
 insert into request(entry,user,method,url) values(1,'prisonmike','GET','http://obe.sandals.com');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(1,null,null,null,null,null,null,null,'www.sandals.com');
+insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
+	values(1,null,null,null,null,null,null,'www.sandals.com');
 
 insert into request(entry,user,method,url) values(1,'prisonmike','POST','https://ct.pinterest.com');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(2,null,null,null,null,null,null,null,null);
+insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
+	values(2,null,null,null,null,null,null,null);
 
 
 insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,isp,city) values('prisonmike',now(),'2020-16-17 8:27:02','24.48.0.1','Vodafone','Patras');
@@ -106,17 +109,21 @@ insert into timing(entry,wait)
 	values(2,217.41);
 
 insert into response(entry,user,status,status_text) values(2,'prisonmike','302','Found');
-insert into header(request,response,content_type,cache_control,pragma,max_age,age,host)
-	values(null,3,'text','no-cache','no-cache','86400','16970',null);
+insert into header(request,response,content_type,pragma,max_age,age,host)
+	values(null,3,'text','no-cache','86400','16970',null);
+insert into cache_control(header,control) VALUES (5,'no-store');
+insert into cache_control(header,control) VALUES (5,'private');
 
 insert into response(entry,user,status,status_text) values(2,'prisonmike','200','OK');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(null,4,'text','public',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
+insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
+	values(null,4,'text',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
+insert into cache_control(header,control) VALUES (6,'no-store');
+insert into cache_control(header,control) VALUES (6,'public');
 
 insert into request(entry,user,method,url) values(2,'prisonmike','GET','http://obe.sandals.com');
-insert into header(request,response,content_type,cache_control,pragma,age,host)
-	values(3,null,null,null,null,null,'www.sandals.com');
+insert into header(request,response,content_type,pragma,age,host)
+	values(3,null,null,null,null,'www.sandals.com');
 
 insert into request(entry,user,method,url) values(2,'prisonmike','POST','https://ct.pinterest.com');
-insert into header(request,response,content_type,cache_control,pragma,expires,age,last_modified,host)
-	values(4,null,null,null,null,null,null,null,null);
+insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
+	values(4,null,null,null,null,null,null,null);
