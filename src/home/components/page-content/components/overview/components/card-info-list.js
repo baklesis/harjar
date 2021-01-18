@@ -1,8 +1,8 @@
 import Card from "../../card.js"
 const template = `
-	<card>
-		<h5 class='pt-4 px-1 text-muted' style='' >Μέση Ηλικία Ιστοαντικειμένων</h5>
-		<div style='height: 475px; overflow: auto; overflow-x: hidden;'>
+	<card style='height:100%'>
+		<h5 class='pt-4 px-1 text-muted' >Μέση Ηλικία Ιστοαντικειμένων</h5>
+		<div style='height: calc(100vh - 300px); overflow: auto; overflow-x: hidden;'>
 			<hr>
 			<div v-for="type in types">
 				<b-row>
@@ -34,13 +34,15 @@ export default {
 	},
 	computed: {
 		types() {
-			axios.get('./php/get_avg_age.php')
-			.then((response)=>{
-				return response.data
-			})
-			.catch(function (error) {
-				console.log(error);
-			})
+			return [{name: 'Application', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Audio', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Font', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Image', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Message', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Model', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Multipart', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Text', value: Math.floor((Math.random() * 100) + 1)},
+     		{name: 'Video', value: Math.floor((Math.random() * 100) + 1)}]
 		}
 	}
 }

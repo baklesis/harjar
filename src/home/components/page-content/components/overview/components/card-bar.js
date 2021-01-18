@@ -1,25 +1,25 @@
 import Card from '../../card.js'
 
 const template = `
-  <card>
-  <b-row class='pt-3'>
-  <h5 class="px-4 text-muted" style='float:left'>Αριθμός εγγραφών</h5>
-  <b-col>
-  <b-form-group style='float:right'>
-      <b-form-radio-group size="sm"
-        id="btn-radios-1"
-        v-model="selected"
-        :options="options"
-        name="radios-btn-default"
-        buttons
-      ></b-form-radio-group>
-    </b-form-group>
-  </b-col>
-  </b-row>
-  <b-row>
-    <b-col>
-    <div class = 'px-2 pb-3 overflow-auto' style='height:465px'>
-      <canvas id="barChart" width="200px" height="140px"></canvas>
+  <card style='100%'>
+    <b-row class='pt-3'>
+      <h5 class="px-4 text-muted" style='float:left'>Αριθμός εγγραφών</h5>
+      <b-col>
+      <b-form-group style='float:right'>
+          <b-form-radio-group size="sm"
+            id="btn-radios-1"
+            v-model="selected"
+            :options="options"
+            name="radios-btn-default"
+            buttons
+          ></b-form-radio-group>
+      </b-form-group>
+    </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+      <div class = 'px-2 pb-3 overflow-auto' style='height: calc(100vh - 300px)'>
+        <canvas id="barChart" width="200px" height="150px"></canvas>
       </div>
     </b-col>
     </b-row>
