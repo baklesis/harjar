@@ -3,16 +3,16 @@ import CardInfoList from './components/card-info-list.js'
 import CardInfo from '../card-info.js'
 
 const template = `
-  <b-col class='d-flex flex-column px-3'>
+  <div class='d-flex flex-column pr-3'>
     <b-row>
       <b-col>
-      	<card-info title='Χρήστες' icon='person-fill' :value='numberOfUsers'></card-info>
+      	<card-info title='Χρήστες' icon='person-fill' :value='users'></card-info>
       </b-col>
       <b-col>
-      	<card-info title='Domain' icon='globe2' :value='numberOfDomains'></card-info>
+      	<card-info title='Domain' icon='globe2' :value='domains'></card-info>
       </b-col>
       <b-col>
-      	<card-info title='Πάροχοι' icon='hdd-network-fill' :value='numberOfProviders'></card-info>
+      	<card-info title='Πάροχοι' icon='hdd-network-fill' :value='providers'></card-info>
       </b-col>
     </b-row>
     <b-row align-v="stretch" class='flex-grow-1 pt-4' >
@@ -21,7 +21,7 @@ const template = `
       </b-col>
       <b-col><card-info-list icon='paperclip'></card-info-list></b-col>
     </b-row>
-  </b-col>
+  </div>
  `
  export default {
  	template,
@@ -32,35 +32,40 @@ const template = `
  	},
    data () {
      return {
+      users: 0,
+      domains: 0,
+      providers: 0,
      }
    },
-   computed: {
-     numberOfUsers() {
+   methods: {
+     loadCardInfo() {
+       // users
        axios.get('./php/get_users_count.php')
        .then((response)=>{
-         return response.data
+         this.users =  response.data
        })
        .catch(function (error) {
          console.log(error);
        })
-     },
-     numberOfDomains() {
+       // domains
        axios.get('./php/get_domains_count.php')
        .then((response)=>{
-         return response.data
+         this.domains = response.data
        })
        .catch(function (error) {
          console.log(error);
        })
-     },
-     numberOfProviders() {
+       // providers
        axios.get('./php/get_providers_count.php')
        .then((response)=>{
-         return response.data
+         this.providers = response.data
        })
        .catch(function (error) {
          console.log(error);
        })
      }
+   },
+   created() {
+    this.loadCardInfo()
    }
  }
