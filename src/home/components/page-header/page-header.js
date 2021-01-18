@@ -1,7 +1,7 @@
 import AccountInfo from './components/account_info.js'
 const template = `
   <b-row align-v='center'>
-    <b-col class='ml-3'>
+    <b-col class='pl-3'>
     <h4 style="color: white">{{title}}</h4>
     </b-col>
     <b-col cols='3'>

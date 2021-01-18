@@ -8,6 +8,7 @@ if($sql){
   while($row = $sql->fetch_assoc()) {
     if($row['name']!= null){
       $row['name'] = ucfirst($row['name']);  //capitalize first letter
+      $row['value'] = intval($row['value']);  // convert value to int
       array_push($results,$row);
     }
   }

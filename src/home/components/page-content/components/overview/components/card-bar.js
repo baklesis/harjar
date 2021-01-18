@@ -18,7 +18,7 @@ const template = `
     </b-row>
     <b-row>
       <b-col>
-      <div class = 'px-2 pb-3 overflow-auto' style='height: calc(100vh - 300px)'>
+      <div class = 'px-2 pb-3 overflow-auto' style='height: calc(100vh - 340px)'>
         <canvas id="barChart" width="200px" height="150px"></canvas>
       </div>
     </b-col>
