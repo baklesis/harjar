@@ -35,7 +35,6 @@ export default {
 	},
 	methods: {
 		getTypes(){
-<<<<<<< HEAD
 			axios.get('./php/get_avg_age.php')
 			.then((response)=>{
 				this.types = response.data
@@ -43,7 +42,7 @@ export default {
 			.catch(function (error) {
 				console.log(error);
 			})
-			this.types =  [{name: 'Application', value: Math.floor((Math.random() * 100) + 1)},
+			//this.types =  [{name: 'Application', value: Math.floor((Math.random() * 100) + 1)},
      	// 	{name: 'Audio', value: Math.floor((Math.random() * 100) + 1)},
      	// 	{name: 'Font', value: Math.floor((Math.random() * 100) + 1)},
      	// 	{name: 'Image', value: Math.floor((Math.random() * 100) + 1)},
@@ -52,24 +51,6 @@ export default {
      	// 	{name: 'Multipart', value: Math.floor((Math.random() * 100) + 1)},
      	// 	{name: 'Text', value: Math.floor((Math.random() * 100) + 1)},
      	// 	{name: 'Video', value: Math.floor((Math.random() * 100) + 1)}]
-=======
-			// axios.get('./php/get_avg_age.php')
-			// .then((response)=>{
-			// 	this.types = response.data
-			// })
-			// .catch(function (error) {
-			// 	console.log(error);
-			// })
-			this.types =  [{name: 'Application', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Audio', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Font', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Image', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Message', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Model', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Multipart', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Text', value: Math.floor((Math.random() * 100) + 1)},
-     		{name: 'Video', value: Math.floor((Math.random() * 100) + 1)}]
->>>>>>> e90f65b95fe9ab11f2dd2c0d1436676d6128b7ce
 		}
 	},
 	mounted() {
