@@ -7,7 +7,8 @@ username varchar(50) not null,
 password varchar(50) not null,
 email varchar(50) not null,
 type enum('user','admin') not null,
-primary key (username)
+primary key (username),
+index (type)
 );
 
 create table entry (
@@ -20,7 +21,8 @@ serverIPAddress varchar(50) not null,
 isp varchar(50) not null,
 city varchar(50) not null,
 primary key (id),
-constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade
+constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade,
+index (user,isp)
 );
 
 create table request (
@@ -29,7 +31,8 @@ entry int not null,
 method varchar(10) not null,
 url varchar(2000) not null,
 primary key (id),
-constraint of_entry1 foreign key (entry) references entry(id) on delete cascade on update cascade
+constraint of_entry1 foreign key (entry) references entry(id) on delete cascade on update cascade,
+index (method)
 );
 
 create table response (
@@ -38,7 +41,8 @@ entry int not null,
 status int not null,
 status_text varchar(50) not null,
 primary key (id),
-constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade
+constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade,
+index (status)
 );
 
 create table header (
@@ -54,14 +58,16 @@ last_modified datetime,
 host varchar(50),
 primary key (id),
 constraint of_response foreign key (response) references response(id) on delete cascade on update cascade,
-constraint of_request foreign key (request) references request(id) on delete cascade on update cascade
+constraint of_request foreign key (request) references request(id) on delete cascade on update cascade,
+index (content_type)
 );
 
 create table cache_control (
 header int not null,
 control varchar(50) not null,
 primary key (header,control),
-constraint of_header foreign key (header) references header(id) on delete cascade on update cascade
+constraint of_header foreign key (header) references header(id) on delete cascade on update cascade,
+index (control)
 );
 
 insert into user values ('admin',MD5('1'),'admin@har.com','admin');
