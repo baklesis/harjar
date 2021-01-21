@@ -121,29 +121,22 @@ export default {
     }
   },
   mounted() {
-    //var data_copy = Object.assign({},this.current_data);
     this.myChart = new Chart(document.getElementById('barChart'), {
         type: this.chart_config.type,
         data: this.current_data,
         options: this.chart_config.options,
         plugins: this.chart_config.plugins,
       });
-    var incoming = '{ "method":{"GET":25,"POST":50,"HEAD":3,"DELETE":2},"code":{ "This":1, "is":3, "a":2, "test":4 } }';
-    var imported = JSON.parse(incoming);
-    var sorted = this.sortNestedJSON(imported);
+    axios.get("./php/get_card_bar.php").then((response)=>{
+      var sorted = this.sortNestedJSON(response.data);
 
-    this.method_data.labels = sorted[0].map(function(value,index) {return value[0];});
-    this.method_data.datasets[0].data = sorted[0].map(function(value,index) {return value[1];});
+      this.method_data.labels = sorted[0].map(function(value,index) {return value[0];});
+      this.method_data.datasets[0].data = sorted[0].map(function(value,index) {return value[1];});
 
-    this.code_data.labels = sorted[1].map(function(value,index) {return value[0];});
-    this.code_data.datasets[0].data = sorted[1].map(function(value,index) {return value[1];});
-
-    /*var max = Object.keys(incoming).reduce(function(max,key){
-  return (max === undefined || incoming[key] > incoming[max]) ? +key : max;
-});
-    outgoing[max] = incoming[max];
-    incoming.remove(max);
-*/
+      this.code_data.labels = sorted[1].map(function(value,index) {return value[0];});
+      this.code_data.datasets[0].data = sorted[1].map(function(value,index) {return value[1];});
+    })
+    
   },
   updated()
   {

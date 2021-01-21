@@ -50,7 +50,7 @@ export default {
             this.header_title = 'Ανάλυση / Χρόνος Απόκρισης Αιτήσεων'
           }
           break;
-        case 'map':
+        case 'request-map':
           this.header_title = 'Χάρτης'
           break;
         case 'overview':
@@ -71,7 +71,7 @@ export default {
           this.page_content_props = null
         }
         else if (response.data['type'] == 'user'){  // if user is regular user
-          this.page_content = 'map' // default content is map
+          this.page_content = 'request-map' // default content is map
           this.page_content_props = null
         }
         this.username = response.data['username']

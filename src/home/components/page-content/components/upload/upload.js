@@ -1,4 +1,5 @@
 import Card from '../card.js'
+import {dataBus} from '../../../../../index.js'
 // class declarations for use in importing HAR data
 class Request{
   constructor(method,url,header){
@@ -50,9 +51,9 @@ const template = `
         browse-text="Αναζήτηση"
         accept=".har">
       </b-form-file></b-col>
-      <b-col><b-button variant='success' @click="importHAR">Εισαγωγή αρχείου
+      <b-col><b-button :disabled.sync="show" variant='success' @click="importHAR">Εισαγωγή αρχείου
       </b-button>
-      <b-button @click="file = null">Καθάρισμα επιλογής</b-button></b-col>
+      <b-button @click="resetForm">Καθάρισμα επιλογής</b-button></b-col>
       </b-row>
       <b-row v-if="show">
       <b-col>
@@ -63,15 +64,18 @@ const template = `
         τοπικά (η εισαγωγή θα ισχύσει μόνο για την τωρινή σας συνεδρία) ή να αποθηκευθεί
         στην υπηρεσία μας; (τα δεδομένα από το αρχείο θα παραμείνουν αποθηκευμένα
         στο λογαριασμό σας)
-        <b-form>
+        <b-form @submit="onSubmit">
          <b-form-group>
-          <b-form-radio v-model="upload" value='true'>Τοπική αποθήκευση</b-form-radio>
-          <b-form-radio v-model="upload" value='false'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
+          <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
+          <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
         </b-form-group>
+        <b-button type="submit">Ολοκλήρωση</b-button>
         </b-form>
       </b-col>
       </b-row>
     </card>
+    <b-alert class="m-4" show dismissible v-if="history" @dismissed=deleteLocalFiles>
+      Έχετε ήδη αποθηκεύσει δεδομένα τοπικά, για να τα διαγράψετε κλείστε αυτό το μήνυμα</b-alert>
     </b-container>
 `
 export default {
@@ -82,11 +86,55 @@ export default {
   data () {
     return {
       file: null,
+      entries: [],
       show: false,
-      upload: false
+      upload: false,
+      isp: null
     }
   },
+  computed:{
+    history: function(){
+      return (window.localStorage.getItem('local_entries')!==null);
+    }
+  },
+  mounted() {
+    this.getIsp();
+    console.log(this.history);
+  },
   methods: {
+    deleteLocalFiles(){
+      window.localStorage.removeItem('local_entries');
+    },
+    onSubmit(){
+      const data = JSON.stringify(this.entries);
+      let isp =this.isp;
+      if(this.upload){
+        axios.post('./php/import.php',{data,isp})
+        .then(function (response) {
+          if(response.data){
+            console.log("Success")
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      }
+      else
+      {
+      window.localStorage.setItem('local_entries',data);
+    }
+    },
+    resetForm(){
+      this.file=null;
+      this.show=false;
+    },
+    getIsp(){
+      var isp=null;
+    axios.post('http://ip-api.com/json/').then((response)=>{
+      this.isp = response.data.isp;
+      console.log(this.isp);
+      })
+    },
     domain_from_url(url) { // function from StackOverflow
     var result
     var match
@@ -100,7 +148,6 @@ export default {
   },
     importHAR(){
       var entries= "";
-      var data = [];
       const HAR_file = this.file;
 
       let reader= new FileReader();
@@ -160,10 +207,13 @@ export default {
             request,
             response
             );
-          data.push(entry);
+          this.entries.push(entry);
         }
-        console.log(JSON.stringify(data));
+        this.entries.reverse();
         this.show=true;
+        const data=JSON.stringify(this.entries);
+        console.log(data);
+        window.localStorage.setItem('local_entries',data);
       }
     },
     oboeHAR(){
@@ -173,8 +223,6 @@ export default {
         console.log(entry.response.content);
       })
     }
-  },
-  mounted() {
   }
 }
 

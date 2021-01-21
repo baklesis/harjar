@@ -15,19 +15,12 @@ id int not null auto_increment,
 user varchar(50) not null,
 uploadDateTime datetime not null,
 startedDateTime datetime not null,
+wait float,
 serverIPAddress varchar(50) not null,
 isp varchar(50) not null,
 city varchar(50) not null,
 primary key (id),
 constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade
-);
-
-create table timing (
-id int not null auto_increment,
-entry int not null,
-wait int not null,
-primary key (id),
-constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade
 );
 
 create table request (
@@ -36,7 +29,7 @@ entry int not null,
 method varchar(10) not null,
 url varchar(2000) not null,
 primary key (id),
-constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade
+constraint of_entry1 foreign key (entry) references entry(id) on delete cascade on update cascade,
 );
 
 create table response (
@@ -45,7 +38,7 @@ entry int not null,
 status int not null,
 status_text varchar(50) not null,
 primary key (id),
-constraint of_entry foreign key (entry) references entry(id) on delete cascade on update cascade
+constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade,
 );
 
 create table header (
@@ -75,9 +68,7 @@ insert into user values ('admin',MD5('1'),'admin@har.com','admin');
 insert into user values ('prisonmike',MD5('1'),'prisonmike@har.com','user');
 
 
-insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,isp,city) values('prisonmike',now(),'2020-12-17 8:27:02','52.85.223.187','Wind','Patras');
-insert into timing(entry,wait)
-	values(1,217.41);
+insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-12-17 8:27:02','52.85.223.187',217.41,'Wind','Patras');
 
 insert into response(entry,status,status_text) values(1,'302','Found');
 insert into header(request,response,content_type,pragma,max_age,age,host)
@@ -100,9 +91,8 @@ insert into header(request,response,content_type,pragma,expires,age,last_modifie
 	values(2,null,null,null,null,null,null,null);
 
 
-insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,isp,city) values('prisonmike',now(),'2020-16-17 8:27:02','24.48.0.1','Vodafone','Patras');
-insert into timing(entry,wait)
-	values(2,217.41);
+insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-11-17 08:27:02','24.48.0.1',217.41,'Vodafone','Patras');
+
 
 insert into response(entry,status,status_text) values(2,'302','Found');
 insert into header(request,response,content_type,pragma,max_age,age,host)
