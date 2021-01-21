@@ -96,16 +96,16 @@ export default {
       if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
         this.$parent.header_saved_filters.content_types = document.getElementById('header_content_types').__vue__.selected
         this.$parent.header_saved_filters.providers = document.getElementById('header_providers').__vue__.selected
-        //reload charts
-        this.$parent.$refs.scrollpane.$refs.histogram.loadData()
-        this.$parent.$refs.scrollpane.$refs.polar.loadData()
+        //reload scroll-pane
+        this.$parent.$refs.scrollpane.loadData()
       }
       else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
         this.$parent.request_saved_filters.content_types = document.getElementById('request_content_types').__vue__.selected
         this.$parent.request_saved_filters.days = document.getElementById('request_days').__vue__.selected
         this.$parent.request_saved_filters.providers = document.getElementById('request_providers').__vue__.selected
         this.$parent.request_saved_filters.http_methods = document.getElementById('request_http_methods').__vue__.selected
-        //reload charts
+        //reload graph
+        this.$parent.$refs.graph.loadData()
       }
     },
     resetSelectedFilters() {  // clears selected filters

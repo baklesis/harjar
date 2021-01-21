@@ -2,7 +2,8 @@
 include "config.php";
 
 $filters = json_decode(file_get_contents('php://input'),TRUE);
-// create string of all array items  using ", " delimiter
+
+// create strings of all filter arrays  using ", " delimiter
 $content_types = join("', ''", $filters['content_types']);
 $providers =join("', '", $filters['providers']);
 
@@ -11,7 +12,7 @@ $bucket_vals = array();  // all bucket values
 
 // finds max TTL either using max_age or using expires/last-modified
 // COALESCE is used to replace null value with zero
-// we also check if any of the filter lists are empty. if any of them are, then "1" is returned in the logical expression (IF())
+// we check if any of the filter lists are empty. if any of them are, then "1" is returned in the logical expression (IF())
 $sql_max_ttl = $conn->query("SELECT GREATEST(COALESCE(TTL1,0), COALESCE(TTL2, 0)) AS TTL
                              FROM
                              ( SELECT MAX(max_age) AS TTL1 , MAX(TIME_TO_SEC(TIMEDIFF(expires,last_modified))) AS TTL2

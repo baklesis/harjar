@@ -49,20 +49,9 @@ export default {
         data: config.data,
         options: config.options,
       });
-    },
-    loadData() {
-      axios.post('./php/get_polar.php',this.$parent.$parent.header_saved_filters)
-      .then((response)=>{
-        this.config.data.datasets[0].data = response.data
-        this.polar.update()
-      })
-      .catch(function (error) {
-          console.log(error);
-      })
     }
   },
   mounted() {
   this.polar = this.createChart('polar', this.config);
-  this.loadData()
   }
 }

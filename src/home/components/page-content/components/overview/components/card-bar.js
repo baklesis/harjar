@@ -18,7 +18,7 @@ const template = `
     </b-row>
     <b-row>
       <b-col>
-      <div class = 'px-2 pb-3 overflow-auto' style='height: calc(100vh - 340px)'>
+      <div class = 'pl-2 pr-4 pb-3 overflow-auto' style='height: calc(100vh - 340px)'>
         <canvas id="barChart" width="200px" height="150px"></canvas>
       </div>
     </b-col>
@@ -74,7 +74,7 @@ export default {
       method_data:{
         labels: ['GET', 'POST', 'CONNECT', 'HEAD', 'PUT', 'DELETE'],
         datasets: [{
-          data: [25, 19, 12, 8, 5, 3],
+          data: [],
           backgroundColor:
             'rgba(255, 159, 64, 0.9)',
           borderWidth: 0
@@ -83,7 +83,7 @@ export default {
       code_data:{
         labels:['This','is','a','test'],
         datasets:[{
-          data: [2,3,4,5],
+          data: [],
           minBarLength: 20,
           backgroundColor:
             'rgba(64, 159, 255, 0.9)',
@@ -128,35 +128,22 @@ export default {
         plugins: this.chart_config.plugins,
       });
     axios.get("./php/get_card_bar.php").then((response)=>{
+      // sort data
       var sorted = this.sortNestedJSON(response.data);
-
+      // load method chart data
       this.method_data.labels = sorted[0].map(function(value,index) {return value[0];});
       this.method_data.datasets[0].data = sorted[0].map(function(value,index) {return value[1];});
-
+      // load code chart data
       this.code_data.labels = sorted[1].map(function(value,index) {return value[0];});
       this.code_data.datasets[0].data = sorted[1].map(function(value,index) {return value[1];});
+      // update chart
+      this.myChart.update();
     })
-    
+
   },
   updated()
   {
-    //console.log(this.current_data);
     this.myChart.data = this.current_data;
-    /*
-   while(this.myChart.data.labels.length!=0){
-      console.log("He");
-      this.myChart.data.labels.pop();
-      this.myChart.data.datasets[0].data.pop();
-    }*/
-    /* console.log(this.current_data);
-   // console.log(this.myChart.data.datasets[0].data);
-    this.myChart.data.labels.push(this.current_data.labels);
-    this.myChart.data.labels=this.myChart.data.labels.flat();
-    //console.log(this.myChart.data.labels);
-    this.myChart.data.datasets[0].data.push(this.current_data.datasets[0].data);
-    this.myChart.data.datasets[0].data=this.myChart.data.datasets[0].data.flat();
-   // console.log(this.myChart.data.datasets[0].data);
-  //console.log(this.myChart.data.labels);*/
     this.myChart.update();
   }
 }

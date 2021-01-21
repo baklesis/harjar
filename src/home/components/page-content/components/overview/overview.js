@@ -37,35 +37,31 @@ const template = `
       providers: 0,
      }
    },
-   methods: {
-     loadCardInfo() {
-       // users
-       axios.get('./php/get_users_count.php')
-       .then((response)=>{
-         this.users =  response.data
-       })
-       .catch(function (error) {
-         console.log(error);
-       })
-       // domains
-       axios.get('./php/get_domains_count.php')
-       .then((response)=>{
-         this.domains = response.data
-       })
-       .catch(function (error) {
-         console.log(error);
-       })
-       // providers
-       axios.get('./php/get_providers_count.php')
-       .then((response)=>{
-         this.providers = response.data
-       })
-       .catch(function (error) {
-         console.log(error);
-       })
-     }
-   },
-   created() {
-    this.loadCardInfo()
+   mounted() {
+     // load Card Info data
+     // users
+     axios.get('./php/get_users_count.php')
+     .then((response)=>{
+       this.users =  response.data
+     })
+     .catch(function (error) {
+       console.log(error);
+     })
+     // domains
+     axios.get('./php/get_domains_count.php')
+     .then((response)=>{
+       this.domains = response.data
+     })
+     .catch(function (error) {
+       console.log(error);
+     })
+     // providers
+     axios.get('./php/get_providers_count.php')
+     .then((response)=>{
+       this.providers = response.data
+     })
+     .catch(function (error) {
+       console.log(error);
+     })
    }
  }

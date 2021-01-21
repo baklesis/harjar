@@ -29,7 +29,7 @@ entry int not null,
 method varchar(10) not null,
 url varchar(2000) not null,
 primary key (id),
-constraint of_entry1 foreign key (entry) references entry(id) on delete cascade on update cascade,
+constraint of_entry1 foreign key (entry) references entry(id) on delete cascade on update cascade
 );
 
 create table response (
@@ -38,7 +38,7 @@ entry int not null,
 status int not null,
 status_text varchar(50) not null,
 primary key (id),
-constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade,
+constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade
 );
 
 create table header (
@@ -75,12 +75,14 @@ insert into header(request,response,content_type,pragma,max_age,age,host)
 	values(null,1,'text','no-cache','31536000','16970',null);
 insert into cache_control(header,control) VALUES (1,'no-cache');
 insert into cache_control(header,control) VALUES (1,'public');
+insert into cache_control(header,control) VALUES (1,'min-fresh');
 
 insert into response(entry,status,status_text) values(1,'200','OK');
 insert into header(request,response,content_type,pragma,max_age,age,host)
 	values(null,2,'text',null,'1800','268',null);
 insert into cache_control(header,control) VALUES (2,'no-cache');
 insert into cache_control(header,control) VALUES (2,'private');
+insert into cache_control(header,control) VALUES (2,'max-stale');
 
 insert into request(entry,method,url) values(1,'GET','http://obe.sandals.com');
 insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
@@ -91,8 +93,7 @@ insert into header(request,response,content_type,pragma,expires,age,last_modifie
 	values(2,null,null,null,null,null,null,null);
 
 
-insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-11-17 08:27:02','24.48.0.1',217.41,'Vodafone','Patras');
-
+insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-11-17 08:27:02','24.48.0.1',347.23,'Vodafone','Patras');
 
 insert into response(entry,status,status_text) values(2,'302','Found');
 insert into header(request,response,content_type,pragma,max_age,age,host)

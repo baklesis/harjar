@@ -51,21 +51,9 @@ export default {
         data: config.data,
         options: config.options,
       })
-    },
-    loadData() {
-      axios.post('./php/get_histogram.php',this.$parent.$parent.header_saved_filters)
-      .then((response)=>{
-        this.config.data.labels = response.data['buckets']
-        this.config.data.datasets[0].data = response.data['bucket_vals']
-        this.histogram.update()
-      })
-      .catch(function (error) {
-          console.log(error);
-      })
     }
   },
   mounted() {
     this.histogram = this.createChart('histogram', this.config);
-    this.loadData()
   }
 }
