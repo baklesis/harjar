@@ -4,7 +4,7 @@ import CardGraph from './components/analysis-request/card-graph.js'
 
 const template = `
     <b-row>
-      <b-col>
+      <b-col style='padding-right:0px'>
         <component :is='getContent' :ref='getRef'></component>
       </b-col>
       <b-col cols='3'>

@@ -1,5 +1,4 @@
 import Card from '../card.js'
-import {dataBus} from '../../../../../index.js'
 // class declarations for use in importing HAR data
 class Request{
   constructor(method,url,header){
@@ -59,7 +58,7 @@ const template = `
       </b-row>
       <b-row v-if="show">
       <b-col>
-        Η εισαγωγή του αρχείου ολοκληρώθηκε επιτυχώς. 
+        Η εισαγωγή του αρχείου ολοκληρώθηκε επιτυχώς.
       </b-col>
       <b-col>
         Θα θέλατε το αρχείο να παραμείνει
@@ -179,7 +178,7 @@ export default {
             }
             if(all.includes(directives[j][0])){
               final_cache_control.control.push(directives[j][0]);
-              
+
             }
           }
         }
@@ -204,7 +203,7 @@ export default {
           this.entries.push(cent);
         }
         for (var i = entries.length - 1; i >= 0; i--) {
-          
+
           // import request header values needed
           let request_header = {
             cache_control: null,
@@ -245,7 +244,7 @@ export default {
             if (har_res_headers[j].name.toLowerCase() == 'last-modified') response_header.last_modified = har_res_headers[j].value;
           }
           let response_cache_control = this.processCacheControl(cache_control);
-          
+
           response_header.cache_control = response_cache_control;
           //make new response object
           let response = new Response(

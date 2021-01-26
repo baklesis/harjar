@@ -19,7 +19,7 @@ const template = `
     <b-row>
       <b-col>
       <div class = 'pl-2 pr-4 pb-3 overflow-auto' style='height: calc(100vh - 340px)'>
-        <canvas id="barChart" width="200px" height="150px"></canvas>
+        <div style='height: 100%'><canvas id="barChart"></canvas></div>
       </div>
     </b-col>
     </b-row>
@@ -42,7 +42,8 @@ export default {
         type: 'horizontalBar',
         plugins: [ChartDataLabels],
         options: {
-          //responsive: false,
+          responsive: true,
+          maintainAspectRatio: false,
           legend:{
             display: false
           },
@@ -81,7 +82,7 @@ export default {
         }]
       },
       code_data:{
-        labels:['This','is','a','test'],
+        labels:[],
         datasets:[{
           data: [],
           minBarLength: 20,
@@ -126,7 +127,7 @@ export default {
         data: this.current_data,
         options: this.chart_config.options,
         plugins: this.chart_config.plugins,
-      });
+      })
     axios.get("./php/get_card_bar.php").then((response)=>{
       // sort data
       var sorted = this.sortNestedJSON(response.data);

@@ -9,7 +9,7 @@ const template = `
 
 	<sidebar-option v-b-toggle.analysis_options option='analysis' title='Ανάλυση' title_size='h5' icon='bar-chart-fill' style='display:none'></sidebar-option>
 
-	<b-collapse id="analysis_options" class="pt-2 pl-4">
+	<b-collapse id="analysis_options" class="pt-2 pl-3">
 		<sidebar-option @choice="onChoice($event)" v-b-toggle option='analysis_header' title='HTTP Κεφαλίδες' title_size='h6' icon='segmented-nav'></sidebar-option>
 		<sidebar-option @choice="onChoice($event)" v-b-toggle option='analysis_request' title='Χρόνος Απόκρισης Αιτήσεων' title_size='h6' icon='hourglass-bottom' class='pl-4'></sidebar-option>
 	</b-collapse>
