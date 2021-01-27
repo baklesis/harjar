@@ -21,18 +21,10 @@ if($sql_select){
     //transfer entries to new account
     $sql_entries = $conn->query("UPDATE entry SET user='$new_username' WHERE user='$old_username'");
     if($sql_entries){
-      //transfer requests to new account
-      $sql_requests = $conn->query("UPDATE request SET user='$new_username' WHERE user='$old_username'");
-      if($sql_requests){
-        //transfer responses to new account
-        $sql_responses = $conn->query("UPDATE response SET user='$new_username' WHERE user='$old_username'");
-        if($sql_responses){
-          //delete old account
-          $sql_delete = $conn->query("DELETE FROM user WHERE username='$old_username'");
-          if($sql_delete){
-          	echo 1;
-          }
-        }
+      //delete old account
+      $sql_delete = $conn->query("DELETE FROM user WHERE username='$old_username'");
+      if($sql_delete){
+      	echo 1;
       }
     }
   }
