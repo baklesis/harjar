@@ -20,7 +20,7 @@ if(sizeof($filters['providers'])==0){$providers_empty = 1;}
 if(sizeof($filters['http_methods'])==0){$http_methods_empty = 1;}
 
 // create strings of all filter arrays using ", " delimiter to pass to MySQL
-$content_types = join("', '", $filters['content_types']);
+$content_types = join("|", $filters['content_types']);
 //map days to numbers
 $mapping=['sunday' => 1, 'monday' => 2, 'tuesday' => 3, 'wednesday' => 4, 'thursday' => 5, 'friday' => 6, 'saturday' => 7];
 $mapped_days = array();
@@ -43,18 +43,21 @@ for ($i=0; $i<24; $i++){
     $time=$i;
   }
 
+
   // get average response time of entries for that hour
 
-  // SQL: We check if any of the filter lists are empty
+  // SQL
+  // We check if any of the filter lists are empty
   // if any of them are, then we "switch off" the rspective filter by returning "1"
   // in the logical expression (IF()).
+  // We also check if content_type is null. If it is, we check if 'undefined' filter is in the content_types selected filter list.
   // DAYOFWEEK() returns number of weekday that corresponds to the mapping above
   $sql = $conn->query("SELECT AVG(wait) as avg FROM entry
                        INNER JOIN response ON entry.id = response.entry
                        INNER JOIN request ON request.id = response.id
                        INNER JOIN header ON response.id = header.response
                        WHERE (DATE_FORMAT(startedDateTime,'%H'))='$time' AND
-                       IF($content_types_empty, 1, content_type in ('$content_types')) AND
+                       IF($content_types_empty, 1, IF(content_type IS NULL, 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types'))  AND
                        IF($days_empty, 1, DAYOFWEEK(startedDateTime) in ('$days')) AND
                        IF($providers_empty, 1, isp in ('$providers')) AND
                        IF($http_methods_empty, 1, method in ('$http_methods'))

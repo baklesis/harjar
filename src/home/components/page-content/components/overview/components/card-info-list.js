@@ -34,10 +34,19 @@ export default {
 		}
 	},
 	mounted() {
-		// load name and max age for each content type
+		// load name and avg age for each content type
 		axios.get('./php/get_avg_age.php')
 		.then((response)=>{
-			this.types = response.data
+			// sort returned types by their avg age
+			let unsorted_types = response.data
+			let sorted_types = unsorted_types.sort(function(a, b) {
+			  var keyA = a.value, keyB = b.value;
+			  // Compare the two values
+			  if (keyA < keyB) return 1;
+			  if (keyA > keyB) return -1;
+			  return 0;
+			})
+			this.types = sorted_types
 		})
 		.catch(function (error) {
 			console.log(error);

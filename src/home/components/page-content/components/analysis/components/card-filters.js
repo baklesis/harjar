@@ -10,7 +10,7 @@ const template = `
     </div>
     <hr>
     <div class="overflow-auto" style="height: calc(100% - 143px)">
-      <div class="pb-3 px-1" v-for='filter_type in filter_types'>
+      <div class="pb-3 px-1" v-for='filter_type in getFilterTypes()'>
         <filter-type :id='filter_type.value' :key='filter_type.value' :title="filter_type.title" :options="filter_type.options"></filter-type>
       </div>
     </div>
@@ -24,8 +24,6 @@ export default {
   template,
   data () {
     return {
-      mounted: false,
-      filter_types: null,  // loaded in mounted()
       // filter option items
       providers: [],  // loaded from db in mounted
       content_types: [
@@ -37,7 +35,8 @@ export default {
         { text: 'Model', value: 'model' },
         { text: 'Multipart', value: 'multipart' },
         { text: 'Text', value: 'text' },
-        { text: 'Video', value: 'video' }
+        { text: 'Video', value: 'video' },
+        { text: 'Undefined', value: 'undefined' }
       ],
       days: [
         { text: 'Δευτέρα', value: 'monday'},
@@ -62,6 +61,24 @@ export default {
     }
   },
   methods: {
+    getFilterTypes() {
+      if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
+        // return filter types for header tab
+        return [
+            { title: "Περιεχόμενο", value: 'header_content_types', options: this.content_types },
+            { title: "Πάροχος", value: 'header_providers', options: this.providers }
+          ]
+      }
+      else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
+      // return filter types for request tab
+      return [
+          { title: "Περιεχόμενο", value: 'request_content_types', options: this.content_types },
+          { title: "Ημέρα", value: 'request_days', options: this.days },
+          { title: "Πάροχος", value: 'request_providers', options: this.providers },
+          { title: "HTTP Μέθοδος", value: 'request_http_methods', options: this.http_methods }
+        ]
+      }
+    },
     saveSelectedFilters() {  // saves selected filters from each filter-type component to global variable in analysis
       if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
         this.$parent.header_saved_filters.content_types = document.getElementById('header_content_types').__vue__.selected
@@ -93,39 +110,17 @@ export default {
     }
   },
   mounted() {
-
+    // get provider filter options from db
     axios.get('./php/get_providers.php')
     .then((response)=>{
-
-      // get provider filter options from db
       this.providers = []
       for(let i in response.data){
         let provider = response.data[i]
         this.providers.push({ text: provider, value: provider})
       }
-
-      //load all filter type options in variable depending on tab selected
-      if (this.$parent.content_type == 'header'){  // if analysis/header tab is selected
-        // return filter types for header tab
-        this.filter_types = [
-            { title: "Περιεχόμενο", value: 'header_content_types', options: this.content_types },
-            { title: "Πάροχος", value: 'header_providers', options: this.providers }
-          ]
-      }
-      else if (this.$parent.content_type == 'request'){  // if analysis/request tab is selected
-      // return filter types for request tab
-        this.filter_types = [
-          { title: "Περιεχόμενο", value: 'request_content_types', options: this.content_types },
-          { title: "Ημέρα", value: 'request_days', options: this.days },
-          { title: "Πάροχος", value: 'request_providers', options: this.providers },
-          { title: "HTTP Μέθοδος", value: 'request_http_methods', options: this.http_methods }
-        ]
-      }
     })
     .catch(function (error) {
         console.log(error);
     })
-
-
   }
 }

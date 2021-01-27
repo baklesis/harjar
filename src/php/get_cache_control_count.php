@@ -14,7 +14,7 @@ if(sizeof($filters['content_types'])==0){$content_types_empty = 1;}
 if(sizeof($filters['providers'])==0){$providers_empty = 1;}
 
 // create string of all array items  using ", " delimiter to pass to MySQL
-$content_types = join("', '", $filters['content_types']);
+$content_types = join("|", $filters['content_types']);
 $providers =join("', '", $filters['providers']);
 
 // cache control vars
@@ -39,14 +39,15 @@ $results = [
 // SQL: We check if any of the filter lists are empty
 // if any of them are, then we "switch off" the rspective filter by returning "1"
 // in the logical expression (IF()).
+// We also check if content_type is null. If it is, we check if 'undefined' filter is in the content_types selected filter list.
 $sql = $conn->query("SELECT control, COUNT(*) as count FROM cache_control
-INNER JOIN header on header.id = cache_control.header
-INNER JOIN response ON response.id = header.response
-INNER JOIN entry ON entry.id = response.entry
-WHERE
-IF($content_types_empty, 1, content_type in ('$content_types')) AND
-IF($providers_empty, 1, isp in ('$providers'))
-GROUP BY control");
+                    INNER JOIN header on header.id = cache_control.header
+                    INNER JOIN response ON response.id = header.response
+                    INNER JOIN entry ON entry.id = response.entry
+                    WHERE
+                    IF($content_types_empty, 1, IF(content_type IS NULL, 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
+                    IF($providers_empty, 1, isp in ('$providers'))
+                    GROUP BY control");
 if($sql){
   while($row = $sql->fetch_assoc()) {
     if ($row['control'] == 'max-stale') {$max_stale = $row['count'];}
@@ -60,11 +61,11 @@ if($sql){
 
 # get number of responses
 $sql = $conn->query("SELECT COUNT(*) as count FROM response
-INNER JOIN header on header.response = response.id
-INNER JOIN entry ON entry.id = response.entry
-WHERE
-IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))");
+                    INNER JOIN header on header.response = response.id
+                    INNER JOIN entry ON entry.id = response.entry
+                    WHERE
+                    IF($content_types_empty, 1, IF(content_type IS NULL, 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
+                    IF('' IN ('$providers'), 1, isp in ('$providers'))");
 if($sql){
   $responses = $sql->fetch_assoc()['count'];
   // create percentages
