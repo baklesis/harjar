@@ -3,16 +3,30 @@ include "config.php";
 
 $filters = json_decode(file_get_contents('php://input'),TRUE);
 
-// create strings of all filter arrays  using ", " delimiter
-$content_types = join("', ''", $filters['content_types']);
+// selected filter arrays
+$content_types = $filters['content_types'];
+$providers = $filters['providers'];
+
+// flag variables for "where" statement in MySQL
+$content_types_empty = 0;
+$providers_empty = 0;
+if(sizeof($filters['content_types'])==0){$content_types_empty = 1;}
+if(sizeof($filters['providers'])==0){$providers_empty = 1;}
+
+// create strings of all filter arrays using ", " delimiter to pass to MySQL
+$content_types = join("', '", $filters['content_types']);
 $providers =join("', '", $filters['providers']);
 
 $buckets = array();  // all bucket ranges
 $bucket_vals = array();  // all bucket values
 
-// finds max TTL either using max_age or using expires/last-modified
+// finds max TTL either using max_age or using expires/last-
+
+// SQL: We check if any of the filter lists are empty
+// if any of them are, then we "switch off" the rspective filter by returning "1"
+// in the logical expression (IF()).
 // COALESCE is used to replace null value with zero
-// we check if any of the filter lists are empty. if any of them are, then "1" is returned in the logical expression (IF())
+// DAYOFWEEK() returns number of weekday that corresponds to the mapping above
 $sql_max_ttl = $conn->query("SELECT GREATEST(COALESCE(TTL1,0), COALESCE(TTL2, 0)) AS TTL
                              FROM
                              ( SELECT MAX(max_age) AS TTL1 , MAX(TIME_TO_SEC(TIMEDIFF(expires,last_modified))) AS TTL2
@@ -20,8 +34,8 @@ $sql_max_ttl = $conn->query("SELECT GREATEST(COALESCE(TTL1,0), COALESCE(TTL2, 0)
                              INNER JOIN header ON response.id = header.response
                              INNER JOIN entry ON entry.id = response.entry
                              WHERE
-                             IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-                             IF('' IN ('$providers'), 1, isp in ('$providers'))
+                             IF($content_types_empty, 1, content_type in ('$content_types')) AND
+                             IF($providers_empty, 1, isp in ('$providers'))
                            )AS all_both_TTL");
 
 if($sql_max_ttl){  // if max value has been found

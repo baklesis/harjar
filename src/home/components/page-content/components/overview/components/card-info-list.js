@@ -14,8 +14,8 @@ const template = `
 		    	</b-col>
 		    </b-row>
 		    <b-row class='px-1' align-v='center'>
-		      <b-col cols='4'><h3><b>{{type.value}} </b></h3></b-col>
-		      <b-col cols='8'>{{subtitle}}</b-col>
+		      <b-col cols='auto'><h3><b>{{type.value}}</b></h3></b-col>
+					<b-col cols='auto'><h6 class='text-muted'>sec</h6></b-col>
 		    </b-row>
 				<hr>
 	    </div>
@@ -27,7 +27,7 @@ export default {
   'card': Card,
 	},
 	template,
-	props: ['title','subtitle','value','icon'],
+	props: ['title','value','icon'],
 	 data () {
 	   return {
 			 types: [],

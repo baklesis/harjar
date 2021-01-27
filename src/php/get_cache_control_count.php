@@ -2,10 +2,22 @@
 include "config.php";
 
 $filters = json_decode(file_get_contents('php://input'),TRUE);
-// create string of all array items  using ", " delimiter
+
+// selected filter arrays
+$content_types = $filters['content_types'];
+$providers = $filters['providers'];
+
+// flag variables for "where" statement in MySQL
+$content_types_empty = 0;
+$providers_empty = 0;
+if(sizeof($filters['content_types'])==0){$content_types_empty = 1;}
+if(sizeof($filters['providers'])==0){$providers_empty = 1;}
+
+// create string of all array items  using ", " delimiter to pass to MySQL
 $content_types = join("', '", $filters['content_types']);
 $providers =join("', '", $filters['providers']);
 
+// cache control vars
 $responses = 0;
 $max_stale = 0;
 $min_fresh = 0;
@@ -24,14 +36,16 @@ $results = [
 ];
 
 # get count of directives
-# we check if any of the filter lists are empty. if any of them are then "1" is returned in the logical expression
+// SQL: We check if any of the filter lists are empty
+// if any of them are, then we "switch off" the rspective filter by returning "1"
+// in the logical expression (IF()).
 $sql = $conn->query("SELECT control, COUNT(*) as count FROM cache_control
 INNER JOIN header on header.id = cache_control.header
 INNER JOIN response ON response.id = header.response
 INNER JOIN entry ON entry.id = response.entry
 WHERE
-IF('' IN ('$content_types'), 1, content_type in ('$content_types')) AND
-IF('' IN ('$providers'), 1, isp in ('$providers'))
+IF($content_types_empty, 1, content_type in ('$content_types')) AND
+IF($providers_empty, 1, isp in ('$providers'))
 GROUP BY control");
 if($sql){
   while($row = $sql->fetch_assoc()) {
