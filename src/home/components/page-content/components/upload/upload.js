@@ -65,12 +65,12 @@ const template = `
         τοπικά (η εισαγωγή θα ισχύσει μόνο για την τωρινή σας συνεδρία) ή να αποθηκευθεί
         στην υπηρεσία μας; (τα δεδομένα από το αρχείο θα παραμείνουν αποθηκευμένα
         στο λογαριασμό σας)
-        <b-form @submit="onSubmit">
+        <b-form>
          <b-form-group>
           <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
           <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
         </b-form-group>
-        <b-button type="submit">Ολοκλήρωση</b-button>
+        <b-button @click="onSubmit">Ολοκλήρωση</b-button>
         </b-form>
       </b-col>
       </b-row>
