@@ -39,8 +39,8 @@ index (method)
 create table response (
 id int not null auto_increment,
 entry int not null,
-status int not null,
-status_text varchar(50) not null,
+status int,
+status_text varchar(50),
 primary key (id),
 constraint of_entry2 foreign key (entry) references entry(id) on delete cascade on update cascade,
 index (status)
@@ -71,8 +71,8 @@ constraint of_header foreign key (header) references header(id) on delete cascad
 index (control)
 );
 
-insert into user values ('admin',MD5('1'),'admin@har.com','admin');
-insert into user values ('prisonmike',MD5('1'),'prisonmike@har.com','user');
+insert into user values ('admin',MD5('1'),'admin@harjar.com','admin');
+insert into user values ('prisonmike',MD5('1'),'prisonmike@harjar.com','user');
 
 
 -- insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-12-17 8:27:02','52.85.223.187',217.41,'Wind','Patras');

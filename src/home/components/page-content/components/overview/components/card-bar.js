@@ -93,6 +93,48 @@ export default {
         }]
       },
       myChart: null,
+      status_codes: {
+        '200': 'OK',
+        '201': 'Created',
+        '202': 'Accepted',
+        '203': 'Non-Authoritative Information',
+        '204': 'No Content',
+        '205': 'Reset Content',
+        '206': 'Partial Content',
+        '300': 'Multiple Choices',
+        '301': 'Moved Permanently',
+        '302': 'Found',
+        '303': 'See Other',
+        '304': 'Not Modified',
+        '305': 'Use Proxy',
+        '306': 'Unused',
+        '307': 'Temporary Redirect',
+        '400': 'Bad Request',
+        '401': 'Unauthorized',
+        '402': 'Payment Required',
+        '403': 'Forbidden',
+        '404': 'Not Found',
+        '405': 'Method Not Allowed',
+        '406': 'Not Acceptable',
+        '407': 'Proxy Authentication Required',
+        '408': 'Request Timeout',
+        '409': 'Conflict',
+        '410': 'Gone',
+        '411': 'Length Required',
+        '412': 'Precondition Required',
+        '413': 'Request Entry Too Large',
+        '414': 'Request-URI Too Long',
+        '415': 'Unsupported Media Type',
+        '416': 'Requested Range Not Satisfiable',
+        '417': 'Expectation Failed',
+        '418': 'I\'m a teapot',
+        '500': 'Internal Server Error',
+        '501': 'Not Implemented',
+        '502': 'Bad Gateway',
+        '503': 'Service Unavailable',
+        '504': 'Gateway Timeout',
+        '505': 'HTTP Version Not Supported'
+      }
     }
   },
   computed:{
@@ -132,10 +174,11 @@ export default {
       // sort data
       var sorted = this.sortNestedJSON(response.data);
       // load method chart data
+      let status_codes = this.status_codes
       this.method_data.labels = sorted[0].map(function(value,index) {return value[0];});
       this.method_data.datasets[0].data = sorted[0].map(function(value,index) {return value[1];});
       // load code chart data
-      this.code_data.labels = sorted[1].map(function(value,index) {return value[0];});
+      this.code_data.labels = sorted[1].map(function(value,index) {return value[0]+": "+status_codes[value[0]];});
       this.code_data.datasets[0].data = sorted[1].map(function(value,index) {return value[1];});
       // update chart
       this.myChart.update();

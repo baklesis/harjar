@@ -3,7 +3,7 @@ include "config.php";
 
 $results = array();
 
-$sql = $conn->query("SELECT content_type as name, AVG(age) as value FROM header GROUP BY content_type");
+$sql = $conn->query("SELECT content_type as name, AVG(age) as value FROM header  WHERE age IS NOT NULL GROUP BY content_type");
 if($sql){
   while($row = $sql->fetch_assoc()) {
     if($row['name']!= null){

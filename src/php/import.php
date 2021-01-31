@@ -36,7 +36,7 @@ foreach ($jsonStream as $index => $data_group) {
 	$sql_cache = $conn->prepare("INSERT INTO cache_control VALUES (?, ?)");
 
 	for ($i=0; $i < sizeof($data_group); $i++) {
-		
+
 		$data = $data_group[$i];
 		// Bind for entry
 		$user = $input['username'];
@@ -71,7 +71,7 @@ foreach ($jsonStream as $index => $data_group) {
 		 		$sql_req_h->bind_param("iis",$last_r_id,$max_age,$host);
 
 		 		if($sql_req_h->execute()){
-		 			
+
 		 			$last_h_id = $conn->insert_id;
 		 			if(!empty($data['request']['cache_control'])){
 		 				foreach($data['request']['cache_control']['control'] as $control)
@@ -84,11 +84,11 @@ foreach ($jsonStream as $index => $data_group) {
 		 					}
 		 			}
 
-		 			$status = $data['response']['status'];
-				 	$status_text = $data['response']['status_text'];
+		 			$status = $data['response']['status'] == 0 ? null : $data['response']['status']; // consider zero status codes as null
+				 	$status_text = $data['response']['status_text'] == '' ? null : $data['response']['status_text']; // consider empty status text strings as null
 
 					$sql_response->bind_param("iis",$last_entry_id,$status,$status_text);
-					
+
 					if($sql_response->execute()){
 
 						$last_r_id = $conn->insert_id;
@@ -99,7 +99,7 @@ foreach ($jsonStream as $index => $data_group) {
 			 				$max_age = $data['response']['cache_control']['max_age'];
 			 			}
 						$sql_res_h->bind_param("isiis",$last_r_id,$content_type,$max_age,$age,$last_modified);
-						
+
 						if($sql_res_h->execute()){
 
 							$last_h_id = $conn->insert_id;
@@ -135,9 +135,9 @@ foreach ($jsonStream as $index => $data_group) {
 		echo $conn -> error . "entry_error\n";
 		}
 
-		
 
-	 	
+
+
 	}
 }
 ?>
