@@ -4,6 +4,17 @@
   background-image: url('../assets/img/bg.jpg'); background-size: cover; background-position: center bottom;"
 }
 
+/*accent color*/
+:root {
+    --mycolor:#68c4de;  /*define color var*/
+}
+.colored {
+  color: var(--mycolor);
+}
+.bg-colored {
+  background: var(--mycolor);
+}
+
 /*rounded corners*/
 .rounded-corners-25 {
   border-radius: 25px;
@@ -44,13 +55,24 @@
 }
 
 /*buttons*/
-.btn-color {
-  background-color: #24cb7f;
+.btn-colored {
+  background-color: var(--mycolor);
   border: 1px;
 }
-.btn-color:hover, .btn-color:focus, .btn-color:active {
-  background-color: #20ab6c;
+.btn-colored:hover, .btn-color:focus, .btn-color:active {
+  background-color: var(--mycolor);
   border: none;
+}
+
+/*links*/
+.link-colored {
+  color: var(--mycolor);
+  text-decoration: none;
+}
+.link-colored:hover {
+  color: var(--mycolor);
+  text-decoration: none;
+  filter: brightness(85%);
 }
 
 /*sidebar option*/

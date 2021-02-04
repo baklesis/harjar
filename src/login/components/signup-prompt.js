@@ -12,7 +12,7 @@ const template = `
       </b-form-group>
       <hr/>
       <b-button type="reset">Ακύρωση</b-button>
-      <b-button type="submit" class='btn-color'>Εγγραφή</b-button>
+      <b-button type="submit" class='btn-colored'>Εγγραφή</b-button>
     </b-form>
   </b-modal>
 `

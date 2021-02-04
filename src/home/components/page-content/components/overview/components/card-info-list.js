@@ -10,7 +10,7 @@ const template = `
 		    		<h6 class='pt-2 px-1 text-muted'>{{type.name}}</h6>
 		    	</b-col>
 		    	<b-col cols='3'>
-		    		<b-icon class="pt-2" :icon='icon' variant="primary" font-scale="3" ></b-icon></h5>
+		    		<b-icon class="pt-2 colored" :icon='icon' font-scale="3" ></b-icon></h5>
 		    	</b-col>
 		    </b-row>
 		    <b-row class='px-1' align-v='center'>

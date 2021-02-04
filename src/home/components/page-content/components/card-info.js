@@ -7,7 +7,7 @@ const template = `
     <h5 class='pt-3 px-1 text-muted'>{{title}}</h5>
     </b-col>
     <b-col cols='3'>
-    <b-icon class="pt-3" :icon='icon' variant="primary" font-scale="3" ></b-icon></h5>
+    <b-icon class="pt-3 colored" :icon='icon' font-scale="3" ></b-icon></h5>
     </b-col>
     </b-row>
     <hr>

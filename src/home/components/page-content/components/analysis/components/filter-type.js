@@ -1,6 +1,6 @@
 const template = `
-  <div class="border border-primary rounded-corners-5">
-    <b-button block @click="visible = !visible" variant="primary" style="text-align: left">
+  <div class="border btn-colored rounded-corners-5">
+    <b-button block @click="visible = !visible" class='btn-colored' style="text-align: left">
       <b-icon :icon="caret()" style="height:15px"></b-icon>
       {{ title }}
     </b-button>

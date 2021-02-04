@@ -11,7 +11,7 @@ const template = `
           <b-dropdown-item @click="logOut()">Αποσύνδεση</b-dropdown-item>
         </b-dropdown>
         <account-info></account-info>
-        <img src='../assets/img/profile.png' style='background: #007BFF; height: 50px; width: 50px; position: absolute; top: -6px; left:65px; border-radius: 50%; z-index: 100;'></img>
+        <img src='../assets/img/profile.png' class='bg-colored' style='height: 50px; width: 50px; position: absolute; top: -6px; left:65px; border-radius: 50%; z-index: 100;'></img>
       </div>
     </b-col>
   </b-row>
