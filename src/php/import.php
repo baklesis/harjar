@@ -23,6 +23,7 @@ include "config.php";
 $input = json_decode(file_get_contents('php://input'),true,2);
 
 $jsonStream = \JsonMachine\JsonMachine::fromString($input["data"]);
+//$jsonStream = \JsonMachine\JsonMachine::fromFile("../test1.txt");
 foreach ($jsonStream as $index => $data_group) {
 
 	//$sql_entry = $conn->query("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ('prisonmike', NOW(), '$started_datetime', $wait, '$server_ip', 'WIND', 'Patras')");
@@ -40,6 +41,7 @@ foreach ($jsonStream as $index => $data_group) {
 		$data = $data_group[$i];
 		// Bind for entry
 		$user = $input['username'];
+		//$user = "prisonmike";
 		$upload_datetime = date("Y-m-d H:i:s");
 		$started_datetime_full = str_replace('T',' ',$data['startedDateTime']);
 	 	list($started_datetime, $leftovers) = explode('.',$started_datetime_full);
@@ -74,14 +76,15 @@ foreach ($jsonStream as $index => $data_group) {
 
 		 			$last_h_id = $conn->insert_id;
 		 			if(!empty($data['request']['cache_control'])){
-		 				foreach($data['request']['cache_control']['control'] as $control)
-		 					$sql_cache->bind_param('is',$last_h_id,$control);
-		 					if($sql_cache->execute()){
-		 						echo 'yes!';
-		 					}
-		 					else{
-								echo $conn -> error . "special1<br>";
-		 					}
+		 				// foreach($data['request']['cache_control']['control'] as $control){
+		 				// 	$sql_cache->bind_param('is',$last_h_id,$control);
+		 				// 	if($sql_cache->execute()){
+		 				// 		echo 'yes!';
+		 				// 	}
+		 				// 	else{
+							// 	echo $conn -> error . "Request cache-control error.<br>";
+		 				// 	}
+		 				// }
 		 			}
 
 		 			$status = $data['response']['status'] == 0 ? null : $data['response']['status']; // consider zero status codes as null
@@ -104,13 +107,16 @@ foreach ($jsonStream as $index => $data_group) {
 
 							$last_h_id = $conn->insert_id;
 				 			if(!empty($data['response']['cache_control'])){
-				 				foreach($data['response']['cache_control']['control'] as $control)
+				 				foreach($data['response']['cache_control']['control'] as $control){
 				 					$sql_cache->bind_param('is',$last_h_id,$control);
 				 					if($sql_cache->execute()){
+				 						echo "Inserted cache_control";
 				 					}
 				 					else{
-										echo $conn -> error . "special2<br>";
+										echo $conn -> error . "Response cache-control error. Control:" . $control;
 				 					}
+				 				}
+				 				echo "Row complete!";
 				 			}
 						}
 						else{

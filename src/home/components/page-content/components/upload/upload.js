@@ -101,19 +101,24 @@ export default {
     }
   },
   mounted() {
+    // On mount, we get the current isp
     this.getIsp();
-    console.log(this.history);
   },
   methods: {
     deleteLocalFiles(){
       window.localStorage.removeItem('local_entries');
     },
+    // Sends the modified file to the server,
+    // upon user choice to upload.
     onSubmit(){
       const data = JSON.stringify(this.entries);
-      axios.get('./php/get_session.php')
       if(this.upload){
+
+        console.log("Checking session");
         axios.get('./php/get_session.php').then(function(response){
           let username = response.data['username'];
+
+          console.log("Starting upload...");
           axios.post('./php/import.php',{data,username})
           .then(function (response) {
             if(response.data){
@@ -131,30 +136,36 @@ export default {
       window.localStorage.setItem('local_entries',data);
     }
     },
+    // Resets the user import form
     resetForm(){
       this.file=null;
       this.show=false;
     },
+    // Requests data based on the user's current IP address,
+    // and passes the isp and city response variables to the local data variables.
     getIsp(){
       var isp=null;
-    axios.post('http://ip-api.com/json/').then((response)=>{
-      this.isp = response.data.isp;
-      this.city = response.data.city;
-      console.log(this.isp);
-      console.log(this.city);
+      axios.post('http://ip-api.com/json/').then((response)=>{
+        this.isp = response.data.isp;
+        this.city = response.data.city;
+        console.log(this.isp);
+        console.log(this.city);
       })
     },
-    domain_from_url(url) { // function from StackOverflow
-    var result
-    var match
+    // Method borrowed from the beloved StackOverflow
+    domain_from_url(url) {
+    var result;
+    var match;
     if (match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im)) {
-        result = match[1]
+        result = match[1];
         if (match = result.match(/^[^\.]+\.(.+\..+)$/)) {
-            result = match[1]
+            result = match[1];
         }
-    }
-    return result
+      }
+      return result
     },
+    // This functions breaks down the cache-control directives
+    // provided in the HAR string, then filters them accordingly
     processCacheControl(directives){
       var all = ['min-fresh','max-stale','no-cache','no-store','private','public'];
       let final_cache_control = {
@@ -189,13 +200,18 @@ export default {
       }
       return final_cache_control;
     },
+    // This method is responsible for loading and parsing the HAR file
+    // as needed for our implementation.
     importHAR(){
       var entries= "";
       const HAR_file = this.file;
 
+      // Setup new FileReader object to read the HAR file
       let reader= new FileReader();
       reader.readAsText(HAR_file,"UTF-8");
       reader.onload = evt => {
+
+        // Once the file is loaded split it into 100-entry chunks (cents)
         let big_var = JSON.parse(evt.target.result);
         entries = big_var.log.entries;
         let cents = Math.ceil(entries.length / 100);
@@ -203,9 +219,11 @@ export default {
           let cent = [];
           this.entries.push(cent);
         }
+
+        // Import each entry
         for (var i = entries.length - 1; i >= 0; i--) {
 
-          // import request header values needed
+          // Import request header values needed
           let request_header = {
             cache_control: null,
             pragma: null,
@@ -222,13 +240,14 @@ export default {
           let request_cache_control = this.processCacheControl(cache_control);
 
           request_header.cache_control = request_cache_control;
-          // make new request object
+          // Make new request object
           let request = new Request(
             entries[i].request.method,
             this.domain_from_url(entries[i].request.url),
             request_header
           );
-          // import response header values needed
+
+          // Import response header values needed
           let response_header = {
             content_type: null,
             cache_control: null,
@@ -247,13 +266,13 @@ export default {
           let response_cache_control = this.processCacheControl(cache_control);
 
           response_header.cache_control = response_cache_control;
-          //make new response object
+          // Make new response object
           let response = new Response(
             entries[i].response.status,
             entries[i].response.statusText,
             response_header
           );
-          //make new entry object with request, response and other data
+          // Make new entry object with request, response and other data
           let entry = new Entry(
             entries[i].startedDateTime,
             entries[i].timings?.wait,
@@ -263,54 +282,22 @@ export default {
             request,
             response
             );
-          //console.log(entries[i].timings?.wait);
+          // Push entry into its corresponding cent
           this.entries[Math.floor(i/100)].push(entry);
         }
+        // Reverse entries because of loop's descending order
         for (var i = 0; i < this.entries.length; i++) {
           this.entries[i].reverse();
         }
+        // Reverse the cents too
         this.entries.reverse();
+        console.log("Imported entries (grouped by 100s):");
         console.log(this.entries);
         this.show=true;
         const data=JSON.stringify(this.entries);
         //console.log(data);
         window.localStorage.setItem('local_entries',data);
       }
-    },
-    oboeHAR(){
-      oboe('../../../../../../../assets/test.har')
-      .node('log.entries.*',function (entry)
-      {
-        console.log(entry.response.content);
-      })
     }
   }
 }
-
-/* var entry = {
-        startedDateTime: null,
-        timings: {
-          wait : null
-        },
-        serverIPAddress: null,
-        request:{
-          method: null,
-          url: null,
-          headers: {
-            cache-control: null,
-            pragma: null,
-            host: null
-          }
-        }
-        response:{
-          status: null,
-          statusText: null,
-          headers: {
-            content-type: null,
-            cache-control: null,
-            expires: null,
-            age: null,
-            last-modified: null
-          }
-        }
-      }; */
