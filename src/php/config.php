@@ -1,8 +1,8 @@
 <?php
 session_start();
-$host = "127.0.0.1";
+$host = "localhost";
 $user = "root";
-$password = "iloveminecraft";
+$password = "";
 $dbname = "userdata";
 
 $conn = mysqli_connect($host, $user, $password,$dbname);
