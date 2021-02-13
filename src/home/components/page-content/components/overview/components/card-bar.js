@@ -42,6 +42,18 @@ export default {
         type: 'horizontalBar',
         plugins: [ChartDataLabels],
         options: {
+          plugins:{
+            datalabels: {
+              color: '#FFFFFF',
+              font: {
+                size: '14',
+                weight: 'bold'
+              }
+            }
+          },
+          tooltips: {
+            enabled: false
+          },
           responsive: true,
           maintainAspectRatio: false,
           legend:{
@@ -49,14 +61,16 @@ export default {
           },
             scales: {
                 yAxes: [{
-                  barThickness: 15,
+                  barThickness: 24,
                     gridLines: {
                       display: false
                     },
                     ticks:{
+                      fontSize: 18,
+                      fontColor: '#6c757d',
                       padding:10,
                       beginAtZero: true
-                    }
+                    },
                 }],
                 xAxes: [{
                   display: false,
@@ -66,15 +80,17 @@ export default {
                     ticks:
                     {
                       beginAtZero: true
-                    }
+                    },
+                    minBarLength: 20
                 }]
             },
-            cornerRadius: 10
+            cornerRadius: 20
         }
       },
       method_data:{
         labels: ['GET', 'POST', 'CONNECT', 'HEAD', 'PUT', 'DELETE'],
         datasets: [{
+          barPercentage: 1,
           data: [],
           backgroundColor:
             'rgba(255, 159, 64, 0.9)',
@@ -84,8 +100,8 @@ export default {
       code_data:{
         labels:[],
         datasets:[{
+          barPercentage: 1,
           data: [],
-          minBarLength: 20,
           backgroundColor:
             'rgba(64, 159, 255, 0.9)',
           borderWidth: 0,

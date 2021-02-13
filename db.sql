@@ -22,6 +22,7 @@ serverIPAddress varchar(50),
 isp varchar(50) not null,
 city varchar(50) not null,
 primary key (id),
+constraint duplicate_entries unique (user,startedDateTime, wait),
 constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade,
 index (user,isp)
 );
@@ -73,51 +74,3 @@ index (control)
 
 insert into user values ('admin',MD5('1'),'admin@harjar.com','admin');
 insert into user values ('prisonmike',MD5('1'),'prisonmike@harjar.com','user');
-
-
--- insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-12-17 8:27:02','52.85.223.187',217.41,'Wind','Patras');
-
--- insert into response(entry,status,status_text) values(1,'302','Found');
--- insert into header(request,response,content_type,pragma,max_age,age,host)
--- 	values(null,1,'text','no-cache','31536000','16970',null);
--- insert into cache_control(header,control) VALUES (1,'no-cache');
--- insert into cache_control(header,control) VALUES (1,'public');
--- insert into cache_control(header,control) VALUES (1,'min-fresh');
-
--- insert into response(entry,status,status_text) values(1,'200','OK');
--- insert into header(request,response,content_type,pragma,max_age,age,host)
--- 	values(null,2,'text',null,'1800','268',null);
--- insert into cache_control(header,control) VALUES (2,'no-cache');
--- insert into cache_control(header,control) VALUES (2,'private');
--- insert into cache_control(header,control) VALUES (2,'max-stale');
-
--- insert into request(entry,method,url) values(1,'GET','http://obe.sandals.com');
--- insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
--- 	values(1,null,null,null,null,null,null,'www.sandals.com');
-
--- insert into request(entry,method,url) values(1,'POST','https://ct.pinterest.com');
--- insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
--- 	values(2,null,null,null,null,null,null,null);
-
-
--- insert into entry(user,uploadDateTime,startedDateTime,serverIPAddress,wait,isp,city) values('prisonmike',now(),'2020-11-17 08:27:02','24.48.0.1',347.23,'Vodafone','Patras');
-
--- insert into response(entry,status,status_text) values(2,'302','Found');
--- insert into header(request,response,content_type,pragma,max_age,age,host)
--- 	values(null,3,'text','no-cache','86400','16970',null);
--- insert into cache_control(header,control) VALUES (5,'no-store');
--- insert into cache_control(header,control) VALUES (5,'private');
-
--- insert into response(entry,status,status_text) values(2,'200','OK');
--- insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
--- 	values(null,4,'text',null,'2020-12-06 17:39:26','268','2020-09-21 19:50:52',null);
--- insert into cache_control(header,control) VALUES (6,'no-store');
--- insert into cache_control(header,control) VALUES (6,'public');
-
--- insert into request(entry,method,url) values(2,'GET','http://obe.sandals.com');
--- insert into header(request,response,content_type,pragma,age,host)
--- 	values(3,null,null,null,null,'www.sandals.com');
-
--- insert into request(entry,method,url) values(2,'POST','https://ct.pinterest.com');
--- insert into header(request,response,content_type,pragma,expires,age,last_modified,host)
--- 	values(4,null,null,null,null,null,null,null);
