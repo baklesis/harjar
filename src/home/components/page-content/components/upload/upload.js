@@ -33,9 +33,10 @@ class Entry{
 }
 
 const template = `
-<b-container>
-    <card class="pt-3 pb-4 px-4">
+<div>
+    <card class="pt-3 pb-4">
       <h5>Εισαγωγή αρχείου HAR</h5>
+      <h5 class='px-1 text-muted'>Εισαγωγή αρχείου HAR</h5>
       <hr><p>Επιλέγοντας να ανεβάσετε ένα αρχείο HAR στην ιστοσελίδα,
       αποκτάτε πρόσβαση σε μια οπτικοποίηση των δεδομένων περιήγησής σας
       σε χάρτη, όπου μπλα μπλα.</p>
@@ -56,7 +57,7 @@ const template = `
       </b-button>
       <b-button @click="resetForm">Καθάρισμα επιλογής</b-button></b-col>
       </b-row>
-      <b-row v-if="show">
+      <b-collapse v-model="show">
       <b-col>
         Η εισαγωγή του αρχείου ολοκληρώθηκε επιτυχώς.
       </b-col>
@@ -73,11 +74,11 @@ const template = `
         <b-button @click="onSubmit">Ολοκλήρωση</b-button>
         </b-form>
       </b-col>
-      </b-row>
+      </b-collapse>
     </card>
     <b-alert class="m-4" show dismissible v-if="history" @dismissed=deleteLocalFiles>
       Έχετε ήδη αποθηκεύσει δεδομένα τοπικά, για να τα διαγράψετε κλείστε αυτό το μήνυμα</b-alert>
-    </b-container>
+    </div>
 `
 export default {
   components: {

@@ -14,6 +14,9 @@
 .bg-colored {
   background: var(--mycolor);
 }
+.border-colored {
+  border: 1px solid var(--mycolor);
+}
 
 /*rounded corners*/
 .rounded-corners-25 {
@@ -57,17 +60,18 @@
 /*buttons*/
 .btn-colored {
   background-color: var(--mycolor);
-  border: 1px;
+  border: 1px solid var(--mycolor);
 }
-.btn-colored:hover, .btn-color:focus, .btn-color:active {
-  background-color: var(--mycolor);
-  border: none;
+.btn-colored:hover, .btn-colored:focus, .btn-colored:active, .btn-colored:hover:active {
+  background-color: var(--mycolor) !important;
+  border: 1px solid var(--mycolor) !important;
 }
 
 /*links*/
 .link-colored {
   color: var(--mycolor);
   text-decoration: none;
+
 }
 .link-colored:hover {
   color: var(--mycolor);

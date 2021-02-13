@@ -3,7 +3,7 @@ import CardInfoList from './components/card-info-list.js'
 import CardInfo from '../card-info.js'
 
 const template = `
-  <div class='d-flex flex-column pr-3'>
+  <div class='d-flex flex-column'>
     <b-row>
       <b-col>
       	<card-info title='Χρήστες' icon='person-fill' :value='users'></card-info>

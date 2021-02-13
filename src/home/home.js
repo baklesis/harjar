@@ -9,12 +9,12 @@ const template = `
     </div>
     <div class='centered' style='width:85vw; float:left'>
       <b-col>
-        <b-row class='pt-4 pb-3'>
+        <b-row class='pt-4 pb-3 px-4'>
           <b-container>
             <page-header :title='getTitle' :username='username'></page-header>
           </b-container>
         </b-row>
-        <b-row>
+        <b-row class='px-4'>
           <b-container>
             <page-content :content='page_content' :content_props='page_content_props'></page-content>
           </b-container>
@@ -71,7 +71,7 @@ export default {
           this.page_content_props = null
         }
         else if (response.data['type'] == 'user'){  // if user is regular user
-          this.page_content = 'upload' // default content is map
+          this.page_content = 'upload' // default content is upload
           this.page_content_props = null
         }
         this.username = response.data['username']

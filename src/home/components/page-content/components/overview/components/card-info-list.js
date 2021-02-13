@@ -1,7 +1,7 @@
 import Card from "../../card.js"
 const template = `
 	<card style='height:100%'>
-		<h5 class='pt-4 px-1 text-muted' >Μέση Ηλικία Ιστοαντικειμένων</h5>
+		<h5 class='pt-3 px-1 text-muted'>Μέση Ηλικία Ιστοαντικειμένων</h5>
 		<div style='height: calc(100vh - 380px); overflow: auto; overflow-x: hidden;'>
 			<hr>
 			<div v-for="type in types">

@@ -2,7 +2,7 @@ import SidebarOption from './components/sidebar-option.js'
 
 const template = `
 <div style='background-color: white; height:100vh;'>
-	<img src='../assets/img/logo.svg' class='p-4 centered-x' style='width: 70%;'>
+	<img src='../assets/img/logo.svg' class='pt-4 px-2 centered-x' style='width: 80%;'>
 	<hr>
 
 	<sidebar-option @choice="onChoice($event)" v-b-toggle option='overview' title='Επισκόπηση' title_size='h5' icon='house-door-fill' style='display:none'></sidebar-option>

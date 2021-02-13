@@ -1,5 +1,5 @@
 const template = `
-    <div id="map" ref="request_map" style= "height: 800px;"></div>
+    <div id="map" ref="request_map" class='rounded-corners-25' style= "height: 800px;"></div>
 `
 class Ip{
   constructor(server,city){
@@ -99,7 +99,7 @@ export default {
               this.createAdminMap('map');
             });
           });
-          
+
         });
       }
       else if(type == 'user'){
@@ -133,7 +133,7 @@ export default {
           console.log(i_peas);
         }
       }
-       
+
     },
     createMap(type){
       if(type=='admin')this.createAdminMap('map')

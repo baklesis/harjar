@@ -2,11 +2,11 @@ import Card from '../../card.js'
 import FilterType from './filter-type.js'
 
 const template = `
-  <card style="height: calc(100vh - 110px); width: 220px">
+  <card style="height: calc(100vh - 110px);">
     <div class="pt-3 px-1" style='text-align: center;'>Φίλτρα Ιστοαντικειμένων</div>
     <div class="pt-3 px-1">
-      <b-button @click='saveSelectedFilters' size="sm">Εφαρμογή</b-button>
-      <b-button @click='resetSelectedFilters' size="sm">Καθάρισμα</b-button>
+      <b-button @click='saveSelectedFilters' size="sm" style='width:48%'>Εφαρμογή</b-button>
+      <b-button @click='resetSelectedFilters' size="sm" style='width:48%'>Καθάρισμα</b-button>
     </div>
     <hr>
     <div class="overflow-auto" style="height: calc(100% - 143px)">

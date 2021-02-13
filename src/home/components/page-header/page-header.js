@@ -5,13 +5,13 @@ const template = `
     <h4 style="color: white">{{title}}</h4>
     </b-col>
     <b-col cols='3'>
-      <div style='height: 45px; width: 215px; margin:auto'>
+      <div style='height: 45px; width: 245px; margin:auto'>
         <b-dropdown right :text='username' variant='outline-light' offset="15" style='width: 150px; float: right;'>
           <b-dropdown-item v-b-modal.account>Λογαριασμός</b-dropdown-item>
           <b-dropdown-item @click="logOut()">Αποσύνδεση</b-dropdown-item>
         </b-dropdown>
         <account-info></account-info>
-        <img src='../assets/img/profile.png' class='bg-colored' style='height: 50px; width: 50px; position: absolute; top: -6px; left:65px; border-radius: 50%; z-index: 100;'></img>
+        <img src='../assets/img/profile.png' class='bg-colored' style='height: 50px; width: 50px; position: absolute; top: -6px; left:80px; border-radius: 50%; z-index: 100;'></img>
       </div>
     </b-col>
   </b-row>
