@@ -29,7 +29,7 @@ foreach ($jsonStream as $index => $data_group) {
 	//$sql_entry = $conn->query("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ('prisonmike', NOW(), '$started_datetime', $wait, '$server_ip', 'WIND', 'Patras')");
 	//$test = "INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ".implode(',',array_fill(0,sizeof($data_group),"(?,?,?,?,?,?,?)"));
 	//echo $test;
-	$sql_entry = $conn->prepare("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES (?,?,?,?,?,?,?)");
+	$sql_entry = $conn->prepare("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES (?,CONVERT_TZ(?,'+00:00','+02:00'),?,?,?,?,?)");
 	$sql_request= $conn->prepare("INSERT INTO request(entry, method, url) VALUES (?,?,?)");
 	$sql_req_h= $conn->prepare("INSERT INTO header(request,max_age,host) VALUES (?,?,?)");
 	$sql_response = $conn->prepare("INSERT INTO response(entry,status,status_text) VALUES (?, ?, ?)");

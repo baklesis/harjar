@@ -34,50 +34,58 @@ class Entry{
 
 const template = `
 <div>
-    <card class="pt-3 pb-4">
-      <h5 class='px-1 text-muted'>Εισαγωγή αρχείου HAR</h5>
-      <hr><p>Επιλέγοντας να ανεβάσετε ένα αρχείο HAR στην ιστοσελίδα,
+  <card class="pt-3 pb-4">
+    <h5 class='px-1 text-muted'>Εισαγωγή αρχείου HAR</h5>
+    <hr>
+    <div class='p-2'>
+      <p>Επιλέγοντας να ανεβάσετε ένα αρχείο HAR στην ιστοσελίδα,
       αποκτάτε πρόσβαση σε μια οπτικοποίηση των δεδομένων περιήγησής σας
-      σε χάρτη, όπου μπλα μπλα.</p>
-      <p>Αφού ολοκληρωθεί η εισαγωγή του αρχείου θα έχετε την επιλογή
-      να ανεβάσετε το αρχείο HAR στο σύστημά μας, για να καταγραφεί μόνιμα
+      σε χάρτη τύπου "Heatmap" οπου φαίνεται η γεωγραφική πυκνότητα των αιτήσεων σας σε διάφορες IP του κόσμου.</p>
+      <p>Μόλις επιλέξετε να εισάγετε ένα αρχείο HAR στο σύστημα, γίνεται καθαρισμός των προσωπικών σας δεδομένων. Αφού ολοκληρωθεί η εισαγωγή του αρχείου θα έχετε την επιλογή
+      είτε να αποθηκεύσετε το αρχείο τοπικά στον browser για να δείτε στην συνέχεια στον χάρτη ποια δεδομένα ανεβάσατε, είτε να αποθηκεύσετε το αρχείο στο σύστημά μας, για να καταγραφεί μόνιμα
       ως μέρος της συλλογής δεδομένων για τη δημιουργία του χάρτη περιήγησής σας
       στο διαδίκτυο.</p>
-      <b-row><b-col>
-      <b-form-file
-        v-model="file"
-        :state="Boolean(file)"
-        placeholder="Επιλέξτε ένα αρχείο ή ρίξτε το εδώ..."
-        drop-placeholder="Αφήστε το αρχείο εδώ..."
-        browse-text="Αναζήτηση"
-        accept=".har">
-      </b-form-file></b-col>
-      <b-col><b-button :disabled.sync="show" variant='success' @click="importHAR">Εισαγωγή αρχείου
-      </b-button>
-      <b-button @click="resetForm">Καθάρισμα επιλογής</b-button></b-col>
-      </b-row>
+      <b-col class='p-0'>
+        <b-row class='no-gutters'>
+          <b-col class='d-flex flex-column pr-1'><b-form-file
+            v-model="file"
+            :state="Boolean(file)"
+            placeholder="Επιλέξτε ένα αρχείο ή ρίξτε το εδώ..."
+            drop-placeholder="Αφήστε το αρχείο εδώ..."
+            browse-text="Αναζήτηση"
+            accept=".har">
+          </b-form-file></b-col>
+          <div style='width:340px'>
+            <b-button :disabled.sync="show" @click="importHAR" class='btn-colored'>Εισαγωγή αρχείου</b-button>
+            <b-button @click="resetForm">Καθάρισμα επιλογής</b-button>
+          </div>
+        </b-row>
+      </b-col>
       <b-collapse v-model="show">
-      <b-col>
-        Η εισαγωγή του αρχείου ολοκληρώθηκε επιτυχώς.
-      </b-col>
-      <b-col>
-        Θα θέλατε το αρχείο να παραμείνει
-        τοπικά (η εισαγωγή θα ισχύσει μόνο για την τωρινή σας συνεδρία) ή να αποθηκευθεί
-        στην υπηρεσία μας; (τα δεδομένα από το αρχείο θα παραμείνουν αποθηκευμένα
-        στο λογαριασμό σας)
-        <b-form>
-         <b-form-group>
-          <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
-          <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
-        </b-form-group>
-        <b-button @click="onSubmit" id='done-button' style='width:122px; height:38px'>Ολοκλήρωση</b-button>
-        </b-form>
-      </b-col>
+        <p class='pt-2'>
+          Η εισαγωγή του αρχείου ολοκληρώθηκε επιτυχώς.
+        </p>
+        <hr>
+        <b-col class='p-0'>
+          Θα θέλατε το αρχείο να παραμείνει
+          τοπικά (τα δεδομένα θα διαγραφούν μόλις αποσυνδεθείτε) ή να αποθηκευθεί
+          στην υπηρεσία μας (τα δεδομένα από το αρχείο θα παραμείνουν αποθηκευμένα
+          στο λογαριασμό σας);
+          <b-form>
+           <b-form-group>
+            <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
+            <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
+          </b-form-group>
+          <b-button @click="onSubmit" id='done-button' class='btn-colored' style='width:122px; height:38px'>Ολοκλήρωση</b-button>
+          </b-form>
+        </b-col>
       </b-collapse>
-    </card>
-    <b-alert class="m-4" show dismissible v-if="history" @dismissed=deleteLocalFiles>
-      Έχετε ήδη αποθηκεύσει δεδομένα τοπικά, για να τα διαγράψετε κλείστε αυτό το μήνυμα</b-alert>
     </div>
+  </card>
+  <b-alert class="my-4" show dismissible v-if="history" @dismissed=deleteLocalFiles>
+    Έχετε ήδη αποθηκεύσει δεδομένα τοπικά, για να τα διαγράψετε κλείστε αυτό το μήνυμα
+  </b-alert>
+</div>
 `
 export default {
   components: {
