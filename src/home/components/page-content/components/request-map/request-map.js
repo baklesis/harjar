@@ -43,6 +43,7 @@ export default {
     // This method is responsible for getting all the data
     // needed to build the map.
     async formMapData(type){
+      // Based on user type
       if(type == 'admin'){
         console.log("Getting map data for admin...")
         var test = await axios.get('./php/get_admin_map.php').then((response)=>{
@@ -72,11 +73,12 @@ export default {
               this.city_coord.push([parseFloat(response.data[0].lat),parseFloat(response.data[0].lon)]);
             });
           }
+          // Once all promises for city coordinates have been settled...
           Promise.allSettled(city_promises).then((response)=>{
-            console.log("All promises settled.");
+            console.log("Source coordinates received. Getting coordinates for endpoints...");
             var coord_promises = [];
+            let lost_coord = 0;
             for (var i = 0; i < i_peas.length; i++) {
-              console.log("Getting coordinates for endpoints...");
               for(var j=0; j<unique_cities.length; j++){
                 // This loop matches the IP's city with the unique cities array
                 // to figure the line's startpoint
@@ -87,34 +89,35 @@ export default {
               coord_promises[i] = axios.get('http://api.ipapi.com/api/'+i_peas[i].server+'?access_key=80e7295c8b88072b77d8746bd5c05647').then((response)=>{
                 let lat = response.data.latitude;
                 let lng = response.data.longitude;
-                var endpoint = [lat,lng];
-                var place = new Place(startpoint,endpoint);
-                this.places.push(place);
-                var marker = L.marker([lat, lng]);
-                this.markers.push(marker);
-                var polyline = L.polyline([[38.246242, 21.7350847],[lat,lng]], {color: 'blue'});
-                this.polylines.push(polyline);
+                // Count dropped responses by API
+                if(!lat || !lng) {
+                  lost_coord++;
+                }
+                else {
+                  var endpoint = [lat,lng];
+                  var place = new Place(startpoint,endpoint);
+                  this.places.push(place);
+                  // Create markers for endpoint
+                  var marker = L.marker(endpoint);
+                  this.markers.push(marker);
+                }
               });
             }
-
+            // Once all promises for server endpoint coordinates have been settled...
             Promise.allSettled(coord_promises).then((response)=>{
-              console.log("Coordinates complete! Last endpoint was:");
-              console.log(this.places[this.places.length-1].endpoint);
+              console.log("Endpoint coordinates received! Number of coordinates lost: " + lost_coord);
               for(i=0;i<this.places.length; i++){
                 // Copy count variables for each IP
                 this.places[i].count = i_peas[i].count;
-                //console.log("Creating marker for endpoint: " + this.places[i].endpoint);
-                //var marker = L.marker(this.places[i].endpoint);
-                //this.markers.push(marker);
-                //var polyline = L.polyline([this.places[i].startpoint,this.places[i].endpoint], {color: 'blue', weight: Math.log(this.places[i].count)+1});
-                //this.polylines.push(polyline);
+                // Create polylines
+                var polyline = L.polyline([this.places[i].startpoint,this.places[i].endpoint], {color: 'blue', weight: Math.log(this.places[i].count)+1});
+                this.polylines.push(polyline);
               }
               console.log("Final data for map:");
               console.log(this.places);
               this.createAdminMap('map');
             });
           });
-
         });
       }
       else if(type == 'user'){
@@ -125,34 +128,54 @@ export default {
         }
         this.heatmap_layer = new HeatmapOverlay(this.heatmap_cfg);
         const group_entries = JSON.parse(window.localStorage.getItem('local_entries'));
-        const entries = group_entries[2];
-        console.log(entries);
-        if(entries != null){
+        if(group_entries) { // if local data exists, load local data
+          console.log("Found local data. Loading local...");
+          const entries = group_entries[2];
+          // Filter IPs and apply user data
+          if(entries != null){
           var i_peas = []
           for(var entry of entries){
             if(typeof entry.serverIPAddress !== 'undefined'){
               if(!(i_peas.includes(entry.serverIPAddress)))i_peas.push(entry.serverIPAddress);
             }
           }
-          var coord_promises = [];
-          for (var i = 0; i < i_peas.length; i++) {
-             coord_promises[i] = axios.get('http://ip-api.com/json/'+i_peas[i]).then((response)=>{
-               let lat = response.data.lat;
-               let lng = response.data.lon;
-               this.places.push([lat, lng]);
-               place.lat = lat;
-               place.lng = lng;
-               this.heatmap_layer.addData(place)
-             });
+          this.applyUserData(entries);
+        }
+        }
+        else {
+          console.log("No local data found. Loading remote...");
+          axios.get('./php/get_user_map.php').then(response => {
+            if(response.data != null){
+              var i_peas = [];
+              for(var ip of response.data){
+                if(typeof ip !== 'undefined'){
+              if(!(i_peas.includes(ip)))i_peas.push(ip);
+            }
           }
-          console.log(i_peas);
-          Promise.allSettled(coord_promises).then((response)=>{
-            console.log("Coordinates complete!");
-            this.createUserMap('map');
+              this.applyUserData(i_peas);
+            }
           });
         }
       }
 
+    },
+    applyUserData(i_peas){
+      var coord_promises = [];
+      for (var i = 0; i < i_peas.length; i++) {
+         coord_promises[i] = axios.get('http://ip-api.com/json/'+i_peas[i]).then((response)=>{
+           let lat = response.data.lat;
+           let lng = response.data.lon;
+           this.places.push([lat, lng]);
+           place.lat = lat;
+           place.lng = lng;
+           this.heatmap_layer.addData(place)
+         });
+      }
+      console.log(i_peas);
+      Promise.allSettled(coord_promises).then((response)=>{
+        console.log("Coordinates complete!");
+        this.createUserMap('map');
+      });
     },
     createUserMap(id) {
       this.map = L.map(id, { dragging: !L.Browser.mobile }).setView([38, 23.85], 6);

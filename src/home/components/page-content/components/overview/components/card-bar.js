@@ -146,20 +146,20 @@ export default {
     sortNestedJSON(parsedJSON)
     {
       var sorted_arrays = [];
-      console.log(Object.entries(parsedJSON)) // Unsupported in IE 11
+      //console.log(Object.entries(parsedJSON)) // Unsupported in IE 11
       for(const [key,value] of Object.entries(parsedJSON))
       {
         var edit_array = [];
-        console.log(value);
+        //console.log(value);
         for (a in value)
         {
           edit_array.push([a,value[a]])
         }
         edit_array.sort(function(a,b){return b[1]- a[1]});
-        console.log(edit_array);
+        //console.log(edit_array);
         sorted_arrays.push(edit_array);
       }
-      console.log(sorted_arrays);
+      //console.log(sorted_arrays);
       return sorted_arrays;
     }
   },
