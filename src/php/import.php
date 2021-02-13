@@ -96,6 +96,8 @@ foreach ($jsonStream as $index => $data_group) {
 
 						$last_r_id = $conn->insert_id;
 						$content_type = $data['response']['content_type'];
+						$type_split_array =explode(";",$content_type);
+						$content_type = $type_split_array[0];
 					 	$age = $data['response']['age'];
 				 		$last_modified = null;//$data['response']['last_modified']; // fix format before enter
 						if(!empty($data['response']['cache_control'])){

@@ -127,12 +127,13 @@ export default {
         if(group_entries) { // if local data exists, load local data
           this.local=true;
           console.log("Found local data. Loading local...");
-          const entries = group_entries[2];
+          const entries = group_entries.flat();
+          console.log(entries);
           // Filter IPs and apply user data
           if(entries != null){
           var i_peas = []
           for(var entry of entries){
-            if(typeof entry.serverIPAddress !== 'undefined'){
+            if((typeof entry.serverIPAddress !== 'undefined') && (String(entry.response.content_type).includes("html"))){
               if(!(i_peas.includes(entry.serverIPAddress)))i_peas.push(entry.serverIPAddress);
             }
           }
