@@ -24,6 +24,7 @@ export default {
     return {
       places: [],
       map: null,
+      local: false,
       city_coord: [],
       polylines: [],
       heatmap_cfg: {
@@ -121,28 +122,26 @@ export default {
         });
       }
       else if(type == 'user'){
-        var place = {
-          lat: 0,
-          lng: 0,
-          count: 1
-        }
         this.heatmap_layer = new HeatmapOverlay(this.heatmap_cfg);
         const group_entries = JSON.parse(window.localStorage.getItem('local_entries'));
         if(group_entries) { // if local data exists, load local data
+          this.local=true;
           console.log("Found local data. Loading local...");
-          const entries = group_entries[2];
+          const entries = group_entries.flat();
+          console.log(entries);
           // Filter IPs and apply user data
           if(entries != null){
           var i_peas = []
           for(var entry of entries){
-            if(typeof entry.serverIPAddress !== 'undefined'){
+            if((typeof entry.serverIPAddress !== 'undefined') && (String(entry.response.content_type).includes("html"))){
               if(!(i_peas.includes(entry.serverIPAddress)))i_peas.push(entry.serverIPAddress);
             }
           }
-          this.applyUserData(entries);
+          this.applyUserData(i_peas);
         }
         }
-        else {
+        else { // else load remote data
+          this.local=false;
           console.log("No local data found. Loading remote...");
           axios.get('./php/get_user_map.php').then(response => {
             if(response.data != null){
@@ -160,6 +159,11 @@ export default {
 
     },
     applyUserData(i_peas){
+      var place = {
+          lat: 0,
+          lng: 0,
+          count: 1
+        }
       var coord_promises = [];
       for (var i = 0; i < i_peas.length; i++) {
          coord_promises[i] = axios.get('http://ip-api.com/json/'+i_peas[i]).then((response)=>{
@@ -168,7 +172,7 @@ export default {
            this.places.push([lat, lng]);
            place.lat = lat;
            place.lng = lng;
-           this.heatmap_layer.addData(place)
+           this.heatmap_layer.addData(place);
          });
       }
       console.log(i_peas);
@@ -191,8 +195,10 @@ export default {
       }).addTo(this.map);
 
       this.map.scrollWheelZoom.disable();
-      L.marker([38,24]).addTo(this.map);
       this.map.addLayer(this.heatmap_layer);
+      if(this.local){
+        var popup = L.popup().setLatLng([38,23.85]).setContent("Γειά! Φαίνεται πως έχεις τοπικά δεδομένα αποθηκευμένα, επομένως αυτή τη στιγμή βλέπεις αυτά. Για να δεις τα δεδομένα που είναι αποθηκευμένα στο λογαριασμό σου, πρέπει να διαγράψεις τα τοπικά.").openOn(this.map);
+      }
     },
 
     async createAdminMap(id) {

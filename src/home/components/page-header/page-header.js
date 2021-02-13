@@ -28,6 +28,7 @@ export default {
   },
   methods: {
     logOut() {
+      window.localStorage.removeItem('local_entries');
       axios.get('./php/logout.php')
       .then((response)=>{
         this.$root.curr_page = 'login'

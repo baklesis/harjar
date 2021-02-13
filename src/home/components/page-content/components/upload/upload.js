@@ -119,7 +119,7 @@ export default {
     // upon user choice to upload.
     onSubmit(){
       // show loading spinner on button
-      document.getElementById('done-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>'
+      document.getElementById('done-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
       // create json string of entries
       const data = JSON.stringify(this.entries);
       if(this.upload){

@@ -5,7 +5,7 @@ $i_peas = array();
 if(isset($_SESSION['username'])){
 	$username = $_SESSION['username'];
 
-	$sql = $conn->query("SELECT serverIPAddress from entry where user='$username' AND serverIPAddress IS NOT NULL");
+	$sql = $conn->query("SELECT serverIPAddress FROM entry INNER JOIN response ON entry.id = response.entry INNER JOIN header ON response.id = header.response where user='$username' AND serverIPAddress IS NOT NULL AND content_type LIKE '%html';");
 	if($sql){
 	  while($row = $sql->fetch_assoc()) {
 	    
