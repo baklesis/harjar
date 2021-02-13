@@ -121,11 +121,7 @@ export default {
         });
       }
       else if(type == 'user'){
-        var place = {
-          lat: 0,
-          lng: 0,
-          count: 1
-        }
+        
         this.heatmap_layer = new HeatmapOverlay(this.heatmap_cfg);
         const group_entries = JSON.parse(window.localStorage.getItem('local_entries'));
         if(group_entries) { // if local data exists, load local data
@@ -139,7 +135,7 @@ export default {
               if(!(i_peas.includes(entry.serverIPAddress)))i_peas.push(entry.serverIPAddress);
             }
           }
-          this.applyUserData(entries);
+          this.applyUserData(i_peas);
         }
         }
         else {
@@ -160,6 +156,11 @@ export default {
 
     },
     applyUserData(i_peas){
+      var place = {
+          lat: 0,
+          lng: 0,
+          count: 1
+        }
       var coord_promises = [];
       for (var i = 0; i < i_peas.length; i++) {
          coord_promises[i] = axios.get('http://ip-api.com/json/'+i_peas[i]).then((response)=>{
@@ -168,7 +169,7 @@ export default {
            this.places.push([lat, lng]);
            place.lat = lat;
            place.lng = lng;
-           this.heatmap_layer.addData(place)
+           this.heatmap_layer.addData(place);
          });
       }
       console.log(i_peas);
@@ -191,7 +192,6 @@ export default {
       }).addTo(this.map);
 
       this.map.scrollWheelZoom.disable();
-      L.marker([38,24]).addTo(this.map);
       this.map.addLayer(this.heatmap_layer);
     },
 

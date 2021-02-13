@@ -76,15 +76,15 @@ foreach ($jsonStream as $index => $data_group) {
 
 		 			$last_h_id = $conn->insert_id;
 		 			if(!empty($data['request']['cache_control'])){
-		 				// foreach($data['request']['cache_control']['control'] as $control){
-		 				// 	$sql_cache->bind_param('is',$last_h_id,$control);
-		 				// 	if($sql_cache->execute()){
-		 				// 		echo 'yes!';
-		 				// 	}
-		 				// 	else{
-							// 	echo $conn -> error . "Request cache-control error.<br>";
-		 				// 	}
-		 				// }
+		 				foreach($data['request']['cache_control']['control'] as $control){
+		 				 	$sql_cache->bind_param('is',$last_h_id,$control);
+		 				 	if($sql_cache->execute()){
+		 				 		echo 'Inserted request cache_control';
+		 				 	}
+		 				 	else{
+							 	echo $conn -> error . "Request cache-control error.<br>";
+		 				 	}
+		 				}
 		 			}
 
 		 			$status = $data['response']['status'] == 0 ? null : $data['response']['status']; // consider zero status codes as null
@@ -110,7 +110,7 @@ foreach ($jsonStream as $index => $data_group) {
 				 				foreach($data['response']['cache_control']['control'] as $control){
 				 					$sql_cache->bind_param('is',$last_h_id,$control);
 				 					if($sql_cache->execute()){
-				 						echo "Inserted cache_control";
+				 						echo "Inserted response cache_control";
 				 					}
 				 					else{
 										echo $conn -> error . "Response cache-control error. Control:" . $control;
