@@ -24,6 +24,7 @@ export default {
     return {
       places: [],
       map: null,
+      local: false,
       city_coord: [],
       polylines: [],
       heatmap_cfg: {
@@ -121,10 +122,10 @@ export default {
         });
       }
       else if(type == 'user'){
-        
         this.heatmap_layer = new HeatmapOverlay(this.heatmap_cfg);
         const group_entries = JSON.parse(window.localStorage.getItem('local_entries'));
         if(group_entries) { // if local data exists, load local data
+          this.local=true;
           console.log("Found local data. Loading local...");
           const entries = group_entries[2];
           // Filter IPs and apply user data
@@ -138,7 +139,8 @@ export default {
           this.applyUserData(i_peas);
         }
         }
-        else {
+        else { // else load remote data
+          this.local=false;
           console.log("No local data found. Loading remote...");
           axios.get('./php/get_user_map.php').then(response => {
             if(response.data != null){
@@ -193,6 +195,9 @@ export default {
 
       this.map.scrollWheelZoom.disable();
       this.map.addLayer(this.heatmap_layer);
+      if(this.local){
+        var popup = L.popup().setLatLng([38,23.85]).setContent("Γειά! Φαίνεται πως έχεις τοπικά δεδομένα αποθηκευμένα, επομένως αυτή τη στιγμή βλέπεις αυτά. Για να δεις τα δεδομένα που είναι αποθηκευμένα στο λογαριασμό σου, πρέπει να διαγράψεις τα τοπικά.").openOn(this.map);
+      }
     },
 
     async createAdminMap(id) {
