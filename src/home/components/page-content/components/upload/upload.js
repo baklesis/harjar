@@ -35,7 +35,6 @@ class Entry{
 const template = `
 <div>
     <card class="pt-3 pb-4">
-      <h5>Εισαγωγή αρχείου HAR</h5>
       <h5 class='px-1 text-muted'>Εισαγωγή αρχείου HAR</h5>
       <hr><p>Επιλέγοντας να ανεβάσετε ένα αρχείο HAR στην ιστοσελίδα,
       αποκτάτε πρόσβαση σε μια οπτικοποίηση των δεδομένων περιήγησής σας
@@ -71,7 +70,7 @@ const template = `
           <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
           <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
         </b-form-group>
-        <b-button @click="onSubmit">Ολοκλήρωση</b-button>
+        <b-button @click="onSubmit" id='done-button' style='width:122px; height:38px'>Ολοκλήρωση</b-button>
         </b-form>
       </b-col>
       </b-collapse>
@@ -111,17 +110,19 @@ export default {
     // Sends the modified file to the server,
     // upon user choice to upload.
     onSubmit(){
+      // show loading spinner on button
+      document.getElementById('done-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>'
+      // create json string of entries
       const data = JSON.stringify(this.entries);
       if(this.upload){
-
         console.log("Checking session");
         axios.get('./php/get_session.php').then(function(response){
           let username = response.data['username'];
-
           console.log("Starting upload...");
           axios.post('./php/import.php',{data,username})
           .then(function (response) {
             if(response.data){
+              location.reload()  // reload page
               console.log("Success")
               console.log(response.data);
             }
@@ -131,10 +132,10 @@ export default {
           })
         })
       }
-      else
-      {
-      window.localStorage.setItem('local_entries',data);
-    }
+      else{
+        location.reload()  // reload page
+        window.localStorage.setItem('local_entries',data);
+      }
     },
     // Resets the user import form
     resetForm(){

@@ -1,5 +1,5 @@
 const template = `
-    <div id="map" ref="request_map" class='rounded-corners-25' style= "height: 800px;"></div>
+    <div id="map" ref="request_map" class='rounded-corners-25' style= "height: 800px; background-color: #75CFF0""></div>
 `
 class Ip{
   constructor(server,city){
