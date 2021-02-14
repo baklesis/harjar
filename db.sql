@@ -72,4 +72,3 @@ index (control)
 );
 
 insert into user values ('admin',MD5('1'),'admin@harjar.com','admin');
-insert into user values ('prisonmike',MD5('1'),'prisonmike@harjar.com','user');

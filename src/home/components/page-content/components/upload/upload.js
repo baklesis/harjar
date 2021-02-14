@@ -223,6 +223,7 @@ export default {
         // Once the file is loaded split it into 100-entry chunks (cents)
         let big_var = JSON.parse(evt.target.result);
         entries = big_var.log.entries;
+        //console.log(entries);
         let cents = Math.ceil(entries.length / 100);
         for (var i = 0; i < cents; i++) {
           let cent = [];

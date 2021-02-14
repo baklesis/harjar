@@ -39,8 +39,8 @@ foreach ($jsonStream as $index => $data_group) {
 
 		$data = $data_group[$i];
 		// Bind for entry
-		//$user = $input['username'];
-		$user = "prisonmike";
+		$user = $input['username'];
+		//$user = "prisonmike";
 		$upload_datetime = date("Y-m-d H:i:s");
 		$started_datetime_full = str_replace('T',' ',$data['startedDateTime']);
 	 	list($started_datetime, $leftovers) = explode('.',$started_datetime_full);
