@@ -23,10 +23,9 @@ include "config.php";
 $input = json_decode(file_get_contents('php://input'),true,2);
 
 $jsonStream = \JsonMachine\JsonMachine::fromString($input["data"]);
-//$jsonStream = \JsonMachine\JsonMachine::fromFile("../test1.txt");
+// For testing: $jsonStream = \JsonMachine\JsonMachine::fromFile("../test1.txt");
 foreach ($jsonStream as $index => $data_group) {
 
-	//$sql_entry = $conn->query("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ('prisonmike', NOW(), '$started_datetime', $wait, '$server_ip', 'WIND', 'Patras')");
 	//$test = "INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ".implode(',',array_fill(0,sizeof($data_group),"(?,?,?,?,?,?,?)"));
 	//echo $test;
 	$sql_entry = $conn->prepare("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES (?,CONVERT_TZ(?,'+00:00','+02:00'),?,?,?,?,?)");

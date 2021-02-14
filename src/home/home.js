@@ -57,7 +57,7 @@ export default {
           this.header_title = 'Επισκόπηση'
           break;
         case 'upload':
-          this.header_title = 'Upload'
+          this.header_title = 'Μεταφόρτωση'
       }
       return this.header_title
     }

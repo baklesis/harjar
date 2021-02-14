@@ -61,6 +61,8 @@ export default {
               i_peas[index].count++;
             }
           }
+          // Find ip with biggest count (this will be used to normalize polyline weight)
+          var max_count = i_peas.reduce((a,b)=>a.count>b.count?a:b).count;
           console.log("List of IPs");
           console.log(i_peas);
           var unique_cities = [...new Set(i_peas.map(a => a.city))];
@@ -111,7 +113,8 @@ export default {
                 // Copy count variables for each IP
                 this.places[i].count = i_peas[i].count;
                 // Create polylines
-                var polyline = L.polyline([this.places[i].startpoint,this.places[i].endpoint], {color: 'blue', weight: Math.log(this.places[i].count)+1});
+                var norm_factor = 8/(max_count-1); // for max weight = 10
+                var polyline = L.polyline([this.places[i].startpoint,this.places[i].endpoint], {color: '#00B9BD', weight: (this.places[i].count*norm_factor+2-norm_factor/*Math.log(this.places[i].count)+1*/)});
                 this.polylines.push(polyline);
               }
               console.log("Final data for map:");
@@ -182,7 +185,7 @@ export default {
       });
     },
     createUserMap(id) {
-      this.map = L.map(id, { dragging: !L.Browser.mobile }).setView([38, 23.85], 6);
+      this.map = L.map(id, { dragging: !L.Browser.mobile }).setView([38, 23.85], 4);
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         minZoom: 2,
@@ -202,7 +205,7 @@ export default {
     },
 
     async createAdminMap(id) {
-      this.map = L.map(id, { dragging: !L.Browser.mobile }).setView([38, 23.85], 6);
+      this.map = L.map(id, { dragging: !L.Browser.mobile }).setView([38, 23.85], 4);
       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         minZoom: 2,
