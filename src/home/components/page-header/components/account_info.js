@@ -47,6 +47,8 @@ const template = `
         <b-button id='save-password' type='submit' class="rounded-right" style="display: none"><b-icon icon='pencil-fill'></b-icon></b-button>
       </b-form>
     </b-form-group>
+    <hr>
+    <b-link @click='delete_account' class='pb-2 link-danger text-centered' style="margin: auto;">Διαγραφή Λογαριασμού</b-link>
   </b-modal>
 `
 export default {
@@ -137,6 +139,7 @@ export default {
       document.getElementById('save-username').style.display = 'block' // show save button
       document.getElementById('edit-username').style.display = 'none' // hide edit button
     },
+
     edit_password() {
       this.password = ''  // only password will be blank when edit button is selected
       this.password_description = "Τουλάχιστον 8 λατινικούς χαρακτήρες, ένα κεφαλαίο γράμμα, αριθμός και σύμβολο."
@@ -145,6 +148,7 @@ export default {
       document.getElementById('save-password').style.display = 'block' // show save button
       document.getElementById('edit-password').style.display = 'none' // hide edit button
     },
+
     save_username(){
       if(this.username_state){
         document.getElementById('username').readOnly = true
@@ -168,6 +172,7 @@ export default {
         document.getElementById('edit-username').style.display = 'block' // show edit button
       }
     },
+
     save_password(){
       if(this.password_state){
         document.getElementById('password').readOnly = true
@@ -191,6 +196,16 @@ export default {
         document.getElementById('save-password').style.display = 'none' // hide save button
         document.getElementById('edit-password').style.display = 'block' // show edit button
       }
+    },
+
+    delete_account(){
+      axios.get('./php/delete_account.php')
+      .then((response)=>{
+        location.reload()
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
     }
-  },
+  }
 }

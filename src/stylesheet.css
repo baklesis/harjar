@@ -80,6 +80,16 @@
   text-decoration: none;
   filter: brightness(90%);
 }
+.link-danger {
+  color: red;
+  text-decoration: none;
+
+}
+.link-danger:hover {
+  color: red;
+  text-decoration: none;
+  filter: brightness(90%);
+}
 
 /*sidebar option*/
 .sidebar-option {
