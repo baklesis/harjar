@@ -65,11 +65,20 @@
 .btn-colored:hover, .btn-colored:focus, .btn-colored:active, .btn-colored:hover:active {
   background-color: var(--mycolor) !important;
   border: 1px solid var(--mycolor) !important;
+  -webkit-box-shadow: none!important;  /*removes grey focus outline*/
+  box-shadow: none!important;
 }
-.btn-colored:disabled {
-  background-color: var(--mycolor);
-  border: 1px solid var(--mycolor);
-  filter: brightness(102%);
+.btn-transparent {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0px;
+  color: var(--mycolor);
+}
+.btn-transparent:hover, .btn-transparent:focus, .btn-transparent:active, .btn-transparent:hover:active {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: 0px !important;
+  color: var(--mycolor) !important;
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
 }
 
 /*links*/

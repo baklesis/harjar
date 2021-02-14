@@ -56,7 +56,7 @@ const template = `
             accept=".har">
           </b-form-file></b-col>
           <div style='width:340px'>
-            <b-button :disabled.sync="show" @click="importHAR" class='btn-colored'>Εισαγωγή αρχείου</b-button>
+            <b-button :disabled.sync="show" @click="importHAR" variant='success'>Εισαγωγή αρχείου</b-button>
             <b-button @click="resetForm">Καθάρισμα επιλογής</b-button>
           </div>
         </b-row>
