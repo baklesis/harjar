@@ -46,10 +46,10 @@ export default {
     async formMapData(type){
       // Based on user type
       if(type == 'admin'){
-        console.log("Getting map data for admin...")
+        //console.log("Getting map data for admin...")
         var test = await axios.get('./php/get_admin_map.php').then((response)=>{
-          console.log("Server responded! Response:")
-          console.log(response.data);
+          //console.log("Server responded! Response:")
+          //console.log(response.data);
           var i_peas = [];
           for(var point of response.data){
             var ip = new Ip(point.serverIPAddress,point.city);
@@ -63,11 +63,11 @@ export default {
           }
           // Find ip with biggest count (this will be used to normalize polyline weight)
           var max_count = i_peas.reduce((a,b)=>a.count>b.count?a:b).count;
-          console.log("List of IPs");
-          console.log(i_peas);
+          //console.log("List of IPs");
+          //console.log(i_peas);
           var unique_cities = [...new Set(i_peas.map(a => a.city))];
-          console.log("Unique cities from those IPs:");
-          console.log(unique_cities);
+          //console.log("Unique cities from those IPs:");
+          //console.log(unique_cities);
 
           var city_promises = [];
           for(var i=0; i<unique_cities.length; i++){
@@ -78,7 +78,7 @@ export default {
           }
           // Once all promises for city coordinates have been settled...
           Promise.allSettled(city_promises).then((response)=>{
-            console.log("Source coordinates received. Getting coordinates for endpoints...");
+            //console.log("Source coordinates received. Getting coordinates for endpoints...");
             var coord_promises = [];
             let lost_coord = 0;
             var startpoints =[];
@@ -119,8 +119,8 @@ export default {
                 var polyline = L.polyline([this.places[i].startpoint,this.places[i].endpoint], {color: '#00B9BD', weight: (this.places[i].count*norm_factor+2-norm_factor/*Math.log(this.places[i].count)+1*/)});
                 this.polylines.push(polyline);
               }
-              console.log("Final data for map:");
-              console.log(this.places);
+              //console.log("Final data for map:");
+              //console.log(this.places);
               document.getElementById('map').innerHTML = '';
               this.createAdminMap('map');
             });
@@ -132,9 +132,9 @@ export default {
         const group_entries = JSON.parse(window.localStorage.getItem('local_entries'));
         if(group_entries) { // if local data exists, load local data
           this.local=true;
-          console.log("Found local data. Loading local...");
+          //console.log("Found local data. Loading local...");
           const entries = group_entries.flat();
-          console.log(entries);
+          //console.log(entries);
           // Filter IPs and apply user data
           if(entries != null){
           var i_peas = []

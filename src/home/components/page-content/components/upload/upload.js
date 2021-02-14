@@ -123,10 +123,10 @@ export default {
       // create json string of entries
       const data = JSON.stringify(this.entries);
       if(this.upload == 'true'){
-        console.log("Checking session");
+        //console.log("Checking session");
         axios.get('./php/get_session.php').then(function(response){
           let username = response.data['username'];
-          console.log("Starting upload...");
+          //console.log("Starting upload...");
           axios.post('./php/import.php',{data,username})
           .then(function (response) {
             if(response.data){
@@ -301,8 +301,8 @@ export default {
         }
         // Reverse the cents too
         this.entries.reverse();
-        console.log("Imported entries (grouped by 100s):");
-        console.log(this.entries);
+        //console.log("Imported entries (grouped by 100s):");
+        //console.log(this.entries);
         this.show=true;
         const data=JSON.stringify(this.entries);
         //console.log(data);
