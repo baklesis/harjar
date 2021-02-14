@@ -157,8 +157,8 @@ export default {
       axios.post('http://ip-api.com/json/').then((response)=>{
         this.isp = response.data.isp;
         this.city = response.data.city;
-        console.log(this.isp);
-        console.log(this.city);
+        console.log("Current user isp: " + this.isp);
+        console.log("User's city: " + this.city);
       })
     },
     // Method borrowed from the beloved StackOverflow
@@ -305,7 +305,6 @@ export default {
         this.show=true;
         const data=JSON.stringify(this.entries);
         //console.log(data);
-        window.localStorage.setItem('local_entries',data);
       }
     }
   }
