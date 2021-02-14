@@ -14,10 +14,10 @@ $content_types_empty = 0;
 $days_empty = 0;
 $providers_empty = 0;
 $http_methods_empty = 0;
-if(sizeof($filters['content_types'])==0){$content_types_empty = 1;}
-if(sizeof($filters['days'])==0){$days_empty = 1;}
-if(sizeof($filters['providers'])==0){$providers_empty = 1;}
-if(sizeof($filters['http_methods'])==0){$http_methods_empty = 1;}
+if(sizeof($content_types)==0){$content_types_empty = 1;}
+if(sizeof($days)==0){$days_empty = 1;}
+if(sizeof($providers)==0){$providers_empty = 1;}
+if(sizeof($http_methods)==0){$http_methods_empty = 1;}
 
 // create strings of all filter arrays using ", " delimiter to pass to MySQL
 $content_types = join("|", $filters['content_types']);
@@ -28,8 +28,8 @@ foreach($filters['days'] as $day){
   array_push($mapped_days,$mapping[$day]);
 }
 $days = join("', '", $mapped_days);
-$providers = join("', '", $filters['providers']);
-$http_methods = join("', '", $filters['http_methods']);
+$providers = join("', '", $providers);
+$http_methods = join("', '", $http_methods);
 
 $output = array();
 
