@@ -10,12 +10,12 @@ $providers = $filters['providers'];
 // flag variables for "where" statement in MySQL
 $content_types_empty = 0;
 $providers_empty = 0;
-if(sizeof($filters['content_types'])==0){$content_types_empty = 1;}
-if(sizeof($filters['providers'])==0){$providers_empty = 1;}
+if(sizeof($content_types)==0){$content_types_empty = 1;}
+if(sizeof($providers)==0){$providers_empty = 1;}
 
 // create strings of all filter arrays using ", " delimiter to pass to MySQL
-$content_types = join("|", $filters['content_types']);
-$providers =join("', '", $filters['providers']);
+$content_types = join("|", $content_types);
+$providers =join("', '", $providers);
 
 $buckets = array();  // all bucket ranges
 $bucket_vals = array();  // all bucket values
@@ -37,7 +37,7 @@ $sql_max_ttl = $conn->query("SELECT GREATEST(COALESCE(TTL1,0), COALESCE(TTL2, 0)
                              INNER JOIN header ON response.id = header.response
                              INNER JOIN entry ON entry.id = response.entry
                              WHERE
-                             IF($content_types_empty, 1, IF(content_type IS NULL, 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
+                             IF($content_types_empty, 1, IF((content_type IS NULL) OR (content_type = ''), 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
                              IF($providers_empty, 1, isp in ('$providers'))
                              )AS all_both_TTL");
 
@@ -75,7 +75,7 @@ if($sql_max_ttl){  // if max value has been found
                              INNER JOIN header ON response.id = header.response
                              INNER JOIN entry ON entry.id = response.entry
                              WHERE
-                             IF($content_types_empty, 1, IF(content_type IS NULL, 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
+                             IF($content_types_empty, 1, IF((content_type IS NULL) OR (content_type = ''), 'undefined' REGEXP '$content_types', content_type REGEXP '$content_types')) AND
                              IF($providers_empty, 1, isp in ('$providers'))
                              )
                              AS all_both_TTL

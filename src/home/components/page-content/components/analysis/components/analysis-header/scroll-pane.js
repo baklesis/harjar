@@ -10,7 +10,7 @@ const template = `
             <card-info title='max-stale' :value='max_stale+"%"' subtitle='των αιτήσεων' icon='graph-up'></card-info>
           </b-col>
           <b-col class='p-3'>
-            <card-info title='min-fresh' :value='max_stale+"%"' subtitle='των αιτήσεων' icon='graph-down'></card-info>
+            <card-info title='min-fresh' :value='min_fresh+"%"' subtitle='των αιτήσεων' icon='graph-down'></card-info>
           </b-col>
         </b-row>
         <b-row><b-col class='p-3'><card-polar ref='polar'></card-polar></b-col></b-row>
