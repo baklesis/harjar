@@ -23,7 +23,7 @@ include "config.php";
 $input = json_decode(file_get_contents('php://input'),true,2);
 
 $jsonStream = \JsonMachine\JsonMachine::fromString($input["data"]);
-// For testing: $jsonStream = \JsonMachine\JsonMachine::fromFile("../test1.txt");
+// $jsonStream = \JsonMachine\JsonMachine::fromFile("test1.txt"); // For testing
 foreach ($jsonStream as $index => $data_group) {
 
 	//$test = "INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ".implode(',',array_fill(0,sizeof($data_group),"(?,?,?,?,?,?,?)"));
@@ -32,15 +32,15 @@ foreach ($jsonStream as $index => $data_group) {
 	$sql_request= $conn->prepare("INSERT INTO request(entry, method, url) VALUES (?,?,?)");
 	$sql_req_h= $conn->prepare("INSERT INTO header(request,max_age,host) VALUES (?,?,?)");
 	$sql_response = $conn->prepare("INSERT INTO response(entry,status,status_text) VALUES (?, ?, ?)");
-	$sql_res_h = $conn->prepare("INSERT INTO header(response,content_type,max_age,age,last_modified) VALUES (?, ?, ?, ?, ?)");
+	$sql_res_h = $conn->prepare("INSERT INTO header(response,content_type,max_age,age,last_modified) VALUES (?, ?, ?, ?, STR_TO_DATE(?,'%a, %d %b %Y %k:%i:%s GMT'))");
 	$sql_cache = $conn->prepare("INSERT INTO cache_control VALUES (?, ?)");
 
 	for ($i=0; $i < sizeof($data_group); $i++) {
 
 		$data = $data_group[$i];
 		// Bind for entry
-		$user = $input['username'];
-		//$user = "prisonmike";
+		//$user = $input['username'];
+		$user = "prisonmike";
 		$upload_datetime = date("Y-m-d H:i:s");
 		$started_datetime_full = str_replace('T',' ',$data['startedDateTime']);
 	 	list($started_datetime, $leftovers) = explode('.',$started_datetime_full);
@@ -98,7 +98,7 @@ foreach ($jsonStream as $index => $data_group) {
 						$type_split_array =explode(";",$content_type);
 						$content_type = $type_split_array[0];
 					 	$age = $data['response']['age'];
-				 		$last_modified = null;//$data['response']['last_modified']; // fix format before enter
+				 		$last_modified = $data['response']['last_modified'];
 						if(!empty($data['response']['cache_control'])){
 			 				$max_age = $data['response']['cache_control']['max_age'];
 			 			}

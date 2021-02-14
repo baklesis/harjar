@@ -22,7 +22,6 @@ serverIPAddress varchar(50),
 isp varchar(50) not null,
 city varchar(50) not null,
 primary key (id),
-constraint duplicate_entries unique (user,startedDateTime, wait),
 constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade,
 index (user,isp)
 );
