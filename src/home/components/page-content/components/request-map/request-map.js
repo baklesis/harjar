@@ -121,6 +121,7 @@ export default {
               }
               console.log("Final data for map:");
               console.log(this.places);
+              document.getElementById('map').innerHTML = '';
               this.createAdminMap('map');
             });
           });
@@ -183,6 +184,7 @@ export default {
       console.log(i_peas);
       Promise.allSettled(coord_promises).then((response)=>{
         console.log("Coordinates complete!");
+        document.getElementById('map').innerHTML = '';
         this.createUserMap('map');
       });
     },
@@ -229,7 +231,8 @@ export default {
     }
   },
   mounted() {
-    // On mount, load map based on user from session
+    document.getElementById('map').innerHTML = '<div style="width:fit-content;margin:auto; padding-top:100px; color: white"><div class="spinner-border spinner-border-sm" role="status"></div> Παρακαλώ περιμένετε...</div>';
+    //On mount, load map based on user from session
     axios.post('./php/get_session.php')
     .then((response)=>{
       if (response.data != null){
