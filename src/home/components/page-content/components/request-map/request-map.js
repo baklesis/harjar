@@ -231,7 +231,7 @@ export default {
     }
   },
   mounted() {
-    document.getElementById('map').innerHTML = '<div style="width:fit-content;margin:auto; padding-top:100px; color: white"><div class="spinner-border spinner-border-sm" role="status"></div> Παρακαλώ περιμένετε...</div>';
+    document.getElementById('map').innerHTML = '<div style="width:fit-content;margin:auto; padding-top:40vh; color: white"><div class="spinner-border spinner-border-sm" role="status"></div> Παρακαλώ περιμένετε...</div>';
     //On mount, load map based on user from session
     axios.post('./php/get_session.php')
     .then((response)=>{
