@@ -73,8 +73,8 @@ const template = `
           στο λογαριασμό σας);
           <b-form>
            <b-form-group>
-            <b-form-radio v-model="upload" value='false'>Τοπική αποθήκευση</b-form-radio>
-            <b-form-radio v-model="upload" value='true'>Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
+            <b-form-radio v-model="upload" value="false">Τοπική αποθήκευση</b-form-radio>
+            <b-form-radio v-model="upload" value="true">Αποθήκευση στο λογαριασμό (ανέβασμα στην υπηρεσία)</b-form-radio>
           </b-form-group>
           <b-button @click="onSubmit" id='done-button' class='btn-colored' style='width:122px; height:38px'>Ολοκλήρωση</b-button>
           </b-form>
@@ -122,7 +122,7 @@ export default {
       document.getElementById('done-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
       // create json string of entries
       const data = JSON.stringify(this.entries);
-      if(this.upload){
+      if(this.upload == 'true'){
         console.log("Checking session");
         axios.get('./php/get_session.php').then(function(response){
           let username = response.data['username'];

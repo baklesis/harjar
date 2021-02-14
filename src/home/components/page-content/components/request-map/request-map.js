@@ -81,12 +81,13 @@ export default {
             console.log("Source coordinates received. Getting coordinates for endpoints...");
             var coord_promises = [];
             let lost_coord = 0;
+            var startpoints =[];
             for (var i = 0; i < i_peas.length; i++) {
               for(var j=0; j<unique_cities.length; j++){
                 // This loop matches the IP's city with the unique cities array
                 // to figure the line's startpoint
-                if(i_peas[i].city==unique_cities[j]){
-                  var startpoint=this.city_coord[j];
+                if(i_peas[i].city === unique_cities[j]){
+                  startpoints.push(this.city_coord[j]);
                 }
               }
               coord_promises[i] = axios.get('http://api.ipapi.com/api/'+i_peas[i].server+'?access_key=80e7295c8b88072b77d8746bd5c05647').then((response)=>{
@@ -98,6 +99,7 @@ export default {
                 }
                 else {
                   var endpoint = [lat,lng];
+                  var startpoint = startpoints.reverse().pop();
                   var place = new Place(startpoint,endpoint);
                   this.places.push(place);
                   // Create markers for endpoint
