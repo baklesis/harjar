@@ -5,6 +5,8 @@
   harjar is a web app of a complete, crowd-sourced system for the collection, management and analysis of user HAR files, with data visualisation through maps and charts.
 </p>
 
+-----------------
+
 #### Development Tools:
 - Frontend:
   - Bootstrap-Vue.js
