@@ -21,12 +21,14 @@ class Response{
   }
 }
 class Entry{
-  constructor(sdt,wait,serverIP,isp,city,request,response){
+  constructor(sdt,wait,server_lat,server_lon,user_lat,user_lon,isp,request,response){
     this.startedDateTime = sdt;
     this.wait = wait;
-    this.serverIPAddress = serverIP;
+    this.server_lat = server_lat;
+    this.server_lon = server_lon;
+    this.user_lat = user_lat;
+    this.user_lon = user_lon;
     this.isp = isp;
-    this.city = city;
     this.request = request;
     this.response = response;
   }
@@ -56,7 +58,7 @@ const template = `
             accept=".har">
           </b-form-file></b-col>
           <div style='width:340px'>
-            <b-button :disabled.sync="show" @click="importHAR" variant='success'>Εισαγωγή αρχείου</b-button>
+            <b-button :disabled.sync="show" @click="importHAR" id="import-button" variant='success' style='width:160px;'>Εισαγωγή αρχείου</b-button>
             <b-button @click="resetForm">Καθάρισμα επιλογής</b-button>
           </div>
         </b-row>
@@ -99,17 +101,14 @@ export default {
       show: false,
       upload: false,
       isp: null,
-      city: null
+      user_lat: null,
+      user_lon: null
     }
   },
   computed:{
     history: function(){
       return (window.localStorage.getItem('local_entries')!==null);
     }
-  },
-  mounted() {
-    // On mount, we get the current isp
-    this.getIsp();
   },
   methods: {
     deleteLocalFiles(){
@@ -130,9 +129,9 @@ export default {
           axios.post('./php/import.php',{data,username})
           .then(function (response) {
             if(response.data){
-              location.reload()  // reload page
               console.log("Success")
               console.log(response.data);
+              location.reload()  // reload page
             }
           })
           .catch(function (error) {
@@ -149,17 +148,6 @@ export default {
     resetForm(){
       this.file=null;
       this.show=false;
-    },
-    // Requests data based on the user's current IP address,
-    // and passes the isp and city response variables to the local data variables.
-    getIsp(){
-      var isp=null;
-      axios.post('http://ip-api.com/json/').then((response)=>{
-        this.isp = response.data.isp;
-        this.city = response.data.city;
-        console.log("Current user isp: " + this.isp);
-        console.log("User's city: " + this.city);
-      })
     },
     // Method borrowed from the beloved StackOverflow
     domain_from_url(url) {
@@ -212,100 +200,146 @@ export default {
     // This method is responsible for loading and parsing the HAR file
     // as needed for our implementation.
     importHAR(){
-      var entries= "";
-      const HAR_file = this.file;
 
-      // Setup new FileReader object to read the HAR file
-      let reader= new FileReader();
-      reader.readAsText(HAR_file,"UTF-8");
-      reader.onload = evt => {
+      if(this.file != null){
 
-        // Once the file is loaded split it into 100-entry chunks (cents)
-        let big_var = JSON.parse(evt.target.result);
-        entries = big_var.log.entries;
-        //console.log(entries);
-        let cents = Math.ceil(entries.length / 100);
-        for (var i = 0; i < cents; i++) {
-          let cent = [];
-          this.entries.push(cent);
-        }
+        // show loading spinner on button
+        document.getElementById('import-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
 
-        // Import each entry
-        for (var i = entries.length - 1; i >= 0; i--) {
+        var imported_entries = "";  // contains unformatted entries, extracted raw from HAR file
+        var grouped_entries = []  // contains formatted entries grouped in groups of 100 entries (each group is called a cent)
+        var lost_coord = 0  // counter of lost coordinates by the API (debugging)
+        const HAR_file = this.file;
 
-          // Import request header values needed
-          let request_header = {
-            cache_control: null,
-            pragma: null,
-            host:null
-          };
-          var cache_control = '';
-          let har_req_headers = entries[i].request.headers;
+        // Get user city coordinates
+        axios.post('http://ip-api.com/json/').then((response)=>{
+          this.isp = response.data.isp;
+          var city = response.data.city;  // we will use the city coordinates and not the user coordinates for privacy
+          axios.get('https://eu1.locationiq.com/v1/search.php?key=pk.1bc0ed635062895ca1656d76fafba3e8&q='+city+'&format=json').then((response)=>{
+            this.user_lat = parseFloat(response.data[0].lat)
+            this.user_lon = parseFloat(response.data[0].lon)
+            console.log("Current user isp: " + this.isp);
+            console.log("User's coordinates: " + city + ' ' + this.user_lat + ", " + this.user_lon);
 
-          for (var j = har_req_headers.length - 1; j >= 0; j--) {
-            if (har_req_headers[j].name.toLowerCase() == 'cache-control') cache_control = har_req_headers[j].value;
-            if (har_req_headers[j].name.toLowerCase() == 'pragma') request_header.pragma = har_req_headers[j].value;
-            if (har_req_headers[j].name.toLowerCase() == 'host') request_header.host = har_req_headers[j].value;
-          }
-          let request_cache_control = this.processCacheControl(cache_control);
+            // Setup new FileReader object to read the HAR file
+            let reader= new FileReader();
+            reader.readAsText(HAR_file,"UTF-8");
+            reader.onload = evt => {
 
-          request_header.cache_control = request_cache_control;
-          // Make new request object
-          let request = new Request(
-            entries[i].request.method,
-            this.domain_from_url(entries[i].request.url),
-            request_header
-          );
+              // Once the file is loaded split it into 100-entry chunks (cents)
+              let big_var = JSON.parse(evt.target.result);
+              imported_entries = big_var.log.entries;
+              //console.log(entries);
+              let cents = Math.ceil(imported_entries.length / 100);
+              for (var i = 0; i < cents; i++) {
+                let cent = [];
+                grouped_entries.push(cent);
+              }
 
-          // Import response header values needed
-          let response_header = {
-            content_type: null,
-            cache_control: null,
-            expires: null,
-            age: null,
-            last_modified: null
-          }
-          let har_res_headers = entries[i].response.headers;
-          for (var j = har_res_headers.length - 1; j >= 0; j--) {
-            if (har_res_headers[j].name.toLowerCase() == 'content-type') response_header.content_type = har_res_headers[j].value;
-            if (har_res_headers[j].name.toLowerCase() == 'cache-control') cache_control = har_res_headers[j].value;
-            if (har_res_headers[j].name.toLowerCase() == 'expires') response_header.expires = har_res_headers[j].value;
-            if (har_res_headers[j].name.toLowerCase() == 'age') response_header.age = har_res_headers[j].value;
-            if (har_res_headers[j].name.toLowerCase() == 'last-modified') response_header.last_modified = har_res_headers[j].value;
-          }
-          let response_cache_control = this.processCacheControl(cache_control);
+              // Format each entry
+              var coord_promises = [] // promise array for API response of server coordinates for each entry
+              for (var i = imported_entries.length - 1; i >= 0; i--) {
+                // Import only request header values needed
+                let request_header = {
+                  cache_control: null,
+                  pragma: null,
+                  host:null
+                };
+                var cache_control = '';
+                let har_req_headers = imported_entries[i].request.headers;
 
-          response_header.cache_control = response_cache_control;
-          // Make new response object
-          let response = new Response(
-            entries[i].response.status,
-            entries[i].response.statusText,
-            response_header
-          );
-          // Make new entry object with request, response and other data
-          let entry = new Entry(
-            entries[i].startedDateTime,
-            entries[i].timings?.wait,
-            entries[i].serverIPAddress,
-            this.isp,
-            this.city,
-            request,
-            response
-            );
-          // Push entry into its corresponding cent
-          this.entries[Math.floor(i/100)].push(entry);
-        }
-        // Reverse entries because of loop's descending order
-        for (var i = 0; i < this.entries.length; i++) {
-          this.entries[i].reverse();
-        }
-        // Reverse the cents too
-        this.entries.reverse();
-        //console.log("Imported entries (grouped by 100s):");
-        //console.log(this.entries);
-        this.show=true;
-        const data=JSON.stringify(this.entries);
-        //console.log(data);
+                for (var j = har_req_headers.length - 1; j >= 0; j--) {
+                  if (har_req_headers[j].name.toLowerCase() == 'cache-control') cache_control = har_req_headers[j].value;
+                  if (har_req_headers[j].name.toLowerCase() == 'pragma') request_header.pragma = har_req_headers[j].value;
+                  if (har_req_headers[j].name.toLowerCase() == 'host') request_header.host = har_req_headers[j].value;
+                }
+                let request_cache_control = this.processCacheControl(cache_control);
+
+                request_header.cache_control = request_cache_control;
+                // Make new request object
+                let request = new Request(
+                  imported_entries[i].request.method,
+                  this.domain_from_url(imported_entries[i].request.url),
+                  request_header
+                );
+
+                // Import response header values needed
+                let response_header = {
+                  content_type: null,
+                  cache_control: null,
+                  expires: null,
+                  age: null,
+                  last_modified: null
+                }
+                let har_res_headers = imported_entries[i].response.headers;
+                for (var j = har_res_headers.length - 1; j >= 0; j--) {
+                  if (har_res_headers[j].name.toLowerCase() == 'content-type') response_header.content_type = har_res_headers[j].value;
+                  if (har_res_headers[j].name.toLowerCase() == 'cache-control') cache_control = har_res_headers[j].value;
+                  if (har_res_headers[j].name.toLowerCase() == 'expires') response_header.expires = har_res_headers[j].value;
+                  if (har_res_headers[j].name.toLowerCase() == 'age') response_header.age = har_res_headers[j].value;
+                  if (har_res_headers[j].name.toLowerCase() == 'last-modified') response_header.last_modified = har_res_headers[j].value;
+                }
+                let response_cache_control = this.processCacheControl(cache_control);
+
+                response_header.cache_control = response_cache_control;
+                // Make new response object
+                let response = new Response(
+                  imported_entries[i].response.status,
+                  imported_entries[i].response.statusText,
+                  response_header
+                );
+
+                // Make new entry object with request, response and other data
+                let entry = new Entry(
+                  imported_entries[i].startedDateTime,
+                  imported_entries[i].timings?.wait,
+                  0,  // init server coordinates with 0 and update with real value after promise is met
+                  0,
+                  this.user_lat,
+                  this.user_lon,
+                  this.isp,
+                  request,
+                  response
+                  );
+                // Push entry into its corresponding cent
+                grouped_entries[Math.floor(i/100)].push(entry);
+
+                // Get server coordinates
+                coord_promises[i] = axios.get('http://api.ipapi.com/api/' + imported_entries[i].serverIPAddress + '?access_key=9a5dce5ef6abf88d7bb3709cb6b90b65').then((response)=>{
+                  entry.server_lat = parseFloat(response.data.latitude);
+                  entry.server_lon = parseFloat(response.data.longitude);
+                  //console.log("Coordinates: " + entry.server_lat + ' ' + entry.server_lon);
+                  if(!entry.server_lat || !entry.server_lon) {
+                    lost_coord++;
+                  }
+                })
+              }
+
+              Promise.allSettled(coord_promises).then((response)=>{
+
+                // show done icon on button
+                document.getElementById('import-button').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>';
+
+                this.entries = grouped_entries // save grouped entries in Vue data
+
+                // Print coordinates
+                console.log("Number of coordinates lost: " + lost_coord);
+
+                // Reverse entries because of loop's descending order
+                for (var i = 0; i < this.entries.length; i++) {
+                  this.entries[i].reverse();
+                }
+                // Reverse the cents too
+                this.entries.reverse();
+                //console.log("Imported entries (grouped by 100s):");
+                //console.log(this.entries);
+                this.show=true;
+                const data=JSON.stringify(this.entries);
+                //console.log(data);
+              })
+            }
+          })
+        })
       }
     }
   }

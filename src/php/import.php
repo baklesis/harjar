@@ -26,9 +26,7 @@ $jsonStream = \JsonMachine\JsonMachine::fromString($input["data"]);
 // $jsonStream = \JsonMachine\JsonMachine::fromFile("test1.txt"); // For testing
 foreach ($jsonStream as $index => $data_group) {
 
-	//$test = "INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES ".implode(',',array_fill(0,sizeof($data_group),"(?,?,?,?,?,?,?)"));
-	//echo $test;
-	$sql_entry = $conn->prepare("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,serverIPAddress,isp, city) VALUES (?,CONVERT_TZ(?,'+00:00','+02:00'),?,?,?,?,?)");
+	$sql_entry = $conn->prepare("INSERT INTO entry(user,uploadDateTime,startedDateTime,wait,server_lat,server_lon,user_lat,user_lon,isp) VALUES (?,CONVERT_TZ(?,'+00:00','+02:00'),?,?,?,?,?,?,?)");
 	$sql_request= $conn->prepare("INSERT INTO request(entry, method, url) VALUES (?,?,?)");
 	$sql_req_h= $conn->prepare("INSERT INTO header(request,max_age,host) VALUES (?,?,?)");
 	$sql_response = $conn->prepare("INSERT INTO response(entry,status,status_text) VALUES (?, ?, ?)");
@@ -44,13 +42,14 @@ foreach ($jsonStream as $index => $data_group) {
 		$upload_datetime = date("Y-m-d H:i:s");
 		$started_datetime_full = str_replace('T',' ',$data['startedDateTime']);
 	 	list($started_datetime, $leftovers) = explode('.',$started_datetime_full);
-	 	$server_ip = $data['serverIPAddress'];
-
+	 	$server_lat = $data['server_lat'];
+		$server_lon = $data['server_lon'];
+		$user_lat = $data['user_lat'];
+		$user_lon = $data['user_lon'];
 	 	$wait = $data['wait'];
 	 	$isp = $data['isp'];
-	 	$city = $data['city'];
 
-		$sql_entry->bind_param("sssisss",$user,$upload_datetime,$started_datetime,$wait,$server_ip,$isp,$city);
+		$sql_entry->bind_param("sssidddds",$user,$upload_datetime,$started_datetime,$wait,$server_lat,$server_lon,$user_lat,$user_lon,$isp);
 
 		if($sql_entry->execute()){
 

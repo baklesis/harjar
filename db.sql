@@ -18,12 +18,15 @@ user varchar(50) not null,
 uploadDateTime datetime not null,
 startedDateTime datetime not null,
 wait int,
-serverIPAddress varchar(50),
+server_lat float,
+server_lon float,
+user_lat float,
+user_lon float,
 isp varchar(50) not null,
-city varchar(50) not null,
 primary key (id),
 constraint entry_user foreign key (user) references user(username) on delete cascade on update cascade,
-index (user,isp)
+index (user),
+index (isp)
 );
 
 create table request (
