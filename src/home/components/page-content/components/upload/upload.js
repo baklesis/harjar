@@ -58,7 +58,12 @@ const template = `
             accept=".har">
           </b-form-file></b-col>
           <div style='width:340px'>
-            <b-button :disabled.sync="show" @click="importHAR" id="import-button" variant='success' style='width:160px;'>Εισαγωγή αρχείου</b-button>
+            <b-button :disabled.sync="show" @click="importHAR" id="import-button" variant='success' style='width:160px;'>
+            <div id='import-button-text'>Εισαγωγή αρχείου</div>
+            <div id='import-button-progress' style='display: none'>
+            <div class="spinner-border spinner-border-sm" role="status" style='margin-right:5px'></div>{{progress}}%
+            </div>
+            </b-button>
             <b-button @click="resetForm">Καθάρισμα επιλογής</b-button>
           </div>
         </b-row>
@@ -102,7 +107,12 @@ export default {
       upload: false,
       isp: null,
       user_lat: null,
-      user_lon: null
+      user_lon: null,
+      // for monitoring progress of import
+      total_entries: 1,
+      loaded_entries: 0,
+      progress: 0,
+      progress_interval: null
     }
   },
   computed:{
@@ -111,6 +121,16 @@ export default {
     }
   },
   methods: {
+    resetProgress(){  // for reseting progress monitor of import
+      this.progress_interval = null
+      this.total_entries = 1
+      this.loaded_entries =  0
+      this.progress =  0
+    },
+    startProgress(){  // for starting progress monitor of import
+      var self = this;
+      self.progress_interval = setInterval(function(){self.progress = parseInt((100*self.loaded_entries)/self.total_entries)}, 1000);
+    },
     deleteLocalFiles(){
       window.localStorage.removeItem('local_entries');
     },
@@ -203,8 +223,12 @@ export default {
 
       if(this.file != null){
 
-        // show loading spinner on button
-        document.getElementById('import-button').innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
+        // show progress and loading spinner on button
+        document.getElementById('import-button-progress').style.display = 'block';
+        document.getElementById('import-button-text').style.display = 'none';
+
+        // start progress monitoring
+        this.startProgress()
 
         var imported_entries = "";  // contains unformatted entries, extracted raw from HAR file
         var grouped_entries = []  // contains formatted entries grouped in groups of 100 entries (each group is called a cent)
@@ -229,6 +253,7 @@ export default {
               // Once the file is loaded split it into 100-entry chunks (cents)
               let big_var = JSON.parse(evt.target.result);
               imported_entries = big_var.log.entries;
+              this.total_entries = imported_entries.length
               //console.log(entries);
               let cents = Math.ceil(imported_entries.length / 100);
               for (var i = 0; i < cents; i++) {
@@ -312,6 +337,8 @@ export default {
                   if(!entry.server_lat || !entry.server_lon) {
                     lost_coord++;
                   }
+                  // Update progress
+                  this.loaded_entries = this.loaded_entries+1
                 })
               }
 
@@ -319,6 +346,9 @@ export default {
 
                 // show done icon on button
                 document.getElementById('import-button').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>';
+
+                // reset progress monitoring
+                this.resetProgress()
 
                 this.entries = grouped_entries // save grouped entries in Vue data
 
