@@ -15,7 +15,6 @@ const template = `
 		    </b-row>
 		    <b-row class='px-1' align-v='center'>
 		      <b-col cols='auto'><h3><b>{{type.value}}</b></h3></b-col>
-					<b-col cols='auto'><h6 class='text-muted'>sec</h6></b-col>
 		    </b-row>
 				<hr>
 	    </div>
@@ -33,6 +32,23 @@ export default {
 			 types: [],
 		}
 	},
+	methods: {
+		secondsToDhms(seconds) {
+			seconds = Number(seconds);
+			var d = Math.floor(seconds / (3600*24));
+			var h = Math.floor(seconds % (3600*24) / 3600);
+			var m = Math.floor(seconds % 3600 / 60);
+			var s = Math.floor(seconds % 60);
+			
+			var dDisplay = d > 0 ? d + "d " : "";
+			var hDisplay = h > 0 ? h + "h " : "";
+			var mDisplay = m > 0 ? m + "m " : "";
+			var sDisplay = s > 0 ? s + "s " : "";
+
+			return dDisplay + hDisplay + mDisplay + sDisplay;
+			}
+
+	},
 	mounted() {
 		// load name and avg age for each content type
 		axios.get('./php/get_avg_age.php')
@@ -46,6 +62,9 @@ export default {
 			  if (keyA > keyB) return -1;
 			  return 0;
 			})
+			for (let type of sorted_types) {
+				type.value = this.secondsToDhms(type.value)
+			}
 			this.types = sorted_types
 		})
 		.catch(function (error) {
